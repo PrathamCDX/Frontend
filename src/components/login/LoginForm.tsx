@@ -33,7 +33,7 @@ export default function LogInForm() {
         />
       </div>
       <div className="flex items-center justify-center mt-[10vh]">
-        <div className=" w-[100%] sm:w-[60%] text-center mt-[4vh]">
+        <div className=" w-full sm:w-[60%] text-center mt-[4vh]">
           <div className="text-lg font-semibold">Log In to Your Account</div>
           <div className="text-sm px-4">
             Welcome to Workr ! Log In to get Started
@@ -62,6 +62,7 @@ function Form() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<LogInFormValues>({
     mode: "onChange",
     reValidateMode: "onBlur",
@@ -122,6 +123,9 @@ function Form() {
 
       <InputField
         register={register}
+        onChangeFn={(e) => {
+          setValue("password", e.target.value, { shouldValidate: true });
+        }}
         fieldName="password"
         placeholder="Password"
         type={showPassword ? "text" : "password"}

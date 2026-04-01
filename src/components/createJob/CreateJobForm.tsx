@@ -1,5 +1,9 @@
 "use client";
-
+import "katex/dist/katex.min.css";
+import MDEditor from "@uiw/react-md-editor";
+import rehypeKatex from "rehype-katex";
+import rehypeRaw from "rehype-raw";
+import remarkMath from "remark-math";
 import { CreateJobFormSchema } from "@/schema/createJob.validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
@@ -24,7 +28,7 @@ import DebouncedDropdown from "./DebouncedDropdown";
 import Dropdown from "./Dropdown";
 import SkillsDropdown from "./SkillsDropdown";
 import { toast, ToastContainer } from "react-toastify";
-import MarkdownEditor from "./MarkdownEditor";
+// import MarkdownEditor from "./MarkdownEditor";
 import { RootState } from "@/lib/store.config";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
 
@@ -60,7 +64,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
   useEffect(() => {
     if (userRoles && !userRoles?.includes("admin")) {
       router.replace("/dashboard");
-    } 
+    }
   }, [userRoles, router]);
 
   const useFormMethods = useForm<CreateJobFormValues>({
@@ -74,18 +78,22 @@ export default function CreateJobForm({ className }: { className?: string }) {
     handleSubmit,
     setValue,
     getValues,
+    watch,
     formState: { errors },
   } = useFormMethods;
 
   const onSubmit = (createData: CreateJobFormValues) => {
-    mutate({ createJobData: {...createData, recruiter_id: Number(data?.id)}, authJwtToken: jwtToken });
+    mutate({
+      createJobData: { ...createData, recruiter_id: Number(data?.id) },
+      authJwtToken: jwtToken,
+    });
   };
 
   const onError = () => {
     toast.error("Fill all the required fields to continue");
   };
 
-  setValue('recruiter_id', Number(data?.id));
+  setValue("recruiter_id", Number(data?.id));
   const { mutate, isPending } = useCreateJob();
 
   // if (!isAuthorized || !userRoles || !userRoles.includes("admin")) {
@@ -96,7 +104,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
     <div
       className={cn(
         `components-createJob-CreateJobForm justify-center sm:flex relative `,
-        className
+        className,
       )}
     >
       <ToastContainer position="top-right" autoClose={3000} className="z-20" />
@@ -249,7 +257,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
                 placeholder={
                   employmentType?.find(
                     (type: OptionType) =>
-                      type.id === getValues("employment_type_id")
+                      type.id === getValues("employment_type_id"),
                   )?.name === "Internship"
                     ? "In thousands"
                     : "In LPA"
@@ -273,7 +281,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
                 placeholder={
                   employmentType?.find(
                     (type: OptionType) =>
-                      type.id === getValues("employment_type_id")
+                      type.id === getValues("employment_type_id"),
                   )?.name === "Internship"
                     ? "In thousands "
                     : "In LPA"
@@ -299,7 +307,20 @@ export default function CreateJobForm({ className }: { className?: string }) {
           <div className="components-createJob-CreateJobForm font-bold text-md mt-2 text-black">
             Job Description{" "}
           </div>
-          <MarkdownEditor fieldName={"description"} />
+          {/* <MarkdownEditor fieldName={"description"} /> */}
+          <MDEditor
+            value={watch("description") || ""}
+            onChange={(v: string | undefined) =>
+              setValue("description", v || "")
+            }
+            data-color-mode="light"
+            height={600}
+            overflow
+            previewOptions={{
+              rehypePlugins: [rehypeRaw, rehypeKatex],
+              remarkPlugins: [remarkMath],
+            }}
+          />
 
           <button
             type="submit"
