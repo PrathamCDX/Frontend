@@ -316,6 +316,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
             data-color-mode="light"
             height={600}
             overflow
+            preview="edit"
             previewOptions={{
               rehypePlugins: [rehypeRaw, rehypeKatex],
               remarkPlugins: [remarkMath],

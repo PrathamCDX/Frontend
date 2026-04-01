@@ -174,3 +174,63 @@ body {
     60%{background-position:0%  50%, 50% 100%,100%   0%}
     80%{background-position:0%  50%, 50%  50%,100% 100%}
 }
+
+.w-md-editor-toolbar {
+  min-height: 48px;          /* default ~32px */
+  padding: 6px 8px;
+}
+
+.w-md-editor-toolbar li button {
+  width: 34px;
+  height: 34px;
+  padding: 0 !important;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #111827;
+  transition: background-color 0.15s ease, transform 0.05s ease;
+}
+
+/* hover */
+.w-md-editor-toolbar li button:hover {
+  background: #f3f4f6;
+}
+
+/* active/pressed feel */
+.w-md-editor-toolbar li button:active {
+  transform: translateY(1px);
+}
+
+/* icon size */
+.w-md-editor-toolbar svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* tooltip / popup menus (optional improvement) */
+.w-md-editor-toolbar .w-md-editor-toolbar-divider {
+  margin: 0 6px;
+  opacity: 0.4;
+}
+
+.w-md-editor-text-input,
+.w-md-editor-preview {
+  font-size: 4rem;
+  line-height: 1.7;
+}
+
+/* Fix bullets/numbers missing in uiw preview */
+.wmde-markdown ul {
+  list-style: disc !important;
+  padding-left: 1.5rem !important;
+}
+
+.wmde-markdown ol {
+  list-style: decimal !important;
+  padding-left: 1.5rem !important;
+}
+
+.wmde-markdown li {
+  margin: 0.25rem 0;
+}
