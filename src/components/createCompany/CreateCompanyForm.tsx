@@ -10,8 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import z from "zod";
 import InputField from "../InputField";
 import useCreateCompany from "@/utils/useCreateCompany";
-import DragAndDropFile from "./DragAndDropFile";
-import useUploadLogo from "@/utils/useUploadLogo";
 import { useEffect, useState } from "react";
 import MarkdownEditor from "../createJob/MarkdownEditor";
 import TripleDotLoader from "../TripleDotLoader";
@@ -20,10 +18,12 @@ import useGetCompanySize from "@/utils/useGetCompanySize";
 import DebouncedDropdown from "../createJob/DebouncedDropdown";
 import { OptionType } from "../createJob/CreateJobForm";
 import useGetIndustry from "@/utils/useGetIndustry";
+import DragAndDropFileBlob from "./DragAndDropFileBlob";
 
 export type CreateCompanyFormType = z.infer<typeof CreateCompanySchema>;
 
 export default function CreateCompanyForm() {
+  const [file, setFile] = useState<File | null>(null);
   const [showDescriptionError, setShowDescriptionError] = useState(false);
   const methods = useForm<CreateCompanyFormType>({
     mode: "onSubmit",
@@ -33,7 +33,7 @@ export default function CreateCompanyForm() {
       name: "",
       description: "",
       website: "",
-      logo: "",
+      // logo: "",
       company_size_id: undefined,
       industry_id: undefined,
     },
@@ -42,20 +42,19 @@ export default function CreateCompanyForm() {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     setValue,
     formState: { errors },
   } = methods;
 
-  const logo = watch("logo");
+  // const logo = watch("logo");
   const dispatch = useDispatch();
   const jwtToken = useSelector((state: RootState) => state.authJwtToken.value);
 
   const { mutate: createCompany, isSuccess, isPending } = useCreateCompany();
   const { data: companySizeList } = useGetCompanySize(jwtToken);
   const onSubmit = (createData: CreateCompanyFormType) => {
-    createCompany({ authJwtToken: jwtToken, createData });
+    createCompany({ authJwtToken: jwtToken, createData, file });
   };
 
   useEffect(() => {
@@ -66,7 +65,7 @@ export default function CreateCompanyForm() {
       // reset(undefined, { keepErrors: false });
       reset();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, reset]);
 
   if (!jwtToken) return null;
@@ -89,18 +88,18 @@ export default function CreateCompanyForm() {
           <div>
             <div>Upload company logo</div>
 
-            <DragAndDropFile
-              fieldName="logo"
-              useMutationFn={useUploadLogo}
+            <DragAndDropFileBlob
+              file={file}
+              setFile={setFile}
               jwtToken={jwtToken}
               fileExtension={[".png"]}
               maxFileSize={3}
             />
           </div>
-          {errors.logo && <div className="text-red-400">Add company logo</div>}
+          {/* {errors.logo && <div className="text-red-400">Add company logo</div>} */}
 
           <div className="components-createCompany-CreateCompanyForm text-xs">
-            Current logo: {logo}
+            {/* Current logo: {logo} */}
           </div>
           <button className="hidden" type="button">
             Debug Values
@@ -168,7 +167,7 @@ export default function CreateCompanyForm() {
             showFormatOptions={false}
             isSuccess={isSuccess}
           />
-          {( errors.description && showDescriptionError )&& (
+          {errors.description && showDescriptionError && (
             <div className="text-red-400">Provide a valid description</div>
           )}
           <div className="flex items-center justify-around">
@@ -177,7 +176,7 @@ export default function CreateCompanyForm() {
                 setShowDescriptionError(true);
               }}
               type="submit"
-              className="rounded py-2 px-4 bg-blue-200 hover:bg-blue-400 font-semibold justify-center duration-200 "
+              className="hover:cursor-pointer rounded py-2 px-4 bg-blue-200 hover:bg-blue-400 font-semibold justify-center duration-200 "
             >
               Create
             </button>
