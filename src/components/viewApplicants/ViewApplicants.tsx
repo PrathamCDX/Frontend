@@ -1,15 +1,14 @@
 "use client";
 
 import { toogleShowJobApplicants } from "@/features/showJobApplicants/showJobApplicantsSlice";
-import { RootState } from "@/lib/store.config";
 import { cn } from "@/utils/cn";
 import { ApplicantListType } from "@/utils/useGetJobApplicants";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
 import ApplicantCard from "./ApplicantCard";
 import useGetJobApplicantsPagination from "@/utils/useGetJobApplicantsPagination";
 import { useEffect, useState } from "react";
 import TripleDotLoader from "../TripleDotLoader";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 export default function ViewApplicants({
   jobId,
@@ -20,11 +19,9 @@ export default function ViewApplicants({
 }) {
   const [pageCount, setPageCount] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const jwtToken = useSelector((state: RootState) => {
-    return state.authJwtToken.value;
-  });
+  const jwtToken = useAppSelector((state) => state.authJwtToken.value);
 
   const { data, isPending } = useGetJobApplicantsPagination({
     jwtToken,
@@ -43,7 +40,7 @@ export default function ViewApplicants({
     <div
       className={cn(
         "component-viewApplicants-ViewApplicants justify-center ",
-        className
+        className,
       )}
     >
       <div
@@ -64,22 +61,22 @@ export default function ViewApplicants({
         </div>
       )}
       <div className="h-5/10 justify-center overflow-y-scroll ">
-      {data?.records?.map((applicant: ApplicantListType) => {
-        return (
-          <div
-          key={applicant.id}
-          className="component-viewApplicants-ViewApplicants rounded m-3 "
-          >
-            <ApplicantCard
-              resumeUrl={applicant.profile.resumeUrl}
-              city={applicant.phoneNo}
-              email={applicant.email}
-              name={applicant.fullName}
-              graduationYear={applicant.graduationYear}
-            />
-          </div>
-        );
-      })}
+        {data?.records?.map((applicant: ApplicantListType) => {
+          return (
+            <div
+              key={applicant.id}
+              className="component-viewApplicants-ViewApplicants rounded m-3 "
+            >
+              <ApplicantCard
+                resumeUrl={applicant.profile.resumeUrl}
+                city={applicant.phoneNo}
+                email={applicant.email}
+                name={applicant.fullName}
+                graduationYear={applicant.graduationYear}
+              />
+            </div>
+          );
+        })}
       </div>
       <div className="w-[100%] sticky bottom-0 bg-white border-t shadow-sm">
         <div className="flex items-center justify-between px-4 py-2">

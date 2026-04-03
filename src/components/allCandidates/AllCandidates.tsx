@@ -1,18 +1,20 @@
 "use client";
 
 import { setShowAllCandidates } from "@/features/showAllCandidates/showAllCandidatesSlice";
-import { RootState } from "@/lib/store.config";
-import { useDispatch, useSelector } from "react-redux";
 import { useDownloadCandidatesCsv } from "@/utils/useDownloadAllCandiidateCSV";
-import { StudentCandidatesList, WorkingCandidatesList } from "./CandidatesLists";
+import {
+  StudentCandidatesList,
+  WorkingCandidatesList,
+} from "./CandidatesLists";
 import { JSX, useState } from "react";
 import { X } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 export default function AllCandidates() {
   const [candidateType, setCandidateType] = useState("Student");
   const [totalCount, setTotalCount] = useState<number | null>(null);
-  const jwtToken = useSelector((state: RootState) => state.authJwtToken.value);
-  const dispatch = useDispatch();
+  const jwtToken = useAppSelector((state) => state.authJwtToken.value);
+  const dispatch = useAppDispatch();
   const { mutate: downloadCsv, isPending: downloadCsvPending } =
     useDownloadCandidatesCsv({ jwtToken, details: candidateType });
 
@@ -40,8 +42,30 @@ export default function AllCandidates() {
           </div>
           <div className="w-full flex justify-center">
             <div className="grid grid-cols-2 w-full sm:w-1/2 py-1 my-1.5 font-light rounded-xl bg-white h-10">
-              <div onClick={()=>{setCandidateType("Student")}} className={(candidateType === "Student" ? "bg-blue-300" : "" )+ " rounded-lg py-0.5 hover:cursor-pointer flex items-center justify-center"}><div>Student</div></div>
-              <div onClick={()=>{setCandidateType("Working Professional")}} className={(candidateType === "Working Professional" ? "bg-blue-300" : "" )+ " rounded-lg py-0.5 hover:cursor-pointer flex items-center justify-center"}><div>Working</div></div>
+              <div
+                onClick={() => {
+                  setCandidateType("Student");
+                }}
+                className={
+                  (candidateType === "Student" ? "bg-blue-300" : "") +
+                  " rounded-lg py-0.5 hover:cursor-pointer flex items-center justify-center"
+                }
+              >
+                <div>Student</div>
+              </div>
+              <div
+                onClick={() => {
+                  setCandidateType("Working Professional");
+                }}
+                className={
+                  (candidateType === "Working Professional"
+                    ? "bg-blue-300"
+                    : "") +
+                  " rounded-lg py-0.5 hover:cursor-pointer flex items-center justify-center"
+                }
+              >
+                <div>Working</div>
+              </div>
             </div>
           </div>
           <button
@@ -50,7 +74,9 @@ export default function AllCandidates() {
             }}
             className="px-5 py-1.5 rounded-2xl bg-blue-300 text-sm md:text-base border-0 hover:cursor-pointer "
           >
-            {downloadCsvPending ? "Downloading..." : ("Download CSV (" + candidateType.split(" ")[0]+ ")")}
+            {downloadCsvPending
+              ? "Downloading..."
+              : "Download CSV (" + candidateType.split(" ")[0] + ")"}
           </button>
         </div>
         {/* candidate list */}

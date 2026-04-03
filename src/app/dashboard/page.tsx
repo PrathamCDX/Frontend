@@ -7,51 +7,45 @@ import InterviewInvitationCard from "@/components/dashboard/InterviewInvitationC
 import JobCard from "@/components/JobCard";
 import OptionButton from "@/components/OptionButton";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
-import { RootState } from "@/lib/store.config";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import useGetUser from "@/utils/useGetUser";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 export default function Page() {
-  const jwtToken = useSelector((state: RootState) => {
+  const jwtToken = useAppSelector((state) => {
     return state.authJwtToken.value;
   });
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   useEffect(() => {
     const token = localStorage.getItem("AuthJwtToken");
     if (token) {
       dispatch(setAuthJwtToken(token));
-    } 
+    }
   }, [dispatch]);
 
-  const {
-    
-  } = useGetUser(jwtToken);
+  const {} = useGetUser(jwtToken);
 
   return (
     <div className="flex flex-col h-full p-2 pb-0">
       <div className="h-fit">
-      <DashboardTopbar pageName="Overview" />
+        <DashboardTopbar pageName="Overview" />
       </div>
       <div className=" hide-scrollbar overflow-y-hidden">
         <div className="flex h-full">
-        <div className="sm:basis-35/50 h-[100%] overflow-y-scroll">
-          <ApplicationSummary />
-          <div className="sm:hidden h-fit mt-4">
+          <div className="sm:basis-35/50 h-[100%] overflow-y-scroll">
+            <ApplicationSummary />
+            <div className="sm:hidden h-fit mt-4">
+              <DashboardRightside />
+            </div>
+            <JobRecommendation />
+          </div>
+          <div className="hidden sm:block">
             <DashboardRightside />
           </div>
-          <JobRecommendation />
         </div>
-        <div className="hidden sm:block">
-          <DashboardRightside />
-        </div>
-      </div>
-
       </div>
     </div>
-  )
-
-  
+  );
 
   return (
     <div className="text-black p-2 bg-[#FFFF] h-full pb-0 ">
@@ -77,19 +71,21 @@ function JobRecommendation() {
     <div className="px-3 w-full border border-[#F0F0F0] rounded-lg my-3 pb-3">
       <div className="flex items-center justify-between px-3 py-2">
         <div className="relative w-fit">
-          <p className="text-[10px] text-red-500 absolute -right-[4.3rem] -top-1">Coming Soon</p>
+          <p className="text-[10px] text-red-500 absolute -right-[4.3rem] -top-1">
+            Coming Soon
+          </p>
           <div className="font-semibold text-xl">Job Recommendation</div>
         </div>
         <div className="text-[#28668B]">See All</div>
       </div>
       <div className=" space-x-3 mt-3 overflow-x-scroll flex hide-scrollbar">
-          <OptionButton name="For you" isActive={false} />
-          <OptionButton name="Trending" isActive={false} />
-          <OptionButton name="New This Week" isActive={false} />
-          <OptionButton name="Nearby Opportunities" isActive={false} />
-          <OptionButton name="Urgently Hiring" isActive={false} />
-          <OptionButton name="Urgently Hiring" isActive={false} />
-          <OptionButton name="Urgently Hiring" isActive={false} />
+        <OptionButton name="For you" isActive={false} />
+        <OptionButton name="Trending" isActive={false} />
+        <OptionButton name="New This Week" isActive={false} />
+        <OptionButton name="Nearby Opportunities" isActive={false} />
+        <OptionButton name="Urgently Hiring" isActive={false} />
+        <OptionButton name="Urgently Hiring" isActive={false} />
+        <OptionButton name="Urgently Hiring" isActive={false} />
       </div>
       <div className="flex gap-2 flex-wrap items-center justify-evenly mt-3 pointer-events-none">
         <JobCard
@@ -134,12 +130,12 @@ function ApplicationSummary() {
           {/* <div>Month</div> */}
         </div>
         <div className=" space-x-3 mt-3 overflow-x-scroll flex hide-scrollbar  ">
-            <OptionButton name="Application" isActive={false} />
-            <OptionButton name="Interview" isActive={false} />
-            <OptionButton name="Screening" isActive={false} />
-            <OptionButton name="Assesment" isActive={false} />
-            <OptionButton name="Offering" isActive={false} />
-            <OptionButton name="Acceptance" isActive={false} />
+          <OptionButton name="Application" isActive={false} />
+          <OptionButton name="Interview" isActive={false} />
+          <OptionButton name="Screening" isActive={false} />
+          <OptionButton name="Assesment" isActive={false} />
+          <OptionButton name="Offering" isActive={false} />
+          <OptionButton name="Acceptance" isActive={false} />
         </div>
 
         <div className="text-4xl mt-4 font-semibold">999</div>

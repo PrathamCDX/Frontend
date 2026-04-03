@@ -17,84 +17,72 @@ import UpdateJobForm from "@/components/updateJob/UpdateJobForm";
 import ViewApplicants from "@/components/viewApplicants/ViewApplicants";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
 import { setLoginRequiredDialogBox } from "@/features/loginRequiredDialogBox/loginRequiredDialogBoxSlice";
-import { RootState } from "@/lib/store.config";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
-
 
 export default function DashboardLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const isSidebarOpen = useSelector((state: RootState) => {
-    return state.isSidebarOpen.value;
-  });
+  const isSidebarOpen = useAppSelector((state) => state.isSidebarOpen.value);
 
-  const showJobApplicants = useSelector((state: RootState) => {
+  const showJobApplicants = useAppSelector((state) => {
     return state.showJobApplicants.value;
   });
 
-  const jobId = useSelector((state: RootState) => {
+  const jobId = useAppSelector((state) => {
     return state.jobId.value;
   });
 
-  const showJobCreateForm = useSelector(
-    (state: RootState) => state.showJobCreateForm.value
+  const showJobCreateForm = useAppSelector(
+    (state) => state.showJobCreateForm.value,
   );
 
-  const showCreateCompanyForm = useSelector((state: RootState) => {
+  const showCreateCompanyForm = useAppSelector((state) => {
     return state.showCreateCompanyForm.value;
   });
 
-  const showEditSkills = useSelector(
-    (state: RootState) => state.showEditSkills
+  const showEditSkills = useAppSelector((state) => state.showEditSkills);
+
+  const showJobUpdateForm = useAppSelector(
+    (state) => state.showJobUpdateForm.value,
   );
 
-  const showJobUpdateForm = useSelector(
-    (state: RootState) => state.showJobUpdateForm.value
-  );
-
-  const showAddLocation = useSelector((state: RootState) => {
+  const showAddLocation = useAppSelector((state) => {
     return state.showAddLocationForm.value;
   });
 
-  const showAddSkillsForm = useSelector((state: RootState) => {
+  const showAddSkillsForm = useAppSelector((state) => {
     return state.showAddSkillsForm.value;
   });
 
-  const showAddTitleForm = useSelector((state: RootState) => {
+  const showAddTitleForm = useAppSelector((state) => {
     return state.showAddTitleForm.value;
   });
 
-  const showAllCandidates = useSelector((state: RootState) => {
+  const showAllCandidates = useAppSelector((state) => {
     return state.showAllCandidates.value;
   });
 
-  const showSearchCandidates = useSelector((state: RootState) => {
+  const showSearchCandidates = useAppSelector((state) => {
     return state.showSearchCandidates.value;
-  })
+  });
 
-
-  const showSearchCandidatesByName = useSelector((state: RootState) => {
+  const showSearchCandidatesByName = useAppSelector((state) => {
     return state.showSearchCandidatesByName.value;
-  })
+  });
 
-  const showSearchCandidatesByEmail = useSelector((state: RootState) => {
+  const showSearchCandidatesByEmail = useAppSelector((state) => {
     return state.showSearchCandidatesByEmail.value;
-  })
+  });
 
-
-  // const jwtToken = useSelector((state: RootState) => {
-  //   return state.authJwtToken.value;
-  // });
-
-  const loginRequiredDialogBox = useSelector(
-    (state: RootState) => state.setLoginRequiredDialogBox.value
+  const loginRequiredDialogBox = useAppSelector(
+    (state) => state.setLoginRequiredDialogBox.value,
   );
 
-  const showAddRolesForm = useSelector(
-    (state: RootState) => state.showAddRolesForm.value
+  const showAddRolesForm = useAppSelector(
+    (state) => state.showAddRolesForm.value,
   );
 
   const panels = [
@@ -140,9 +128,7 @@ export default function DashboardLayout({
     },
     {
       show: showJobCreateForm,
-      element: (
-        <CreateJobForm className="dashboard-layout h-screen w-full" />
-      ),
+      element: <CreateJobForm className="dashboard-layout h-screen w-full" />,
     },
     {
       show: showJobUpdateForm,
@@ -152,7 +138,8 @@ export default function DashboardLayout({
           className="dashboard-layout h-screen w-full"
         />
       ),
-    }, {
+    },
+    {
       show: showSearchCandidatesByName,
       element: <SearchCandidatesByName />,
     },
@@ -163,11 +150,10 @@ export default function DashboardLayout({
     {
       show: showAddRolesForm,
       element: <AddRoles />,
-    }
+    },
   ];
 
-
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -299,15 +285,12 @@ export default function DashboardLayout({
 
       {panels.map(
         (panel, index) =>
-          panel.show && (
-            <Wrapper key={index}>
-              {panel.element}
-            </Wrapper>
-          )
+          panel.show && <Wrapper key={index}>{panel.element}</Wrapper>,
       )}
       <div
-        className={`dashboard-layout absolute w-[100%] h-[100%] sm:hidden  border top-0 left-0 bg-black opacity-35 z-10 ${isSidebarOpen ? (showJobCreateForm ? "hidden" : "block") : "hidden"
-          }`}
+        className={`dashboard-layout absolute w-[100%] h-[100%] sm:hidden  border top-0 left-0 bg-black opacity-35 z-10 ${
+          isSidebarOpen ? (showJobCreateForm ? "hidden" : "block") : "hidden"
+        }`}
       ></div>
       <div className={"dashboard-layout flex h-full w-full gap-x-2"}>
         <div
@@ -316,8 +299,9 @@ export default function DashboardLayout({
           <DashboardSidebar />
         </div>
         <div
-          className={`dashboard-layout absolute rounded-r-lg bg-[#F5F5F5] h-full w-[75%] sm:hidden overflow-y-scroll px-5 z-50 transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-            }`}
+          className={`dashboard-layout absolute rounded-r-lg bg-[#F5F5F5] h-full w-[75%] sm:hidden overflow-y-scroll px-5 z-50 transform transition-transform duration-300 ease-in-out ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
         >
           <DashboardSidebar />
         </div>
@@ -390,10 +374,8 @@ export default function DashboardLayout({
           {panels.map(
             (panel, index) =>
               panel.show && (
-                <WrapperMobile key={index}>
-                  {panel.element}
-                </WrapperMobile>
-              )
+                <WrapperMobile key={index}>{panel.element}</WrapperMobile>
+              ),
           )}
 
           {children}
@@ -405,16 +387,12 @@ export default function DashboardLayout({
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
   <div className="shadow-gray-500 border border-gray-700 dashboard-layout hidden sm:block sm:absolute top-[10%] right-[10%] rounded-lg shadow-lg px-10 hide-scrollbar justify-center z-20 h-[calc(100vh-20%)] w-full sm:w-[79%] bg-[#F5F5F5] overflow-y-auto">
-    <div className="dashboard-layout w-full min-h-full">
-      {children}
-    </div>
+    <div className="dashboard-layout w-full min-h-full">{children}</div>
   </div>
 );
 
 const WrapperMobile = ({ children }: { children: React.ReactNode }) => (
   <div className="dashboard-layout absolute sm:hidden px-5 hide-scrollbar flex justify-center z-40 h-screen w-full bg-white overflow-y-auto">
-    <div className="dashboard-layout w-full min-h-full">
-      {children}
-    </div>
+    <div className="dashboard-layout w-full min-h-full">{children}</div>
   </div>
 );

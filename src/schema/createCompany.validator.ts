@@ -8,7 +8,7 @@ export const CreateCompanySchema = z.object({
       (file) => ["image/png", "image/jpeg", "image/jpg"].includes(file.type),
       { error: "Logo must be a PNG, JPG or JPEG image" },
     ),
-  description: z.string().min(2, "Please provide a valid description") || "",
+  description: z.string().min(2, "Please provide a valid description"),
   website: z.url({
     error: "Website must be a valid URL of type: https://www.example.com",
   }),

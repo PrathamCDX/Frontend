@@ -3,13 +3,8 @@
 import { JSX, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
-import {
-  ChevronDown,
-  Search,
-} from "lucide-react";
+import { ChevronDown, Search } from "lucide-react";
 import UserProfileSidebar from "../UserProfileSidebar";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/lib/store.config";
 import { mainMenuCollapsedToogle } from "@/features/mainMenuCollapsed/mainMenuCollapsed";
 import { otherMenuCollapsedToogle } from "@/features/otherMenuCollapsed/otherMenuCollapsedSlice";
 import { isSidebarOpenToogle } from "@/features/isSidebarOpen/isSidebarOpenSlice";
@@ -19,6 +14,7 @@ import useGetUserRoles from "@/utils/useGetUserRoles";
 
 import { dashboardSidebarTabs } from "./dashboard.utis";
 import { OnClickFnType } from "./dashboard.utils";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 // import { toogleShowJobCreateForm } from "@/features/showJobCreateForm/showJobCreateForm";
 const mainMenuTabId: { [key: string]: number } = {
   jobs: 1,
@@ -27,27 +23,27 @@ const mainMenuTabId: { [key: string]: number } = {
 
 export default function DashboardSidebar() {
   const router = useRouter();
-  const jwtToken = useSelector((state: RootState) => state.authJwtToken.value);
-  const dispatch = useDispatch();
+  const jwtToken = useAppSelector((state) => state.authJwtToken.value);
+  const dispatch = useAppDispatch();
   const pathname = usePathname();
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   const [mainMenuActiveTab, setMainMenuActiveTab] = useState<number | null>(
-    mainMenuTabId[pathname.split("/")[2]] ?? 0
+    mainMenuTabId[pathname.split("/")[2]] ?? 0,
   );
   const [role, setRole] = useState("user");
   const [otherMenuActiveTab, setOtherMenuActiveTab] = useState<number | null>(
-    null
+    null,
   );
 
-  const mainMenuCollapsed = useSelector(
-    (state: RootState) => state.mainMenuCollapsed.value
+  const mainMenuCollapsed = useAppSelector(
+    (state) => state.mainMenuCollapsed.value,
   );
-  const otherMenuCollapsed = useSelector(
-    (state: RootState) => state.otherMenuCollapsed.value
+  const otherMenuCollapsed = useAppSelector(
+    (state) => state.otherMenuCollapsed.value,
   );
-  const showJobCreateForm = useSelector(
-    (state: RootState) => state.showJobCreateForm.value
+  const showJobCreateForm = useAppSelector(
+    (state) => state.showJobCreateForm.value,
   );
 
   const { data: userData, isSuccess } = useGetUser(jwtToken);
@@ -302,37 +298,38 @@ export default function DashboardSidebar() {
           <div className="text-xs text-gray-500 tracking-wide uppercase flex items-center justify-between z-20 bg-[#F5F5F5]">
             Main
             <ChevronDown
-              className={`hover:cursor-pointer duration-300 ${mainMenuCollapsed ? "transform rotate-180" : ""
-                }`}
+              className={`hover:cursor-pointer duration-300 ${
+                mainMenuCollapsed ? "transform rotate-180" : ""
+              }`}
               onClick={() => {
                 dispatch(mainMenuCollapsedToogle());
               }}
             />
           </div>
           <div
-            className={`transition-all duration-500 ease-in-out -z-10 ${mainMenuCollapsed ? "hidden" : ""
-              }`}
+            className={`transition-all duration-500 ease-in-out -z-10 ${
+              mainMenuCollapsed ? "hidden" : ""
+            }`}
           >
             <div className="flex flex-col">
-              {newMainMenuTabs[role]?.map((tab, index) =>
-                (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setMainMenuActiveTab(index);
-                      dispatch(isSidebarOpenToogle(false));
-                      tab.onClickFn(dispatch, router, tab.link, isSuccess);
-                    }}
-                    className={`text-sm sm:text-lg py-2 sm:py-1.5 px-4 flex items-center gap-4 -mb-px font-medium transition-all duration-300  rounded-md hover:cursor-pointer ${mainMenuActiveTab === index
+              {newMainMenuTabs[role]?.map((tab, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setMainMenuActiveTab(index);
+                    dispatch(isSidebarOpenToogle(false));
+                    tab.onClickFn(dispatch, router, tab.link, isSuccess);
+                  }}
+                  className={`text-sm sm:text-lg py-2 sm:py-1.5 px-4 flex items-center gap-4 -mb-px font-medium transition-all duration-300  rounded-md hover:cursor-pointer ${
+                    mainMenuActiveTab === index
                       ? "border-blue-500 text-[#D8FFFF] bg-[#0470B8]"
                       : "border-transparent text-gray-500 hover:text-blue-500"
-                      }`}
-                  >
-                    {tab.icon}
-                    {tab.name}
-                  </button>
-                )
-              )}
+                  }`}
+                >
+                  {tab.icon}
+                  {tab.name}
+                </button>
+              ))}
             </div>
           </div>
         </aside>
@@ -344,20 +341,21 @@ export default function DashboardSidebar() {
           <div className="text-xs text-gray-500 tracking-wide uppercase flex items-center justify-between z-20 bg-[#F5F5F5]">
             Creation
             <ChevronDown
-              className={`hover:cursor-pointer duration-300 ${otherMenuCollapsed ? "transform rotate-180" : ""
-                }`}
+              className={`hover:cursor-pointer duration-300 ${
+                otherMenuCollapsed ? "transform rotate-180" : ""
+              }`}
               onClick={() => {
                 dispatch(otherMenuCollapsedToogle());
               }}
             />
           </div>
           <div
-            className={`transition-all duration-500 ease-in-out -z-10 ${otherMenuCollapsed ? "hidden" : ""
-              }`}
+            className={`transition-all duration-500 ease-in-out -z-10 ${
+              otherMenuCollapsed ? "hidden" : ""
+            }`}
           >
             <div className="flex flex-col">
-              {newCreationTabs[role]?.map((tab, index) =>
-              (
+              {newCreationTabs[role]?.map((tab, index) => (
                 <button
                   key={index}
                   onClick={() => {
@@ -379,16 +377,18 @@ export default function DashboardSidebar() {
           <div className="text-xs text-gray-500 tracking-wide uppercase flex items-center justify-between z-20 bg-[#F5F5F5]">
             Others
             <ChevronDown
-              className={`hover:cursor-pointer duration-300 ${otherMenuCollapsed ? "transform rotate-180" : ""
-                }`}
+              className={`hover:cursor-pointer duration-300 ${
+                otherMenuCollapsed ? "transform rotate-180" : ""
+              }`}
               onClick={() => {
                 dispatch(otherMenuCollapsedToogle());
               }}
             />
           </div>
           <div
-            className={`transition-all duration-500 ease-in-out -z-10 ${otherMenuCollapsed ? "hidden" : ""
-              }`}
+            className={`transition-all duration-500 ease-in-out -z-10 ${
+              otherMenuCollapsed ? "hidden" : ""
+            }`}
           >
             <div className="flex flex-col">
               {otherMenuTabs.map((tab, index) => (
@@ -398,10 +398,11 @@ export default function DashboardSidebar() {
                     setOtherMenuActiveTab(index);
                     router.push(`${pathname}${tab.link}`);
                   }}
-                  className={`text-sm sm:text-lg py-1.5 px-4 flex items-center gap-4 -mb-px font-medium transition-all duration-300 border-2 rounded-md pointer-events-none ${otherMenuActiveTab === index
-                    ? "border-blue-500 text-[#D8FFFF] bg-[#0470B8]"
-                    : "border-transparent text-gray-500 hover:text-blue-500"
-                    }`}
+                  className={`text-sm sm:text-lg py-1.5 px-4 flex items-center gap-4 -mb-px font-medium transition-all duration-300 border-2 rounded-md pointer-events-none ${
+                    otherMenuActiveTab === index
+                      ? "border-blue-500 text-[#D8FFFF] bg-[#0470B8]"
+                      : "border-transparent text-gray-500 hover:text-blue-500"
+                  }`}
                 >
                   {tab.icon}
                   <div className="relative">

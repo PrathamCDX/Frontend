@@ -1,10 +1,8 @@
 import { setShowAddLocationForm } from "@/features/showAddLocationForm/showAddLocationFormSlice";
-import { RootState } from "@/lib/store.config";
 import useCreateLocation from "@/utils/useCreateLocation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
 import z from "zod";
 import DebouncedDropdown from "../createJob/DebouncedDropdown";
 import { OptionType } from "../createJob/CreateJobForm";
@@ -12,8 +10,7 @@ import useGetCity from "@/utils/useGetCity";
 import useGetState from "@/utils/useGetState";
 import useGetCountry from "@/utils/useGetCountry";
 import { AddLocationFormSchema } from "@/schema/addLocation.validator";
-
-
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 type AddLocationFormType = z.infer<typeof AddLocationFormSchema>;
 
@@ -34,10 +31,10 @@ export default function AddLocationForm() {
     setValue,
     formState: { errors },
   } = methods;
-  const jwtToken = useSelector((state: RootState) => {
+  const jwtToken = useAppSelector((state) => {
     return state.authJwtToken.value;
   });
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { mutate, isPending } = useCreateLocation();
   const onSubmit = (data: AddLocationFormType) => {
     mutate({ jwtToken, ...data });
@@ -162,7 +159,6 @@ export default function AddLocationForm() {
             useQueryFn={useGetCountry}
             setValue={setValue}
             useTextValue={true}
-            
           />
           <button
             type="submit"

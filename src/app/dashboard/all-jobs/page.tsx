@@ -10,30 +10,29 @@ import { setJobId } from "@/features/jobId/jobId";
 import { resetJobPageCount } from "@/features/jobPageNumber/jobPageNumberSlice";
 import { setShowJobApplicants } from "@/features/showJobApplicants/showJobApplicantsSlice";
 import { setShowJobupdateForm } from "@/features/showJobUpdateForm/showJobUpdateForm";
-import { RootState } from "@/lib/store.config";
+import { useAppSelector } from "@/lib/hooks";
 import useDeleteJob from "@/utils/useDeleteJob";
 import useGetJobPagination from "@/utils/useGetJobsPagination";
 import useGetUser from "@/utils/useGetUser";
 import useGetUserRoles from "@/utils/useGetUserRoles";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function Page() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const jwtToken = useSelector((state: RootState) => state.authJwtToken.value);
+  const jwtToken = useAppSelector((state) => state.authJwtToken.value);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [jobIdToBeDeleted, setJobIdToBeDeleted] = useState<number>();
-  const page = useSelector((state: RootState) => state.jobPageNumber.value);
+  const page = useAppSelector((state) => state.jobPageNumber.value);
 
- useEffect(() => {
-  if(!mounted){
-    setMounted(true);
-  }
+  useEffect(() => {
+    if (!mounted) {
+      setMounted(true);
+    }
   }, [mounted]);
-
 
   useEffect(() => {
     dispatch(resetJobPageCount());
@@ -43,37 +42,40 @@ export default function Page() {
     const token = localStorage.getItem("AuthJwtToken");
     if (token) {
       dispatch(setAuthJwtToken(token));
-    } 
+    }
   }, [dispatch]);
 
   const { data: userData, isError } = useGetUser(jwtToken);
   const { data: userRoles } = useGetUserRoles(jwtToken, userData?.id);
-  const { data: jobList, isPending, refetch } = useGetJobPagination(jwtToken, page, 20);
-  
+  const {
+    data: jobList,
+    isPending,
+    refetch,
+  } = useGetJobPagination(jwtToken, page, 20);
+
   const permission: { [key: string]: boolean } = {
     admin: true,
     user: false,
     jobseeker: false,
     operations_admin: true,
-  }
-
+  };
 
   const { mutate, isSuccess } = useDeleteJob();
-  if(isSuccess) refetch();
+  if (isSuccess) refetch();
 
   useEffect(() => {
-    if(jwtToken.trim() === '') router.push('/login');
+    if (jwtToken.trim() === "") router.push("/login");
 
-    if(isError){
-      router.push('/login')
+    if (isError) {
+      router.push("/login");
     }
     if (userRoles && !permission[userRoles[0]]) {
       router.replace("/dashboard");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userRoles, router, isError]);
 
-  if(!mounted) return null ;
+  if (!mounted) return null;
 
   if (!userRoles || !permission[userRoles[0]]) {
     return <div className="flex justify-center w-full">Authorizing... </div>;
@@ -147,12 +149,12 @@ export default function Page() {
                     Delete
                   </button>
 
-                  <button 
+                  <button
                     onClick={() => {
                       dispatch(setShowJobApplicants(true));
                       dispatch(setJobId(String(job.id)));
                     }}
-                    className={` ${userRoles[0] === 'admin' ? '' : 'hidden'} all-jobs-page hover:cursor-pointer  border rounded-lg py-1 px-1.5 bg-[#32db97] `}
+                    className={` ${userRoles[0] === "admin" ? "" : "hidden"} all-jobs-page hover:cursor-pointer  border rounded-lg py-1 px-1.5 bg-[#32db97] `}
                   >
                     View applicants
                   </button>

@@ -1,13 +1,12 @@
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
 import { setLoginRequiredDialogBox } from "@/features/loginRequiredDialogBox/loginRequiredDialogBoxSlice";
-import { RootState } from "@/lib/store.config";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { timeAgo } from "@/utils/getTime";
 import useCreateApplication from "@/utils/useCreateApplication";
 import useGetUser from "@/utils/useGetUser";
 import { Bookmark, MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 type JobDetailsCardProps = {
@@ -28,10 +27,8 @@ export default function JobDetailsCard({
   created_at,
   apply_link,
 }: JobDetailsCardProps) {
-  const dispatch = useDispatch();
-  const jwtToken = useSelector((state: RootState) => {
-    return state.authJwtToken.value;
-  });
+  const dispatch = useAppDispatch();
+  const jwtToken = useAppSelector((state) => state.authJwtToken.value);
 
   useEffect(() => {
     if (!jwtToken) {
@@ -78,31 +75,37 @@ export default function JobDetailsCard({
         <button className="hidden components-jobDetails-JobDetailsCard bg-white/20 hover:bg-white/30 p-2 rounded-md">
           <MoreHorizontal size={16} />
         </button>
-        <button onClick={()=>{
-          if(isSuccess){
-            mutate({jobId, jwtToken})
-            if(apply_link){
-              window.open(apply_link, '_blank');
-            }else{
-              toast.warning('Invalid apply link')
+        <button
+          onClick={() => {
+            if (isSuccess) {
+              mutate({ jobId, jwtToken });
+              if (apply_link) {
+                window.open(apply_link, "_blank");
+              } else {
+                toast.warning("Invalid apply link");
+              }
+            } else {
+              dispatch(setLoginRequiredDialogBox(true));
+              // router.replace('/login');
             }
-          }else{
-            dispatch(setLoginRequiredDialogBox(true))
-            // router.replace('/login');
-          }
-        }} className="components-jobDetails-JobDetailsCard w-[15rem] hover:cursor-pointer hover:bg-[#cedcf1] ml-3 bg-white text-[#0052CC] px-4 py-1.5 rounded-md text-sm">
+          }}
+          className="components-jobDetails-JobDetailsCard w-[15rem] hover:cursor-pointer hover:bg-[#cedcf1] ml-3 bg-white text-[#0052CC] px-4 py-1.5 rounded-md text-sm"
+        >
           Apply Now
         </button>
 
-        <button 
+        <button
           onClick={() => {
-            if(isSuccess) {
-              toast.success('Request is submitted successfully')
+            if (isSuccess) {
+              toast.success("Request is submitted successfully");
             } else {
-              dispatch(setLoginRequiredDialogBox(true))
+              dispatch(setLoginRequiredDialogBox(true));
             }
           }}
-        className="components-jobDetails-JobDetailsCard w-[15rem] hover:cursor-pointer hover:bg-[#cedcf1] ml-3 bg-white text-[#0052CC] px-4 py-1.5 rounded-md text-sm">Request Refferal</button>
+          className="components-jobDetails-JobDetailsCard w-[15rem] hover:cursor-pointer hover:bg-[#cedcf1] ml-3 bg-white text-[#0052CC] px-4 py-1.5 rounded-md text-sm"
+        >
+          Request Refferal
+        </button>
       </div>
     </div>
   );

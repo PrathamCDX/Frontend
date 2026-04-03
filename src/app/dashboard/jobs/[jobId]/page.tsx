@@ -4,10 +4,8 @@ import BackButton from "@/components/BackButton";
 import JobDetailsCard from "@/components/jobDetails/JobDetailsCard";
 import JobDescription from "@/components/jobDetails/JobDescription";
 import JobSpecification from "@/components/jobDetails/JobSpecification";
-import { useDispatch, useSelector } from "react-redux";
 import { use, useEffect } from "react";
 import { setJobId } from "@/features/jobId/jobId";
-import { RootState } from "@/lib/store.config";
 import useGetJobDetails from "@/utils/useGetJobDetails";
 import { ToastContainer } from "react-toastify";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
@@ -15,6 +13,7 @@ import TripleDotLoader from "@/components/TripleDotLoader";
 import { setJobDetails } from "@/features/jobDetails/jobDetails";
 import CompanyCard from "@/components/jobDetails/CompanyCard";
 import JobSkills from "@/components/jobDetails/JobSkills";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 export default function Page({
   params,
@@ -22,12 +21,12 @@ export default function Page({
   params: Promise<{ jobId: string }>;
 }) {
   const { jobId } = use(params);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const jwtToken = useSelector((state: RootState) => {
+  const jwtToken = useAppSelector((state) => {
     return state.authJwtToken.value;
   });
-  const jobDetails = useSelector((state: RootState) => {
+  const jobDetails = useAppSelector((state) => {
     return state.jobDetails.value;
   });
 

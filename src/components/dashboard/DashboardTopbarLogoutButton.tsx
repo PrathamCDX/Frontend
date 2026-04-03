@@ -1,18 +1,17 @@
 "use client";
 
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
-import { RootState } from "@/lib/store.config";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import useGetUser from "@/utils/useGetUser";
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 export default function DashboardTopbarLogoutButton() {
   const [mounted, setMounted] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
-  const jwtToken = useSelector((state: RootState) => state.authJwtToken.value);
+  const jwtToken = useAppSelector((state) => state.authJwtToken.value);
   const { isSuccess } = useGetUser(jwtToken);
 
   useEffect(() => {

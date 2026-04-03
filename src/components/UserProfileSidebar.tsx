@@ -1,20 +1,17 @@
 "use client";
 import React, { useEffect } from "react";
 import { ChevronUp } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/lib/store.config";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
 import useGetUser from "@/utils/useGetUser";
 import { usePathname, useRouter } from "next/navigation";
 import { isSidebarOpenToogle } from "@/features/isSidebarOpen/isSidebarOpenSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 export default function UserProfileSidebar() {
   const router = useRouter();
   const pathname = usePathname();
-  const authJwtToken = useSelector(
-    (state: RootState) => state.authJwtToken.value
-  );
-  const dispatch = useDispatch();
+  const authJwtToken = useAppSelector((state) => state.authJwtToken.value);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (typeof window !== "undefined") {

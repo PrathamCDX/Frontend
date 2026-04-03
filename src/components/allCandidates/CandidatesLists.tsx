@@ -1,23 +1,25 @@
 import { GetUserResponseType } from "@/types/GetUserResponseType";
 import TripleDotLoader from "../TripleDotLoader";
 import { useEffect, useState } from "react";
-import { RootState } from "@/lib/store.config";
-import { useSelector } from "react-redux";
 import useGetUserListPagination from "@/utils/useGetUserListPaginated";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useAppSelector } from "@/lib/hooks";
 
 type CandidatesListProps = {
   setTotalCount: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
-export function StudentCandidatesList({
-  setTotalCount,
-}: CandidatesListProps) {
+export function StudentCandidatesList({ setTotalCount }: CandidatesListProps) {
   const [pageCount, setPageCount] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const jwtToken = useSelector((state: RootState) => state.authJwtToken.value);
+  const jwtToken = useAppSelector((state) => state.authJwtToken.value);
 
-  const { data, isPending } = useGetUserListPagination(jwtToken, pageCount, 10, "Student");
+  const { data, isPending } = useGetUserListPagination(
+    jwtToken,
+    pageCount,
+    10,
+    "Student",
+  );
   useEffect(() => {
     if (data) {
       setTotalCount(data.pagination.totalCount);
@@ -31,11 +33,11 @@ export function StudentCandidatesList({
         {isPending && <TripleDotLoader />}
         {data &&
           data.records.map((user: GetUserResponseType) => (
-            <div key={user.id} className="border rounded-lg p-4 m-4">
-              <div>Name: {user.fullName}</div>
-              <div>Email: {user.email}</div>
-              <div>Phone: {user.phoneNo}</div>
-              <div>Domain: {user.profile.domain}</div>
+            <div key={user?.id ?? ""} className="border rounded-lg p-4 m-4">
+              <div>Name: {user?.fullName}</div>
+              <div>Email: {user?.email}</div>
+              <div>Phone: {user?.phoneNo}</div>
+              <div>Domain: {user?.profile?.domain ?? ""}</div>
 
               <div>
                 {"Graduation Year: "}
@@ -77,14 +79,17 @@ export function StudentCandidatesList({
   );
 }
 
-export function WorkingCandidatesList({
-  setTotalCount,
-}: CandidatesListProps) {
+export function WorkingCandidatesList({ setTotalCount }: CandidatesListProps) {
   const [pageCount, setPageCount] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const jwtToken = useSelector((state: RootState) => state.authJwtToken.value);
+  const jwtToken = useAppSelector((state) => state.authJwtToken.value);
 
-  const { data, isPending } = useGetUserListPagination(jwtToken, pageCount, 10, "Working Professional");
+  const { data, isPending } = useGetUserListPagination(
+    jwtToken,
+    pageCount,
+    10,
+    "Working Professional",
+  );
   useEffect(() => {
     if (data) {
       setTotalCount(data.pagination.totalCount);
@@ -98,16 +103,16 @@ export function WorkingCandidatesList({
         {isPending && <TripleDotLoader />}
         {data &&
           data.records.map((user: GetUserResponseType) => (
-            <div key={user.id} className="border rounded-lg p-4 m-4">
-              <div>Name: {user.fullName}</div>
-              <div>Email: {user.email}</div>
-              <div>Phone: {user.phoneNo}</div>
-              <div>Company: {user.profile.currentCompany}</div>
-              <div>CTC: {user.profile.currentCtc}</div>
-              <div>Domain: {user.profile.domain}</div>
+            <div key={user?.id ?? ""} className="border rounded-lg p-4 m-4">
+              <div>Name: {user?.fullName}</div>
+              <div>Email: {user?.email}</div>
+              <div>Phone: {user?.phoneNo}</div>
+              <div>Company: {user?.profile?.currentCompany}</div>
+              <div>CTC: {user?.profile?.currentCtc}</div>
+              <div>Domain: {user?.profile?.domain ?? ""}</div>
               <div>
                 {"Graduation Year: "}
-                {user.graduationYear ?? "Not available"}
+                {user?.graduationYear ?? "Not available"}
               </div>
             </div>
           ))}
