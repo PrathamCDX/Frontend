@@ -109,7 +109,7 @@ export default function Page({
         {/* custom top bar */}
       </div>
 
-      <div className="jobId-page sm:flex flex-1 overflow-y-scroll sm:overflow-hidden  bg- rounded-2xl border-gray-200">
+      <div className="jobId-page sm:flex flex-1 overflow-y-scroll sm:overflow-hidden  bg- rounded-lg border-gray-200">
         <div className="jobId-page sm:hidden overflow-y-auto p-4 min-h-0">
           <JobSpecification
             experienceLevelName={jobDetails.experienceLevel.name}
