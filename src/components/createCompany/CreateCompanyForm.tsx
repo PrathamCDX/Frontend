@@ -2,12 +2,11 @@
 
 import { setShowCreateCompanyForm } from "@/features/showCreateCompanyForm/showCreateCompanyFormSlice";
 import { RootState } from "@/lib/store.config";
-import { CreateCompanySchema } from "@/schema/createCompany.validator";
+import { CreateCompanySchema, CreateCompanyFormData } from "@/schema/createCompany.validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Building2, Link2, X } from "lucide-react";
-import { FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import z from "zod";
 import InputField from "../InputField";
 import useCreateCompany from "@/utils/useCreateCompany";
 import { useEffect, useState } from "react";
@@ -20,12 +19,10 @@ import { OptionType } from "../createJob/CreateJobForm";
 import useGetIndustry from "@/utils/useGetIndustry";
 import DragAndDropFileBlob from "./DragAndDropFileBlob";
 
-export type CreateCompanyFormType = z.infer<typeof CreateCompanySchema>;
-
 export default function CreateCompanyForm() {
-  const [file, setFile] = useState<File | null>(null);
   const [showDescriptionError, setShowDescriptionError] = useState(false);
-  const methods = useForm<CreateCompanyFormType>({
+
+  const methods = useForm<CreateCompanyFormData>({
     mode: "onSubmit",
     reValidateMode: "onSubmit",
     resolver: zodResolver(CreateCompanySchema),
@@ -33,7 +30,7 @@ export default function CreateCompanyForm() {
       name: "",
       description: "",
       website: "",
-      // logo: "",
+      logoImage: undefined,
       company_size_id: undefined,
       industry_id: undefined,
     },
@@ -41,20 +38,25 @@ export default function CreateCompanyForm() {
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
     setValue,
     formState: { errors },
   } = methods;
 
-  // const logo = watch("logo");
   const dispatch = useDispatch();
   const jwtToken = useSelector((state: RootState) => state.authJwtToken.value);
 
   const { mutate: createCompany, isSuccess, isPending } = useCreateCompany();
   const { data: companySizeList } = useGetCompanySize(jwtToken);
-  const onSubmit = (createData: CreateCompanyFormType) => {
-    createCompany({ authJwtToken: jwtToken, createData, file });
+
+  const onSubmit = (createData: CreateCompanyFormData) => {
+    createCompany({
+      authJwtToken: jwtToken,
+      createData,
+      file: createData.logoImage,
+    });
   };
 
   useEffect(() => {
@@ -62,22 +64,21 @@ export default function CreateCompanyForm() {
       if (showDescriptionError) {
         setShowDescriptionError(false);
       }
-      // reset(undefined, { keepErrors: false });
       reset();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess, reset]);
+  }, [isSuccess, reset, showDescriptionError]);
 
   if (!jwtToken) return null;
 
   return (
     <div className="components-createCompany-CreateCompanyForm text-black all-[unset] justify-center">
       <div
-        className="components-createCompany-CreateCompanyForm absolute top-2 right-2 hover:cursor-pointer "
+        className="components-createCompany-CreateCompanyForm absolute top-2 right-2 hover:cursor-pointer"
         onClick={() => dispatch(setShowCreateCompanyForm(false))}
       >
         <X width={20} />
       </div>
+
       {isPending && <TripleDotLoader />}
 
       <FormProvider {...methods}>
@@ -88,22 +89,25 @@ export default function CreateCompanyForm() {
           <div>
             <div>Upload company logo</div>
 
-            <DragAndDropFileBlob
-              file={file}
-              setFile={setFile}
-              jwtToken={jwtToken}
-              fileExtension={[".png"]}
-              maxFileSize={3}
+            <Controller
+              name="logoImage"
+              control={control}
+              render={({ field, fieldState }) => (
+                <DragAndDropFileBlob
+                  file={field.value ?? null}
+                  onFileChange={field.onChange}
+                  error={fieldState.error}
+                />
+              )}
             />
           </div>
-          {/* {errors.logo && <div className="text-red-400">Add company logo</div>} */}
 
-          <div className="components-createCompany-CreateCompanyForm text-xs">
-            {/* Current logo: {logo} */}
-          </div>
+          <div className="components-createCompany-CreateCompanyForm text-xs"></div>
+
           <button className="hidden" type="button">
             Debug Values
           </button>
+
           <InputField
             fieldName="name"
             icon={<Building2 />}
@@ -112,14 +116,7 @@ export default function CreateCompanyForm() {
             type="text"
             error={errors.name}
           />
-          {/* <InputField
-            fieldName="description"
-            icon={<Text />}
-            placeholder="Short Description"
-            register={register}
-            type="text"
-            error={errors.description}
-          /> */}
+
           <div>Company Size</div>
           <Dropdown
             error={errors.company_size_id}
@@ -136,13 +133,12 @@ export default function CreateCompanyForm() {
             setValue={setValue}
             resetOn={isSuccess}
           />
+
           <div>Industry</div>
           <DebouncedDropdown
             error={errors.industry_id}
             fieldName="industry_id"
-            getOptionLabel={(option: OptionType) => {
-              return option.name;
-            }}
+            getOptionLabel={(option: OptionType) => option.name}
             getOptionValue={(option: OptionType) => option.id}
             jwtToken={jwtToken}
             placeholder="Please select an industry"
@@ -151,6 +147,7 @@ export default function CreateCompanyForm() {
             useTextValue={false}
             resetOn={isSuccess}
           />
+
           <div>Website</div>
           <InputField
             fieldName="website"
@@ -167,16 +164,18 @@ export default function CreateCompanyForm() {
             showFormatOptions={false}
             isSuccess={isSuccess}
           />
+
           {errors.description && showDescriptionError && (
             <div className="text-red-400">Provide a valid description</div>
           )}
+
           <div className="flex items-center justify-around">
             <button
               onClick={() => {
                 setShowDescriptionError(true);
               }}
               type="submit"
-              className="hover:cursor-pointer rounded py-2 px-4 bg-blue-200 hover:bg-blue-400 font-semibold justify-center duration-200 "
+              className="hover:cursor-pointer rounded py-2 px-4 bg-blue-200 hover:bg-blue-400 font-semibold justify-center duration-200"
             >
               Create
             </button>

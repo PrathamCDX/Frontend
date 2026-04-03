@@ -21,8 +21,9 @@ import  showSearchCandidatesByNameSlice from "@/features/showSearchCandidates/sh
 import  showSearchCandidatesByEmailSlice from "@/features/showSearchCandidates/showSearchCandidatesByEmail";
 import  showAddRolesFormSlice  from "@/features/showAddRolesForm/showAddRolesFormSlice";
 
-export const store = configureStore({
-  reducer: {
+export const makeStore = () => {
+  return configureStore({
+    reducer: {
     isSidebarOpen: isSidebarOpenReducer,
     mainMenuCollapsed: mainMenuCollapsed,
     otherMenuCollapsed: otherMenuCollapsed,
@@ -45,19 +46,20 @@ export const store = configureStore({
     showSearchCandidatesByEmail: showSearchCandidatesByEmailSlice,
     showAddRolesForm: showAddRolesFormSlice,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: ["showEditSkills/setShowEditSkillsPayload"],
-        ignoredPaths: [
-          "showEditSkills.setValue",
-          "showEditSkills.handleSkillAdd",
-          "showEditSkills.handleSkillDelete",
-        ],
-      },
-    }),
-});
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: ["showEditSkills/setShowEditSkillsPayload"],
+          ignoredPaths: [
+            "showEditSkills.setValue",
+            "showEditSkills.handleSkillAdd",
+            "showEditSkills.handleSkillDelete",
+          ],
+        },
+      }),
+  });
+};
 
-export type RootState = ReturnType<typeof store.getState>;
-
-export type AppDispatch = typeof store.dispatch;
+export type AppStore = ReturnType<typeof makeStore>;
+export type RootState = ReturnType<AppStore['getState']>;
+export type AppDispatch = AppStore['dispatch'];

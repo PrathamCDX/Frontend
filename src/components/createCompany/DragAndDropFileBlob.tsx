@@ -1,53 +1,36 @@
 import Image from "next/image";
-import React, { useState, DragEvent } from "react";
-import { useFormContext } from "react-hook-form";
+import React, { useEffect, useMemo, useState, DragEvent } from "react";
+import { FieldError } from "react-hook-form";
 
 interface DragAndDropFileProps {
   file: File | null;
-  setFile: React.Dispatch<React.SetStateAction<File | null>>;
-  maxFileSize: number; // MB
-  fileExtension: string[];
-  jwtToken: string | null;
+  onFileChange: (file: File | null) => void;
+  error?: FieldError;
   onChangeFn?: () => void;
 }
 
 export default function DragAndDropFileBlob({
   file,
-  setFile,
-  maxFileSize,
-  fileExtension,
-  jwtToken,
+  onFileChange,
+  error,
   onChangeFn,
 }: DragAndDropFileProps) {
   const [dragActive, setDragActive] = useState(false);
 
-  const {
-    register,
-    setValue,
-    formState: { errors },
-    trigger,
-  } = useFormContext();
+  const previewUrl = useMemo(() => {
+    if (!file) return null;
+    return URL.createObjectURL(file);
+  }, [file]);
 
-  const validateFile = (file: File) => {
-    if (file.size > maxFileSize * 1024 * 1024) {
-      alert(`File too large. Max ${maxFileSize} MB`);
-      return false;
-    }
-    if (!fileExtension.some((ext) => file.name.toLowerCase().endsWith(ext))) {
-      alert(`Invalid file type. Allowed: ${fileExtension.join(", ")}`);
-      return false;
-    }
-    return true;
-  };
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
 
-  const handleFileUpload = (file: File) => {
-    if (!file || !jwtToken) return;
-
-    if (validateFile(file)) {
-      setValue("logoImage", file);
-      trigger("logoImage");
-      setFile(file);
-    }
+  const handleFileUpload = (selectedFile: File) => {
+    onFileChange(selectedFile);
+    onChangeFn?.();
   };
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
@@ -55,13 +38,17 @@ export default function DragAndDropFileBlob({
     e.stopPropagation();
     setDragActive(false);
 
-    const file = e.dataTransfer.files?.[0];
-    if (file) handleFileUpload(file);
+    const selectedFile = e.dataTransfer.files?.[0];
+    if (selectedFile) {
+      handleFileUpload(selectedFile);
+    }
   };
 
   return (
     <div
-      className={`components-createCompany-DragAndDropFile drag-drop-container justify-center ${dragActive ? "active" : ""}`}
+      className={`components-createCompany-DragAndDropFile drag-drop-container justify-center ${
+        dragActive ? "active" : ""
+      }`}
       onDragEnter={() => setDragActive(true)}
       onDragOver={(e) => e.preventDefault()}
       onDragLeave={() => setDragActive(false)}
@@ -69,32 +56,34 @@ export default function DragAndDropFileBlob({
     >
       <input
         type="file"
-        {...register("logo")}
-        accept={fileExtension.join(",")}
         onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) handleFileUpload(file);
-          onChangeFn?.();
+          const selectedFile = e.target.files?.[0] ?? null;
+          if (selectedFile) {
+            handleFileUpload(selectedFile);
+          }
         }}
-        className="components-createCompany-DragAndDropFile border w-full rounded-lg p-4 hover:cursor-pointer "
+        className="components-createCompany-DragAndDropFile border w-full rounded-lg p-4 hover:cursor-pointer"
         id="upload-input"
       />
-      {file && (
-        <Image
-          src={URL.createObjectURL(file)}
-          height={1000}
-          width={1000}
-          alt="preview"
-          className="h-20 w-20"
-        />
+
+      {file && previewUrl && (
+        <div className="mt-2">
+          <Image
+            src={previewUrl}
+            height={1000}
+            width={1000}
+            alt="preview"
+            className="h-20 w-20"
+          />
+          <p className="mt-1 text-sm text-gray-600">{file.name}</p>
+        </div>
       )}
-      <div>
-        {errors.logoImage && (
-          <p className="text-sm text-red-500 mt-1 ml-1">
-            {"Please upload a valid logo image (PNG)"}
-          </p>
-        )}
-      </div>
+
+      {error && (
+        <p className="text-sm text-red-500 mt-1 ml-1">
+          {error.message}
+        </p>
+      )}
     </div>
   );
 }

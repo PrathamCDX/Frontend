@@ -4,9 +4,9 @@ import MDEditor from "@uiw/react-md-editor";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
 import remarkMath from "remark-math";
-import { CreateJobFormSchema } from "@/schema/createJob.validator";
+import { CreateJobFormSchema, CreateJobFormData } from "@/schema/createJob.validator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import InputField from "../InputField";
 import { useEffect } from "react";
@@ -67,18 +67,32 @@ export default function CreateJobForm({ className }: { className?: string }) {
     }
   }, [userRoles, router]);
 
-  const useFormMethods = useForm<CreateJobFormValues>({
-    mode: "onChange",
-    reValidateMode: "onBlur",
-    resolver: zodResolver(CreateJobFormSchema),
-  });
+  const useFormMethods = useForm<CreateJobFormData>({
+  mode: "onChange",
+  reValidateMode: "onBlur",
+  resolver: zodResolver(CreateJobFormSchema),
+  defaultValues: {
+    title_id: 0,
+    employment_type_id: 0,
+    experience_level_id: 0,
+    company_id: 0,
+    city_id: 0,
+    is_remote: false,
+    apply_link: "",
+    salary_min: 0,
+    salary_max: 0,
+    skillIds: [],
+    recruiter_id: 0,
+    description: "",
+  },
+});
 
   const {
     register,
     handleSubmit,
     setValue,
     getValues,
-    watch,
+    control,
     formState: { errors },
   } = useFormMethods;
 
@@ -308,19 +322,31 @@ export default function CreateJobForm({ className }: { className?: string }) {
             Job Description{" "}
           </div>
           {/* <MarkdownEditor fieldName={"description"} /> */}
-          <MDEditor
-            value={watch("description") || ""}
-            onChange={(v: string | undefined) =>
-              setValue("description", v || "")
-            }
-            data-color-mode="light"
-            height={600}
-            overflow
-            preview="edit"
-            previewOptions={{
-              rehypePlugins: [rehypeRaw, rehypeKatex],
-              remarkPlugins: [remarkMath],
-            }}
+          <Controller
+            control={control}
+            name="description"
+            render={({ field, fieldState }) => (
+              <div>
+                <MDEditor
+                  value={field.value ?? null}
+                  onChange={field.onChange}
+                  data-color-mode="light"
+                  height={600}
+                  overflow
+                  preview="edit"
+                  previewOptions={{
+                    rehypePlugins: [rehypeRaw, rehypeKatex],
+                    remarkPlugins: [remarkMath],
+                  }}
+                />
+
+                {fieldState.error && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {fieldState.error.message}
+                  </p>
+                )}
+              </div>
+            )}
           />
 
           <button
