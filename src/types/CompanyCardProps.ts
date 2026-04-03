@@ -6,4 +6,5 @@ export type CompanyCardProps= {
   industry: string;
   size: string;
   description: string;
+  website: string;
 }

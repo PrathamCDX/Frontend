@@ -7,7 +7,6 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { cn } from "@/utils/cn";
-import { useDispatch, useSelector } from "react-redux";
 import { Minus, X } from "lucide-react";
 import DebouncedDropdown from "../createJob/DebouncedDropdown";
 import { OptionType } from "../createJob/CreateJobForm";
@@ -23,9 +22,9 @@ import InputField from "../InputField";
 import SkillsDropdown from "../createJob/SkillsDropdown";
 import useUpdateJobs from "@/utils/useUpdateJob";
 import { setShowJobupdateForm } from "@/features/showJobUpdateForm/showJobUpdateForm";
-import { RootState } from "@/lib/store.config";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
 import TripleDotLoader from "../TripleDotLoader";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 type UpdateFormValues = z.infer<typeof UpdateJobSchema>;
 
@@ -36,20 +35,24 @@ export default function UpdateJobForm({
   id: number;
   className?: string;
 }) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   useEffect(() => {
     const token = localStorage.getItem("AuthJwtToken");
     if (token) {
       dispatch(setAuthJwtToken(token));
     }
   }, [dispatch]);
-  const jwtToken = useSelector((state: RootState) => state.authJwtToken.value);
+  const jwtToken = useAppSelector((state) => state.authJwtToken.value);
 
   const { data } = useGetUser(jwtToken);
   const { data: employmentType } = useGetEmploymentType(jwtToken);
   const { data: experienceLevel } = useGetExperienceLevel(jwtToken);
   useGetUserRoles(jwtToken, data?.id);
-  const { data: jobDetails, isFetching: isFetchingJobDetails, isPending: isPendingJobDetails } = useGetJobDetails(jwtToken, String(id));
+  const {
+    data: jobDetails,
+    isFetching: isFetchingJobDetails,
+    isPending: isPendingJobDetails,
+  } = useGetJobDetails(jwtToken, String(id));
 
   const { mutate } = useUpdateJobs();
 
@@ -59,30 +62,40 @@ export default function UpdateJobForm({
     setValue,
     formState: { errors },
   } = useForm<UpdateFormValues>({
-    mode: "onChange",      
+    mode: "onChange",
     reValidateMode: "onBlur",
     resolver: zodResolver(UpdateJobSchema),
   });
 
   setValue("id", id);
-  const skillIdArray = jobDetails?.skills.map((val)=>{ return val.id})
-  setValue('skillIds',skillIdArray);
-  setValue('apply_link',jobDetails?.apply_link);
-  setValue('salary_max',jobDetails?.salary_max ? Number(jobDetails?.salary_max) : 0);
-  setValue('salary_min',jobDetails?.salary_min ? Number(jobDetails?.salary_min) : 0);
+  const skillIdArray = jobDetails?.skills.map((val) => {
+    return val.id;
+  });
+  setValue("skillIds", skillIdArray);
+  setValue("apply_link", jobDetails?.apply_link);
+  setValue(
+    "salary_max",
+    jobDetails?.salary_max ? Number(jobDetails?.salary_max) : 0,
+  );
+  setValue(
+    "salary_min",
+    jobDetails?.salary_min ? Number(jobDetails?.salary_min) : 0,
+  );
 
   function onSubmit(updateData: UpdateFormValues) {
     mutate({ authJwtToken: jwtToken, updateJobData: updateData });
   }
 
   if (!jobDetails) {
-    return <TripleDotLoader className="fixed w-full h-full flex justify-center items-center"/>;
+    return (
+      <TripleDotLoader className="fixed w-full h-full flex justify-center items-center" />
+    );
   }
 
   return (
     <div className={cn("justify-center sm:flex ", className)}>
       {(isPendingJobDetails || isFetchingJobDetails) && (
-        <TripleDotLoader className="fixed w-full h-full flex justify-center items-center"/>
+        <TripleDotLoader className="fixed w-full h-full flex justify-center items-center" />
       )}
       <div
         className="absolute top-2 right-2 hover:cursor-pointer "

@@ -22,37 +22,45 @@ export default function JobSpecification({
 }: JobSpecificationProps) {
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-center gap-2 mb-4">
-        <JobInfoCard label="Level" value={experienceLevelName} className="w-[48%] " />
+      <div className=" gap-2 mb-4 p-5  bg-white rounded-2xl">
+        <div className="text-lg font-bold mb-3">Job Info</div>
         <JobInfoCard
+          topElement={true}
+          imgUrl={"/level_icon.svg"}
+          label="Level"
+          value={experienceLevelName}
+          className="w-full "
+        />
+        <JobInfoCard
+          imgUrl={"/experience_icon.svg"}
           label="Experience"
           value={experienceLevel}
-          className="w-[48%]"
+          className="w-full"
         />
         <JobInfoCard
+          imgUrl={"/job_type_icon.svg"}
           label="Job Type"
           value={employmentType}
-          className="w-[48%]"
+          className="w-full"
         />
         <JobInfoCard
+          imgUrl={"/work_type_icon.svg"}
           label="Work Type"
           value={workType ? "Remote" : "On-site"}
-          className="w-[48%]"
+          className="w-full"
         />
         {/* hidden */}
         <JobInfoCard
+          imgUrl={"/Rectangle 46.svg"}
           label="Salary Range"
           value={
             employmentType === "Internship"
               ? `${Number(salaryMin)}K-${Number(salaryMax)}K`
-              : `${Number(salaryMin)}LPA-${
-                  Number(salaryMax)}LPA`
+              : `${Number(salaryMin)}LPA-${Number(salaryMax)}LPA`
           }
-          className=" hidden w-[96%]"
+          className=" hidden w-full"
         />
       </div>
-
-      
     </div>
   );
 }

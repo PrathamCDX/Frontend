@@ -6,10 +6,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import InputField from "../InputField";
 import useGetUser from "@/utils/useGetUser";
-import { RootState } from "@/lib/store.config";
 import { useEffect } from "react";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
-import { useDispatch, useSelector } from "react-redux";
 import TextAreaInput from "../createJob/TextAreaInput";
 import useUploadUserResume from "@/utils/useUploadUserResume";
 import DragAndDropFile from "../createCompany/DragAndDropFile";
@@ -23,6 +21,7 @@ import {
   domainOptions,
   fresherOptions,
 } from "@/utils/signup.utils";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 export type UserProfileFormValues = z.infer<typeof UserProfileSchema>;
 export default function UserProfileForm() {
@@ -52,9 +51,9 @@ export default function UserProfileForm() {
   } = methods;
 
   const router = useRouter();
-  const jwtToken = useSelector((state: RootState) => state.authJwtToken.value);
+  const jwtToken = useAppSelector((state) => state.authJwtToken.value);
   const { data: userData, refetch } = useGetUser(jwtToken);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const isFresher = !(watch("details") == "Working Professional");
   useEffect(() => {
     const token = localStorage.getItem("AuthJwtToken");
@@ -83,13 +82,12 @@ export default function UserProfileForm() {
           ? (String(profile.yearsOfExperience) ?? "0")
           : "0",
         details: profile.details ?? "",
-        currentCtc:
-          profile.currentCtc || null,
+        currentCtc: profile.currentCtc || null,
         resumeUrl: profile.resumeUrl ?? "",
         linkedinUrl: profile.linkedinUrl ?? "",
         currentLocation: profile.currentLocation?.name ?? null,
         currentCompany: profile.currentCompany ?? "",
-        domain: profile.domain ?? null
+        domain: profile.domain ?? null,
       });
     }
     // setIsFresher(
@@ -111,13 +109,17 @@ export default function UserProfileForm() {
   };
 
   // const { data: companyDetails } = useGetCompanyById(jwtToken,userData?.profile.currentCompany)
-  const { mutate: updateUserProfile, isPending, isSuccess } = useUpdateUserProfile();
-  useEffect(()=>{
-    if(isSuccess){
+  const {
+    mutate: updateUserProfile,
+    isPending,
+    isSuccess,
+  } = useUpdateUserProfile();
+  useEffect(() => {
+    if (isSuccess) {
       refetch();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[isSuccess])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
 
   return (
     <FormProvider {...methods}>
@@ -180,7 +182,9 @@ export default function UserProfileForm() {
                 defaultValue={userData?.profile.currentCtc ?? "Select CTC"}
               />
               {errors.currentCtc?.message && (
-                <p className="text-[#E04B40] text-xs">{errors.currentCtc.message}</p>
+                <p className="text-[#E04B40] text-xs">
+                  {errors.currentCtc.message}
+                </p>
               )}
 
               {/* <InputField

@@ -1,16 +1,17 @@
 "use client";
 
 import { setShowCreateCompanyForm } from "@/features/showCreateCompanyForm/showCreateCompanyFormSlice";
-import { RootState } from "@/lib/store.config";
-import { CreateCompanySchema, CreateCompanyFormData } from "@/schema/createCompany.validator";
+import {
+  CreateCompanySchema,
+  CreateCompanyFormData,
+} from "@/schema/createCompany.validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Building2, Link2, X } from "lucide-react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
 import InputField from "../InputField";
 import useCreateCompany from "@/utils/useCreateCompany";
 import { useEffect, useState } from "react";
-import MarkdownEditor from "../createJob/MarkdownEditor";
+// import MarkdownEditor from "../createJob/MarkdownEditor";
 import TripleDotLoader from "../TripleDotLoader";
 import Dropdown from "../createJob/Dropdown";
 import useGetCompanySize from "@/utils/useGetCompanySize";
@@ -18,6 +19,8 @@ import DebouncedDropdown from "../createJob/DebouncedDropdown";
 import { OptionType } from "../createJob/CreateJobForm";
 import useGetIndustry from "@/utils/useGetIndustry";
 import DragAndDropFileBlob from "./DragAndDropFileBlob";
+import CustomMDEditor from "../createJob/CustomMDEditor";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 export default function CreateCompanyForm() {
   const [showDescriptionError, setShowDescriptionError] = useState(false);
@@ -45,8 +48,8 @@ export default function CreateCompanyForm() {
     formState: { errors },
   } = methods;
 
-  const dispatch = useDispatch();
-  const jwtToken = useSelector((state: RootState) => state.authJwtToken.value);
+  const dispatch = useAppDispatch();
+  const jwtToken = useAppSelector((state) => state.authJwtToken.value);
 
   const { mutate: createCompany, isSuccess, isPending } = useCreateCompany();
   const { data: companySizeList } = useGetCompanySize(jwtToken);
@@ -159,15 +162,21 @@ export default function CreateCompanyForm() {
           />
 
           <div>Description</div>
-          <MarkdownEditor
-            fieldName="description"
-            showFormatOptions={false}
-            isSuccess={isSuccess}
+          <Controller
+            name="description"
+            control={control}
+            render={({ field, fieldState }) => (
+              <CustomMDEditor
+                value={field.value ?? ""}
+                onChange={(val) => field.onChange(val ?? "")}
+                error={fieldState.error}
+              />
+            )}
           />
 
-          {errors.description && showDescriptionError && (
+          {/* {errors.description && showDescriptionError && (
             <div className="text-red-400">Provide a valid description</div>
-          )}
+          )} */}
 
           <div className="flex items-center justify-around">
             <button

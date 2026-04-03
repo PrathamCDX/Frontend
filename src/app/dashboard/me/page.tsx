@@ -6,17 +6,16 @@ import UserProfileForm from "@/components/me/UserProfileForm";
 import UserSkillForm from "@/components/me/UserSkillForm";
 import TripleDotLoader from "@/components/TripleDotLoader";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
-import { RootState } from "@/lib/store.config";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import useGetUser from "@/utils/useGetUser";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 export default function Page() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
-  const jwtToken = useSelector((state: RootState) => state.authJwtToken.value);
+  const jwtToken = useAppSelector((state) => state.authJwtToken.value);
   useEffect(() => {
     const token = localStorage.getItem("AuthJwtToken");
     if (token) {
@@ -35,11 +34,10 @@ export default function Page() {
       router.replace("/login");
     }
   }, [router, isError]);
-  
-    if (!mounted) {
-      return null;
-    }
-  
+
+  if (!mounted) {
+    return null;
+  }
 
   if (isPending) {
     return <TripleDotLoader />;

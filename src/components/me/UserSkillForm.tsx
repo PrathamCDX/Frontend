@@ -1,8 +1,6 @@
 "use client";
 
 import useGetUser from "@/utils/useGetUser";
-import { RootState } from "@/lib/store.config";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
 import SkillItem from "./SkillItem";
@@ -13,6 +11,7 @@ import {
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 const SkillUpdateSchema = z.object({
   skillIds: z.array(z.number()),
@@ -35,8 +34,8 @@ export default function UserSkillForm() {
     resolver: zodResolver(SkillUpdateSchema),
   });
 
-  const jwtToken = useSelector((state: RootState) => state.authJwtToken.value);
-  const dispatch = useDispatch();
+  const jwtToken = useAppSelector((state) => state.authJwtToken.value);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem("AuthJwtToken");
@@ -45,19 +44,19 @@ export default function UserSkillForm() {
     }
   }, [dispatch]);
 
-  
-
   const { data: userData } = useGetUser(jwtToken);
   if (!mounted) return null;
   return (
     <div className="components-me-UserSkillForm space-y-4 p-4 my-3 border rounded-lg shadow-md w-full">
       <div className="">
         <div className="components-me-UserSkillForm flex justify-between items-center p-2">
-          <div className="components-me-UserSkillForm text-lg font-semibold">Skills</div>
+          <div className="components-me-UserSkillForm text-lg font-semibold">
+            Skills
+          </div>
           <div
             className="components-me-UserSkillForm border border-gray-300 p-2 hover:cursor-pointer rounded-lg"
             onClick={() => {
-                dispatch(setShowEditSkills(true));
+              dispatch(setShowEditSkills(true));
               dispatch(
                 setShowEditSkillsPayload({
                   fieldName: "skillIds",
@@ -66,7 +65,7 @@ export default function UserSkillForm() {
                   jwtToken: jwtToken, // jwt token from state
                   fieldValue: userData?.skills, // current value of the field
                   value: true, // add required 'value'
-                })
+                }),
               );
             }}
           >
@@ -80,7 +79,9 @@ export default function UserSkillForm() {
                 <SkillItem key={index} skillName={skill.name} />
               ))
             ) : (
-              <div className="components-me-UserSkillForm text-gray-500">No skills added yet.</div>
+              <div className="components-me-UserSkillForm text-gray-500">
+                No skills added yet.
+              </div>
             )}
           </div>
         </div>

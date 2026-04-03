@@ -11,10 +11,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useLogin from "@/utils/useLogin";
 import InputField from "../InputField";
 // import ErrorPopup from "../ErrorPopup";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/lib/store.config";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
 import useGetUser from "@/utils/useGetUser";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 type LogInFormValues = z.infer<typeof LogInFormSchema>;
 
@@ -69,10 +68,8 @@ function Form() {
     resolver: zodResolver(LogInFormSchema),
   });
   const router = useRouter();
-  const dispatch = useDispatch();
-  const jwtToken = useSelector((state: RootState) => {
-    return state.authJwtToken.value;
-  });
+  const dispatch = useAppDispatch();
+  const jwtToken = useAppSelector((state) => state.authJwtToken.value);
 
   useEffect(() => {
     const token = localStorage.getItem("AuthJwtToken");

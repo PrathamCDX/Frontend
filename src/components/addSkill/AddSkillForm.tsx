@@ -1,27 +1,26 @@
 import { setShowAddSkillsForm } from "@/features/showAddSkillsForm/showAddSkillsFormSlice";
-import { RootState } from "@/lib/store.config";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import useCreateSkill from "@/utils/useCreateSkills";
 import useGetSkill from "@/utils/useGetSkill";
 import { Plus, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 export default function AddSkill() {
   const [skills, setSkills] = useState<string[]>([]);
   const [currentInput, setCurrentInput] = useState("");
   const [debouncedInput, setDebouncedInput] = useState("");
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { mutate, isPending, isSuccess } = useCreateSkill();
 
-  useEffect(()=>{
-    const timeout = setTimeout(()=>{
+  useEffect(() => {
+    const timeout = setTimeout(() => {
       setDebouncedInput(currentInput);
     }, 400);
 
-    return ()=> clearTimeout(timeout);
-  },[currentInput])
+    return () => clearTimeout(timeout);
+  }, [currentInput]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -29,10 +28,10 @@ export default function AddSkill() {
     }
   }, [isSuccess]);
 
-  const jwtToken = useSelector((state: RootState) => {
-      return state.authJwtToken.value;
-    });
-    const { data: skillList } = useGetSkill(jwtToken, debouncedInput) ;
+  const jwtToken = useAppSelector((state) => {
+    return state.authJwtToken.value;
+  });
+  const { data: skillList } = useGetSkill(jwtToken, debouncedInput);
 
   return (
     <div className="text-black all-[unset] py-3 justify-center h-full">
@@ -84,11 +83,12 @@ export default function AddSkill() {
         </button>
       </div>
       <div className="mt-4 overflow-y-auto min-h-[50%]">
-        {skillList && skillList.map((skill, index)=>
-            (
-                <div className="border mt-1 px-6 py-3 rounded-sm" key={index}>{skill.name}</div>
-            )
-        ) }
+        {skillList &&
+          skillList.map((skill, index) => (
+            <div className="border mt-1 px-6 py-3 rounded-sm" key={index}>
+              {skill.name}
+            </div>
+          ))}
       </div>
       <div className="flex flex-wrap mt-4">
         {skills.map((skill, index) => (
@@ -97,9 +97,12 @@ export default function AddSkill() {
             key={index}
           >
             <div>{skill}</div>
-            <div className="hover:cursor-pointer" onClick={()=>{
-              setSkills((prev)=> [...prev.filter((v)=> v!==skill)])
-            }}>
+            <div
+              className="hover:cursor-pointer"
+              onClick={() => {
+                setSkills((prev) => [...prev.filter((v) => v !== skill)]);
+              }}
+            >
               <X />
             </div>
           </div>

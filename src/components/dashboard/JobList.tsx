@@ -1,18 +1,16 @@
-'use client';
-import { RootState } from "@/lib/store.config";
+"use client";
 // import useGetJobs from "@/utils/useGetJobs";
-import { useSelector } from "react-redux";
 import JobCard from "../JobCard";
 import useGetJobPagination from "@/utils/useGetJobsPagination";
 import TripleDotLoader from "../TripleDotLoader";
+import { useAppSelector } from "@/lib/hooks";
 
 export default function JobList() {
-  const jwtToken = useSelector((state: RootState) => {
+  const jwtToken = useAppSelector((state) => {
     return state.authJwtToken.value;
   });
-  const page = useSelector((state: RootState)=>{ return state.jobPageNumber.value})
-  const { data, isPending } = useGetJobPagination(jwtToken, page, 12) ;
-
+  const page = useAppSelector((state) => state.jobPageNumber.value);
+  const { data, isPending } = useGetJobPagination(jwtToken, page, 12);
 
   return (
     <div className="component-dashboard-JobList w-full flex flex-wrap items-stretch justify-center-safe my-2 mx gap-2 gap-y-3.5">

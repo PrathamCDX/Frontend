@@ -3,17 +3,16 @@ import { isSidebarOpenToogle } from "@/features/isSidebarOpen/isSidebarOpenSlice
 import { mainMenuCollapsedToogle } from "@/features/mainMenuCollapsed/mainMenuCollapsed";
 import { ChartPie, ChevronDown, Folder, Globe } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
 import {
   onClickAllJobs,
   onClickExploreJob,
   onClickOverview,
 } from "./dashboard.utils";
 import { useEffect, useState } from "react";
-import { RootState } from "@/lib/store.config";
 import useGetUser from "@/utils/useGetUser";
 import useGetUserRoles from "@/utils/useGetUserRoles";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 const mainMenuTabs = [
   {
@@ -40,21 +39,21 @@ const mainMenuTabs = [
 ];
 
 const mainMenuTabId: { [key: string]: number } = {
-  "jobs": 1,
+  jobs: 1,
   "all-jobs": 2,
 };
 
 export default function MainTabList() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
-  const jwtToken = useSelector((state: RootState) => state.authJwtToken.value);
+  const jwtToken = useAppSelector((state) => state.authJwtToken.value);
 
-  const mainMenuCollapsed = useSelector(
-    (state: RootState) => state.mainMenuCollapsed.value
+  const mainMenuCollapsed = useAppSelector(
+    (state) => state.mainMenuCollapsed.value,
   );
   const [mainMenuActiveTab, setMainMenuActiveTab] = useState<number | null>(
-    mainMenuTabId[pathname.split("/")[2]] ?? 0
+    mainMenuTabId[pathname.split("/")[2]] ?? 0,
   );
   const [role, setRole] = useState("user");
 
@@ -113,7 +112,7 @@ export default function MainTabList() {
               </button>
             ) : (
               <div key={index}></div>
-            )
+            ),
           )}
         </div>
       </div>

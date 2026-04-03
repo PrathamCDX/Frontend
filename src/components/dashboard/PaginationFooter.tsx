@@ -3,19 +3,14 @@ import {
   decrementJobPageCount,
   incrementJobPageCount,
 } from "@/features/jobPageNumber/jobPageNumberSlice";
-import { RootState } from "@/lib/store.config";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
 
 export default function PaginationFooter() {
-  const currentPage = useSelector((state: RootState) => {
-    return state.jobPageNumber.value;
-  });
-  const totalPages = useSelector((state: RootState) => {
-    return state.jobPageNumber.totalPages;
-  });
+  const currentPage = useAppSelector((state) => state.jobPageNumber.value);
+  const totalPages = useAppSelector((state) => state.jobPageNumber.totalPages);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   return (
     <div className="w-[100%] sticky bottom-0 bg-white border-t shadow-sm">
       <div className="flex items-center justify-between px-4 py-2">

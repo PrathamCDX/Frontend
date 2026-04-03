@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Poppins } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/components/QueryProvider";
 // import ReduxProvider from "@/components/ReduxProvider";
@@ -30,6 +30,12 @@ export const metadata: Metadata = {
   },
 };
 
+export const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -38,9 +44,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full w-full ">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased bg-[#F5F5F5] w-full h-full`}
+        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${inter.variable} antialiased bg-[#F5F5F5] w-full h-full`}
       >
-      <ToastContainer position="top-right" autoClose={3000} />
+        <ToastContainer position="top-right" autoClose={3000} />
         <StoreProvider>
           <QueryProvider>{children}</QueryProvider>
         </StoreProvider>

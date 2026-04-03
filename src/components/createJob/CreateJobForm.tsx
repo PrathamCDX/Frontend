@@ -1,10 +1,9 @@
 "use client";
 import "katex/dist/katex.min.css";
-import MDEditor from "@uiw/react-md-editor";
-import rehypeKatex from "rehype-katex";
-import rehypeRaw from "rehype-raw";
-import remarkMath from "remark-math";
-import { CreateJobFormSchema, CreateJobFormData } from "@/schema/createJob.validator";
+import {
+  CreateJobFormSchema,
+  CreateJobFormData,
+} from "@/schema/createJob.validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm, Controller } from "react-hook-form";
 import { z } from "zod";
@@ -12,7 +11,6 @@ import InputField from "../InputField";
 import { useEffect } from "react";
 import useCreateJob from "@/utils/useCreateJob";
 import useGetUser from "@/utils/useGetUser";
-import { useDispatch, useSelector } from "react-redux";
 import useGetJobTitle from "@/utils/useGetJobTitle";
 import useGetCity from "@/utils/useGetCity";
 import useGetEmploymentType from "@/utils/useGetEmploymentType";
@@ -29,8 +27,9 @@ import Dropdown from "./Dropdown";
 import SkillsDropdown from "./SkillsDropdown";
 import { toast, ToastContainer } from "react-toastify";
 // import MarkdownEditor from "./MarkdownEditor";
-import { RootState } from "@/lib/store.config";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
+import CustomMDEditor from "./CustomMDEditor";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 type CreateJobFormValues = z.infer<typeof CreateJobFormSchema>;
 
@@ -42,9 +41,9 @@ export type OptionType = {
 export default function CreateJobForm({ className }: { className?: string }) {
   const router = useRouter();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const jwtToken = useSelector((state: RootState) => {
+  const jwtToken = useAppSelector((state) => {
     return state.authJwtToken.value;
   });
 
@@ -68,24 +67,24 @@ export default function CreateJobForm({ className }: { className?: string }) {
   }, [userRoles, router]);
 
   const useFormMethods = useForm<CreateJobFormData>({
-  mode: "onChange",
-  reValidateMode: "onBlur",
-  resolver: zodResolver(CreateJobFormSchema),
-  defaultValues: {
-    title_id: 0,
-    employment_type_id: 0,
-    experience_level_id: 0,
-    company_id: 0,
-    city_id: 0,
-    is_remote: false,
-    apply_link: "",
-    salary_min: 0,
-    salary_max: 0,
-    skillIds: [],
-    recruiter_id: 0,
-    description: "",
-  },
-});
+    mode: "onChange",
+    reValidateMode: "onBlur",
+    resolver: zodResolver(CreateJobFormSchema),
+    defaultValues: {
+      title_id: 0,
+      employment_type_id: 0,
+      experience_level_id: 0,
+      company_id: 0,
+      city_id: 0,
+      is_remote: false,
+      apply_link: "",
+      salary_min: 0,
+      salary_max: 0,
+      skillIds: [],
+      recruiter_id: 0,
+      description: "",
+    },
+  });
 
   const {
     register,
@@ -326,26 +325,11 @@ export default function CreateJobForm({ className }: { className?: string }) {
             control={control}
             name="description"
             render={({ field, fieldState }) => (
-              <div>
-                <MDEditor
-                  value={field.value ?? null}
-                  onChange={field.onChange}
-                  data-color-mode="light"
-                  height={600}
-                  overflow
-                  preview="edit"
-                  previewOptions={{
-                    rehypePlugins: [rehypeRaw, rehypeKatex],
-                    remarkPlugins: [remarkMath],
-                  }}
-                />
-
-                {fieldState.error && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {fieldState.error.message}
-                  </p>
-                )}
-              </div>
+              <CustomMDEditor
+                onChange={(val) => field.onChange(val ?? "")}
+                value={field.value}
+                error={fieldState.error}
+              />
             )}
           />
 
