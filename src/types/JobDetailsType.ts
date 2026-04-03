@@ -9,6 +9,7 @@ export type JobDetails = {
     name: string;
   };
   company: {
+    website: string;  
     name: string;
     logo: string;
     description: string;

@@ -17,6 +17,7 @@ type JobDetailsCardProps = {
   city: string;
   created_at: Date;
   apply_link: string;
+  isRemote: boolean;
 };
 export default function JobDetailsCard({
   jobId,
@@ -25,6 +26,7 @@ export default function JobDetailsCard({
   companyName,
   city,
   created_at,
+  isRemote,
   apply_link,
 }: JobDetailsCardProps) {
   const dispatch = useAppDispatch();
@@ -43,32 +45,25 @@ export default function JobDetailsCard({
   const { isSuccess } = useGetUser(jwtToken);
 
   return (
-    <div className="components-jobDetails-JobDetailsCard bg-gradient-to-r from-[#0052CC] to-[#0073E6] text-white p-4 rounded-xl space-y-3 sm:flex items-center justify-between shadow-md w-full ">
-      <div className="components-jobDetails-JobDetailsCard flex  items-center gap-12 sm:gap-4">
-        <div className="components-jobDetails-JobDetailsCard w-12 h-12 rounded-md overflow-hidden bg-white p-1">
+    <div className="components-jobDetails-JobDetailsCard bg-white text-black pt-1 rounded-xl space-y-3 sm:grid grid-cols-[1fr_auto] items-center w-full px-3">
+      <div className="grid grid-cols-[auto_1fr] w-full items-center h-full m-0">
+        <div className=" m-0">
           <Image
-            src={img ? img : "/google-icon-logo-svgrepo-com.svg"}
-            alt="Company Logo"
-            width={48}
-            height={48}
-            className="components-jobDetails-JobDetailsCard object-contain"
-            unoptimized
+            alt=""
+            src={img}
+            width={60}
+            height={60}
+            className="w-12 h-12 rounded-xl overflow-hidden"
           />
         </div>
-
-        <div className="components-jobDetails-JobDetailsCard space-y-1">
-          <div className="components-jobDetails-JobDetailsCard text-sm text-white/80">
-            {created_at ? timeAgo(String(created_at)) : ""}
-          </div>
-          <div className="components-jobDetails-JobDetailsCard font-semibold text-lg flex items-center gap-2">
-            {title}
-          </div>
-          <div className="components-jobDetails-JobDetailsCard text-sm text-white/90">
-            {companyName + ` ,  `} {city}
+        <div className="pl-4 tracking-">
+          <div className="text-2xl font-semibold text-black mb-1">{title}</div>
+          <div className="text-base text-black/90">
+            {city}, {isRemote ? "Remote" : "Onsite"}
           </div>
         </div>
       </div>
-      <div className="components-jobDetails-JobDetailsCard flex items-center gap-2">
+      <div className="components-jobDetails-JobDetailsCard flex items-center gap-2 ">
         <button className="hidden components-jobDetails-JobDetailsCard bg-white/20 hover:bg-white/30 p-2 rounded-md">
           <Bookmark size={16} />
         </button>
@@ -89,7 +84,7 @@ export default function JobDetailsCard({
               // router.replace('/login');
             }
           }}
-          className="components-jobDetails-JobDetailsCard w-[15rem] hover:cursor-pointer hover:bg-[#cedcf1] ml-3 bg-white text-[#0052CC] px-4 py-1.5 rounded-md text-sm"
+          className="components-jobDetails-JobDetailsCard  hover:cursor-pointer hover:bg-[#cedcf1] ml-3 bg-[#2563EB] text-[#FFFFFF] px-4 py-1.5 rounded-md text-sm"
         >
           Apply Now
         </button>
@@ -102,11 +97,12 @@ export default function JobDetailsCard({
               dispatch(setLoginRequiredDialogBox(true));
             }
           }}
-          className="components-jobDetails-JobDetailsCard w-[15rem] hover:cursor-pointer hover:bg-[#cedcf1] ml-3 bg-white text-[#0052CC] px-4 py-1.5 rounded-md text-sm"
+          className="components-jobDetails-JobDetailsCard  hover:cursor-pointer  ml-3 bg-white text-[#2563EB] border-2 border-[#D1D5DB] px-4 py-1.5 rounded-md text-sm"
         >
           Request Refferal
         </button>
       </div>
+      <div className="w-full col-span-2 h-px bg-gray-300 mt-3"></div>
     </div>
   );
 }

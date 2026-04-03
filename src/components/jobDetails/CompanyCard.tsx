@@ -9,10 +9,11 @@ export default function CompanyCard({
   industry,
   size,
   description,
+  website,
 }: CompanyCardProps) {
   return (
-    <div className="rounded-xl border border-gray-200 mt-3 p-5 bg-white space-y-4 shadow-sm">
-      <h3 className="text-md font-semibold text-gray-900">About Company</h3>
+    <div className="rounded-xl border-gray-200 mt-3 p-5 bg-white/30 bg-radial from-black/10 to-white backdrop-blur-2xl  space-y-4 shadow-md mb-10">
+      <h3 className="text-lg font-semibold text-gray-900">About Company</h3>
 
       <div className="flex items-center gap-4">
         {logoUrl && (
@@ -42,7 +43,18 @@ export default function CompanyCard({
       </div>
 
       <div className="text-sm text-gray-600 leading-relaxed">
-        <MarkdownHTML content={description ?? "null"}/>
+        <MarkdownHTML content={description ?? "null"} />
+      </div>
+
+      <div className="text-sm font-semibold">
+        <a
+          href={website}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-500 hover:underline"
+        >
+          Visit Website
+        </a>
       </div>
     </div>
   );

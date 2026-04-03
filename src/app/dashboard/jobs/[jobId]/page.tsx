@@ -4,7 +4,7 @@ import BackButton from "@/components/BackButton";
 import JobDetailsCard from "@/components/jobDetails/JobDetailsCard";
 import JobDescription from "@/components/jobDetails/JobDescription";
 import JobSpecification from "@/components/jobDetails/JobSpecification";
-import { use, useEffect } from "react";
+import { Suspense, use, useEffect } from "react";
 import { setJobId } from "@/features/jobId/jobId";
 import useGetJobDetails from "@/utils/useGetJobDetails";
 import { ToastContainer } from "react-toastify";
@@ -14,6 +14,9 @@ import { setJobDetails } from "@/features/jobDetails/jobDetails";
 import CompanyCard from "@/components/jobDetails/CompanyCard";
 import JobSkills from "@/components/jobDetails/JobSkills";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { Calendar } from "lucide-react";
+import { getFormattedDate } from "@/utils/getTime";
+import DashboardTopbarLogoutButton from "@/components/dashboard/DashboardTopbarLogoutButton";
 
 export default function Page({
   params,
@@ -73,24 +76,37 @@ export default function Page({
   }
 
   return (
-    <div className="jobId-page text-black bg-white h-full flex flex-col p-2">
+    <div className="jobId-page font-inter text-black bg-white/40 h-full flex flex-col px-2">
       <ToastContainer position="top-right" autoClose={3000} />
-      <div className="jobId-page flex items-center ">
+      <div className="jobId-page grid grid-cols-[5fr_95fr] items-center ">
         <div className="jobId-page basis-[5%] ">
           <BackButton />
         </div>
-        <DashboardTopbar className="basis-[95%]" pageName="Job Details" />
+        <div className=" w-full py-2">
+          {/* <DashboardTopbar className="basis-[95%]" pageName="Job Details" /> */}
+          <div className="grid grid-cols-[1fr_auto] h-full w-full items-center">
+            <div className="text-lg text-gray-500 w-full font-semibold">
+              <span className="pr-2"> Jobs </span> {">"}
+              <span className="px-2"> {data?.company.name} </span> {">"}
+              <span className="text-black pl-2"> {data?.jobTitle.title} </span>
+            </div>
+            <div className="components-dashboard-DashboardTopbar w-70 gap-2 flex items-center justify-end px-3 py-2 rounded-lg">
+              <div className="hidden sm:block">
+                <Calendar className="components-dashboard-DashboardTopbar w-5 h-5 hidden sm:block" />
+              </div>
+              <div className="components-dashboard-DashboardTopbar text-sm hidden sm:block">
+                {getFormattedDate()}
+              </div>
+              <Suspense fallback={<div>...</div>}>
+                <DashboardTopbarLogoutButton />
+              </Suspense>
+            </div>
+          </div>
+        </div>
+        {/* custom top bar */}
       </div>
-      <JobDetailsCard
-        img={jobDetails?.company.logo}
-        title={jobDetails.jobTitle.title}
-        companyName={jobDetails?.company.name}
-        city={jobDetails.city.name}
-        jobId={Number(jobId)}
-        created_at={jobDetails.created_at}
-        apply_link={jobDetails.apply_link}
-      />
-      <div className="jobId-page sm:flex flex-1 overflow-y-scroll sm:overflow-hidden">
+
+      <div className="jobId-page sm:flex flex-1 overflow-y-scroll sm:overflow-hidden bg- rounded-2xl border-gray-200">
         <div className="jobId-page sm:hidden overflow-y-auto p-4 min-h-0">
           <JobSpecification
             experienceLevelName={jobDetails.experienceLevel.name}
@@ -106,6 +122,7 @@ export default function Page({
           {/* hidden */}
           <JobSkills skills={jobDetails.skills} className="hidden" />
           <CompanyCard
+            website={jobDetails.company.website ?? "https://example.com"}
             description={jobDetails.company.description ?? "Description"}
             industry={
               jobDetails.company.industry
@@ -128,10 +145,20 @@ export default function Page({
             }
           />
         </div>
-        <div className="jobId-page sm:basis-35/50 overflow-y-auto p-4 min-h-0">
+        <div className="jobId-page sm:basis-35/50 overflow-y-auto py-4 bg-white rounded-2xl px-2 min-h-0">
+          <JobDetailsCard
+            isRemote={jobDetails.is_remote}
+            img={jobDetails?.company.logo}
+            title={jobDetails.jobTitle.title}
+            companyName={jobDetails?.company.name}
+            city={jobDetails.city.name}
+            jobId={Number(jobId)}
+            created_at={jobDetails.created_at}
+            apply_link={jobDetails.apply_link}
+          />
           <JobDescription />
         </div>
-        <div className="jobId-page hidden sm:block sm:basis-15/50 overflow-y-auto p-4 min-h-0">
+        <div className="jobId-page hidden sm:block sm:basis-15/50 overflow-y-auto px-4 min-h-0">
           <JobSpecification
             experienceLevelName={jobDetails.experienceLevel.name}
             experienceLevel={`${jobDetails.experienceLevel.min_years} - ${jobDetails.experienceLevel.max_years} years`}
@@ -145,6 +172,7 @@ export default function Page({
           />
           <JobSkills skills={jobDetails.skills} />
           <CompanyCard
+            website={jobDetails.company.website ?? "https://example.com"}
             description={jobDetails.company.description ?? "Description"}
             industry={
               jobDetails.company.industry
