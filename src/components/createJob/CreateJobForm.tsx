@@ -30,6 +30,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
 import CustomMDEditor from "./CustomMDEditor";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import MarkdownEditor from "../MarkdownEditor";
 
 type CreateJobFormValues = z.infer<typeof CreateJobFormSchema>;
 
@@ -325,10 +326,11 @@ export default function CreateJobForm({ className }: { className?: string }) {
             control={control}
             name="description"
             render={({ field, fieldState }) => (
-              <CustomMDEditor
-                onChange={(val) => field.onChange(val ?? "")}
+              <MarkdownEditor
+                onValueChange={field.onChange}
                 value={field.value}
                 error={fieldState.error}
+                placeholder="Type or paste your job description..."
               />
             )}
           />

@@ -18,7 +18,7 @@ export default function JobInfoCard({
     <div className={cn("rounded-xl flex text-start items-center ", className)}>
       <div className="flex items-center gap-x-3">
         <div className="flex flex-col items-center">
-          {!topElement && <div className="h-5 w-0.5 bg-gray-200"></div>}
+          {!topElement && <div className="h-5 w-[2.5px] bg-gray-200"></div>}
           <Image
             alt=""
             src={imgUrl}

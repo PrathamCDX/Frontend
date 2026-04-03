@@ -1,5 +1,6 @@
 "use client";
 import DashboardTopbar from "@/components/dashboard/DashboardTopbar";
+import { IoIosArrowForward } from "react-icons/io";
 import BackButton from "@/components/BackButton";
 import JobDetailsCard from "@/components/jobDetails/JobDetailsCard";
 import JobDescription from "@/components/jobDetails/JobDescription";
@@ -76,19 +77,21 @@ export default function Page({
   }
 
   return (
-    <div className="jobId-page font-inter text-black bg-white/40 h-full flex flex-col px-2">
+    <div className="jobId-page  text-black bg-[#f1f2f4] h-full flex flex-col px-3">
       <ToastContainer position="top-right" autoClose={3000} />
-      <div className="jobId-page grid grid-cols-[5fr_95fr] items-center ">
+      <div className="jobId-page grid grid-cols-[5fr_95fr]  items-center ">
         <div className="jobId-page basis-[5%] ">
           <BackButton />
         </div>
         <div className=" w-full py-2">
           {/* <DashboardTopbar className="basis-[95%]" pageName="Job Details" /> */}
-          <div className="grid grid-cols-[1fr_auto] h-full w-full items-center">
-            <div className="text-lg text-gray-500 w-full font-semibold">
-              <span className="pr-2"> Jobs </span> {">"}
-              <span className="px-2"> {data?.company.name} </span> {">"}
-              <span className="text-black pl-2"> {data?.jobTitle.title} </span>
+          <div className="grid grid-cols-[1fr_auto] h-full w-full items-center py-1">
+            <div className="md:text-lg text-base text-gray-500 flex items-center gap-x-3 w-full font-semibold">
+              <p>Jobs</p>
+              <IoIosArrowForward />
+              <p>{data?.company.name}</p>
+              <IoIosArrowForward />
+              <p className="text-black">{data?.jobTitle.title}</p>
             </div>
             <div className="components-dashboard-DashboardTopbar w-70 gap-2 flex items-center justify-end px-3 py-2 rounded-lg">
               <div className="hidden sm:block">
@@ -106,7 +109,7 @@ export default function Page({
         {/* custom top bar */}
       </div>
 
-      <div className="jobId-page sm:flex flex-1 overflow-y-scroll sm:overflow-hidden bg- rounded-2xl border-gray-200">
+      <div className="jobId-page sm:flex flex-1 overflow-y-scroll sm:overflow-hidden  bg- rounded-2xl border-gray-200">
         <div className="jobId-page sm:hidden overflow-y-auto p-4 min-h-0">
           <JobSpecification
             experienceLevelName={jobDetails.experienceLevel.name}
@@ -145,7 +148,7 @@ export default function Page({
             }
           />
         </div>
-        <div className="jobId-page sm:basis-35/50 overflow-y-auto py-4 bg-white rounded-2xl px-2 min-h-0">
+        {/* <div className="jobId-page sm:basis-35/50 overflow-y-auto py-4 mr-2 shadow-[0_5px_15px_rgba(0,0,0,0.1)] bg-white rounded-lg px-2 min-h-0">
           <JobDetailsCard
             isRemote={jobDetails.is_remote}
             img={jobDetails?.company.logo}
@@ -157,6 +160,24 @@ export default function Page({
             apply_link={jobDetails.apply_link}
           />
           <JobDescription />
+        </div> */}
+        <div className="jobId-page sm:basis-35/50 mr-2 min-h-0 rounded-lg bg-white shadow-[0_5px_15px_rgba(0,0,0,0.1)] flex flex-col">
+          <div className="shrink-0 px-2 py-4">
+            <JobDetailsCard
+              isRemote={jobDetails.is_remote}
+              img={jobDetails?.company.logo}
+              title={jobDetails.jobTitle.title}
+              companyName={jobDetails?.company.name}
+              city={jobDetails.city.name}
+              jobId={Number(jobId)}
+              created_at={jobDetails.created_at}
+              apply_link={jobDetails.apply_link}
+            />
+          </div>
+
+          <div className="flex-1 min-h-0 overflow-y-auto px-2">
+            <JobDescription />
+          </div>
         </div>
         <div className="jobId-page hidden sm:block sm:basis-15/50 overflow-y-auto px-4 min-h-0">
           <JobSpecification

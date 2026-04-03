@@ -1,7 +1,6 @@
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
 import { setLoginRequiredDialogBox } from "@/features/loginRequiredDialogBox/loginRequiredDialogBoxSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { timeAgo } from "@/utils/getTime";
 import useCreateApplication from "@/utils/useCreateApplication";
 import useGetUser from "@/utils/useGetUser";
 import { Bookmark, MoreHorizontal } from "lucide-react";
@@ -19,6 +18,7 @@ type JobDetailsCardProps = {
   apply_link: string;
   isRemote: boolean;
 };
+
 export default function JobDetailsCard({
   jobId,
   img,
@@ -40,36 +40,40 @@ export default function JobDetailsCard({
       }
     }
   }, [dispatch, jwtToken]);
-  const { mutate } = useCreateApplication();
 
+  const { mutate } = useCreateApplication();
   const { isSuccess } = useGetUser(jwtToken);
 
   return (
-    <div className="components-jobDetails-JobDetailsCard bg-white text-black pt-1 rounded-xl space-y-3 sm:grid grid-cols-[1fr_auto] items-center w-full px-3">
-      <div className="grid grid-cols-[auto_1fr] w-full items-center h-full m-0">
-        <div className=" m-0">
+    <div className="components-jobDetails-JobDetailsCard bg-[#fefefe] text-black pt-1 rounded-xl space-y-3 sm:grid grid-cols-[1fr_auto] items-center w-full px-3">
+      <div className="grid grid-cols-[auto_1fr] gap-x-2 w-full items-center h-full m-0">
+        <div className="m-0 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-white">
           <Image
             alt=""
             src={img}
-            width={60}
-            height={60}
-            className="w-12 h-12 rounded-xl overflow-hidden"
+            width={64}
+            height={64}
+            className="h-full w-full object-cover"
           />
         </div>
-        <div className="pl-4 tracking-">
-          <div className="text-2xl font-semibold text-black mb-1">{title}</div>
-          <div className="text-base text-black/90">
+
+        <div className="pl-1">
+          <div className="text-3xl font-bold text-black mb-1">{title}</div>
+          <div className="text-base font-medium text-black/90">
             {city}, {isRemote ? "Remote" : "Onsite"}
           </div>
         </div>
       </div>
-      <div className="components-jobDetails-JobDetailsCard flex items-center gap-2 ">
-        <button className="hidden components-jobDetails-JobDetailsCard bg-white/20 hover:bg-white/30 p-2 rounded-md">
+
+      <div className="components-jobDetails-JobDetailsCard flex items-center gap-3">
+        <button className="hidden bg-white/20 hover:bg-white/30 p-2 rounded-md">
           <Bookmark size={16} />
         </button>
-        <button className="hidden components-jobDetails-JobDetailsCard bg-white/20 hover:bg-white/30 p-2 rounded-md">
+
+        <button className="hidden bg-white/20 hover:bg-white/30 p-2 rounded-md">
           <MoreHorizontal size={16} />
         </button>
+
         <button
           onClick={() => {
             if (isSuccess) {
@@ -81,10 +85,9 @@ export default function JobDetailsCard({
               }
             } else {
               dispatch(setLoginRequiredDialogBox(true));
-              // router.replace('/login');
             }
           }}
-          className="components-jobDetails-JobDetailsCard  hover:cursor-pointer hover:bg-[#cedcf1] ml-3 bg-[#2563EB] text-[#FFFFFF] px-4 py-1.5 rounded-md text-sm"
+          className="ml-3 rounded-md cursor-pointer bg-[#0A66C2] px-5 py-2 text-sm font-medium text-white shadow-[0_4px_12px_rgba(10,102,194,0.28)] transition-all duration-200 hover:translate-y-[-1px] hover:bg-[#0858A8] hover:shadow-[0_8px_18px_rgba(10,102,194,0.34)] focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/30 active:translate-y-0"
         >
           Apply Now
         </button>
@@ -97,11 +100,12 @@ export default function JobDetailsCard({
               dispatch(setLoginRequiredDialogBox(true));
             }
           }}
-          className="components-jobDetails-JobDetailsCard  hover:cursor-pointer  ml-3 bg-white text-[#2563EB] border-2 border-[#D1D5DB] px-4 py-1.5 rounded-md text-sm"
+          className="ml-1 cursor-pointer rounded-md border border-[#0A66C2] bg-white px-5 py-2 text-sm font-medium text-[#0A66C2] shadow-[0_2px_8px_rgba(10,102,194,0.08)] transition-all duration-200 hover:translate-y-[-1px] hover:bg-[#EFF6FF] hover:border-[#0858A8] hover:text-[#0858A8] hover:shadow-[0_6px_16px_rgba(10,102,194,0.12)] focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/20 active:translate-y-0"
         >
-          Request Refferal
+          Request Referral
         </button>
       </div>
+
       <div className="w-full col-span-2 h-px bg-gray-300 mt-3"></div>
     </div>
   );

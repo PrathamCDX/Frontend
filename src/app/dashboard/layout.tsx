@@ -292,9 +292,9 @@ export default function DashboardLayout({
           isSidebarOpen ? (showJobCreateForm ? "hidden" : "block") : "hidden"
         }`}
       ></div>
-      <div className={"dashboard-layout flex h-full w-full gap-x-2"}>
+      <div className={"dashboard-layout bg-[#f1f2f4] flex h-full w-full gap-x-2"}>
         <div
-          className={`dashboard-layout hidden sm:block basis-1/5 overflow-y-scroll hide-scrollbar px-3`}
+          className={`dashboard-layout hidden sm:block basis-1/5 bg-[#f1f2f4] overflow-y-scroll hide-scrollbar px-3`}
         >
           <DashboardSidebar />
         </div>

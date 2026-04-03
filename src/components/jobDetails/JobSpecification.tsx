@@ -22,7 +22,7 @@ export default function JobSpecification({
 }: JobSpecificationProps) {
   return (
     <div>
-      <div className=" gap-2 mb-4 p-5  bg-white rounded-2xl">
+      <div className=" gap-2 mb-4 py-5 px-6  bg-white rounded-lg shadow-[0_5px_15px_rgba(0,0,0,0.1)]">
         <div className="text-lg font-bold mb-3">Job Info</div>
         <JobInfoCard
           topElement={true}

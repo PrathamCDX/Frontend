@@ -21,6 +21,7 @@ import useGetIndustry from "@/utils/useGetIndustry";
 import DragAndDropFileBlob from "./DragAndDropFileBlob";
 import CustomMDEditor from "../createJob/CustomMDEditor";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import MarkdownEditor from "../MarkdownEditor";
 
 export default function CreateCompanyForm() {
   const [showDescriptionError, setShowDescriptionError] = useState(false);
@@ -166,10 +167,11 @@ export default function CreateCompanyForm() {
             name="description"
             control={control}
             render={({ field, fieldState }) => (
-              <CustomMDEditor
-                value={field.value ?? ""}
-                onChange={(val) => field.onChange(val ?? "")}
+              <MarkdownEditor
+                value={field.value}
+                onValueChange={field.onChange}
                 error={fieldState.error}
+                placeholder="Type or paste your company description..."
               />
             )}
           />
