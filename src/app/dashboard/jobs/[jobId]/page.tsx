@@ -115,9 +115,9 @@ export default function Page({
         {/* custom top bar */}
       </div>
 
-      <div className="jobId-page sm:flex flex-1 overflow-y-scroll sm:overflow-hidden  bg- rounded-lg border-gray-200">
+      <div className="jobId-page sm:flex flex-1 overflow-y-scroll  sm:overflow-hidden  bg- rounded-lg border-gray-200">
         {/* mobile  */}
-        <div className="jobId-page pt-0 sm:pt-4 sm:hidden overflow-y-auto p-4 min-h-0">
+        <div className="sticky top-0 px-4 py-2  bg-[#f1f2f4] z-10 sm:hidden">
           <JobDetailsCard
             isRemote={jobDetails.is_remote}
             img={jobDetails?.company.logo}
@@ -128,6 +128,8 @@ export default function Page({
             created_at={jobDetails.created_at}
             apply_link={jobDetails.apply_link}
           />
+        </div>
+        <div className="jobId-page pt-0 sm:pt-4 sm:hidden overflow-y-auto p-4 min-h-0">
           <JobSpecification
             experienceLevelName={jobDetails.experienceLevel.name}
             experienceLevel={`${jobDetails.experienceLevel.min_years} - ${jobDetails.experienceLevel.max_years} years`}

@@ -45,7 +45,7 @@ export default function JobDetailsCard({
   const { isSuccess } = useGetUser(jwtToken);
 
   return (
-    <div className="components-jobDetails-JobDetailsCard bg-[#fefefe] text-black pt-1 rounded-xl mb-4 sm:mb-0 space-y-3 sm:grid grid-cols-[1fr_auto] items-center w-full px-3">
+    <div className="components-jobDetails-JobDetailsCard bg-[#fefefe] text-black pt-1 rounded-xl mb-0 space-y-3 sm:grid grid-cols-[1fr_auto] items-center w-full px-3">
       <div className="grid grid-cols-[auto_1fr] gap-x-2 w-full items-center h-full m-0">
         <div className="mt-2 sm:mt-0 sm:m-0 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-white">
           <Image
