@@ -129,7 +129,7 @@ export default function Page({
             apply_link={jobDetails.apply_link}
           />
         </div>
-        <div className="jobId-page pt-0 sm:pt-4 sm:hidden overflow-y-auto p-4 min-h-0">
+        <div className="jobId-page pt-2 sm:pt-4 sm:hidden overflow-y-auto p-4 min-h-0">
           <JobSpecification
             experienceLevelName={jobDetails.experienceLevel.name}
             experienceLevel={`${jobDetails.experienceLevel.min_years} - ${jobDetails.experienceLevel.max_years} years`}
@@ -186,8 +186,8 @@ export default function Page({
         </div> */}
 
         {/* desktop */}
-        <div className="jobId-page hidden sm:flex sm:basis-35/50 mr-2 min-h-0 rounded-lg  shadow-[0_5px_15px_rgba(0,0,0,0.1)]  flex-col">
-          <div className="shrink-0  pt-4 pb-3">
+        <div className="jobId-page hidden sm:flex sm:basis-35/50 mr-2 min-h-0 rounded-lg gap-y-4  flex-col">
+          <div className="shrink-0  ">
             <JobDetailsCard
               isRemote={jobDetails.is_remote}
               img={jobDetails?.company.logo}

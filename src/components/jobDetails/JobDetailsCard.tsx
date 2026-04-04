@@ -45,7 +45,7 @@ export default function JobDetailsCard({
   const { isSuccess } = useGetUser(jwtToken);
 
   return (
-    <div className="components-jobDetails-JobDetailsCard bg-[#fefefe] text-black pb-2 pt-3 rounded-xl mb-0 space-y-3 sm:grid grid-cols-[1fr_auto] items-center w-full px-3">
+    <div className="components-jobDetails-JobDetailsCard bg-[#fefefe] text-black pb-2 pt-3 md:py-4 rounded-xl shadow-[0_5px_15px_rgba(0,0,0,0.1)] mb-0 space-y-3 sm:grid grid-cols-[1fr_auto] items-center w-full md:px-5 px-3">
       <div className="grid grid-cols-[auto_1fr] gap-x-2 w-full items-center h-full m-0">
         <div className="mt-2 sm:mt-0 sm:m-0 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-white">
           <Image
@@ -67,7 +67,7 @@ export default function JobDetailsCard({
         </div>
       </div>
 
-      <div className="components-jobDetails-JobDetailsCard mt-5 sm:mt-0 flex items-center justify-around sm:justify-start gap-3">
+      <div className="components-jobDetails-JobDetailsCard mt-5 mb-0 sm:mt-0 flex items-center justify-around sm:justify-start gap-3">
         <button className="hidden bg-white/20 hover:bg-white/30 p-2 rounded-md">
           <Bookmark size={16} />
         </button>
@@ -108,7 +108,7 @@ export default function JobDetailsCard({
         </button>
       </div>
 
-      <div className="w-full max-md:hidden col-span-2 h-px bg-gray-300 mt-3"></div>
+      <div className="w-full hidden col-span-2 h-px bg-gray-300 mt-3"></div>
     </div>
   );
 }
