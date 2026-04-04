@@ -89,7 +89,7 @@ export default function JobDetailsCard({
               dispatch(setLoginRequiredDialogBox(true));
             }
           }}
-          className="ml-3  rounded-md cursor-pointer w-30 sm:w-auto bg-[#0A66C2] px-5 py-2 text-sm font-medium text-white shadow-[0_4px_12px_rgba(10,102,194,0.28)] transition-all duration-200 hover:translate-y-[-1px] hover:bg-[#0858A8] hover:shadow-[0_8px_18px_rgba(10,102,194,0.34)] focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/30 active:translate-y-0"
+          className="sm:ml-3  rounded-md cursor-pointer flex-1 sm:flex-none w-full sm:w-auto bg-[#0A66C2] px-5 py-2 text-sm font-medium text-white shadow-[0_4px_12px_rgba(10,102,194,0.28)] transition-all duration-200 hover:translate-y-[-1px] hover:bg-[#0858A8] hover:shadow-[0_8px_18px_rgba(10,102,194,0.34)] focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/30 active:translate-y-0"
         >
           Apply Now
         </button>
@@ -102,7 +102,7 @@ export default function JobDetailsCard({
               dispatch(setLoginRequiredDialogBox(true));
             }
           }}
-          className="ml-1 cursor-pointer rounded-md border border-[#0A66C2] bg-white px-5 py-2 text-sm font-medium text-[#0A66C2] shadow-[0_2px_8px_rgba(10,102,194,0.08)] transition-all duration-200 hover:translate-y-[-1px] hover:bg-[#EFF6FF] hover:border-[#0858A8] hover:text-[#0858A8] hover:shadow-[0_6px_16px_rgba(10,102,194,0.12)] focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/20 active:translate-y-0"
+          className="ml-1 cursor-pointer flex-1 sm:flex-none w-full sm:w-auto rounded-md border border-[#0A66C2] bg-white px-5 py-2 text-sm font-medium text-[#0A66C2] shadow-[0_2px_8px_rgba(10,102,194,0.08)] transition-all duration-200 hover:translate-y-[-1px] hover:bg-[#EFF6FF] hover:border-[#0858A8] hover:text-[#0858A8] hover:shadow-[0_6px_16px_rgba(10,102,194,0.12)] focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/20 active:translate-y-0"
         >
           Request Referral
         </button>

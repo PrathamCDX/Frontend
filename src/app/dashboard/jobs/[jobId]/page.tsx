@@ -81,10 +81,10 @@ export default function Page({
     <div className="jobId-page  text-black bg-[#f1f2f4] h-full flex flex-col px-3">
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="jobId-page grid grid-cols-[5fr_95fr]  items-center pl-3 md:pl-0">
-        <div className="jobId-page hidden md:block">
+        <div className="jobId-page hidden sm:block">
           <BackButton />
         </div>
-        <div>
+        <div className="sm:hidden">
           <Suspense fallback={<div>...</div>}>
             <DashboardTopbarHamburgerMenu />
           </Suspense>
@@ -94,12 +94,12 @@ export default function Page({
           <div className="grid grid-cols-[1fr_auto] h-full w-full items-center py-1">
             <div className="min-w-0 ml-3 pr-2 sm:ml-0 md:text-lg text-base text-gray-500 flex items-center gap-x-2 sm:gap-x-3 w-full font-semibold">
               <p>Jobs</p>
-              <IoIosArrowForward />
+              <IoIosArrowForward className=" w-10" />
               <p>{data?.company.name}</p>
-              <IoIosArrowForward />
+              <IoIosArrowForward className=" w-10" />
               <p className="text-black truncate ">{data?.jobTitle.title}</p>
             </div>
-            <div className="components-dashboard-DashboardTopbar sm:w-70 gap-2 flex items-center justify-end px-3 py-2 rounded-lg">
+            <div className="components-dashboard-DashboardTopbar gap-2 flex items-center justify-end px-3 py-2 rounded-lg">
               <div className="hidden sm:block">
                 <Calendar className="components-dashboard-DashboardTopbar w-5 h-5 hidden sm:block" />
               </div>
