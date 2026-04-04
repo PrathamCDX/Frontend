@@ -186,8 +186,8 @@ export default function Page({
         </div> */}
 
         {/* desktop */}
-        <div className="jobId-page hidden sm:flex sm:basis-35/50 mr-2 min-h-0 rounded-lg bg-white shadow-[0_5px_15px_rgba(0,0,0,0.1)]  flex-col">
-          <div className="shrink-0 px-2 py-4">
+        <div className="jobId-page hidden sm:flex sm:basis-35/50 mr-2 min-h-0 rounded-lg  shadow-[0_5px_15px_rgba(0,0,0,0.1)]  flex-col">
+          <div className="shrink-0  pt-4 pb-3">
             <JobDetailsCard
               isRemote={jobDetails.is_remote}
               img={jobDetails?.company.logo}
@@ -200,7 +200,7 @@ export default function Page({
             />
           </div>
 
-          <div className="flex-1 min-h-0 overflow-y-auto px-2">
+          <div className="flex-1 min-h-0 overflow-y-auto px-2 bg-white rounded-lg shadow-[0_5px_15px_rgba(0,0,0,0.1)]">
             <JobDescription />
           </div>
         </div>
