@@ -35,7 +35,7 @@ export default function UserProfileSidebar() {
     return (
       <div className="w-full flex items-stretch justify-around gap-2">
         <button
-          className="w-full text-center bg-blue-200 rounded-lg px-2 py-1 hover:cursor-pointer hover:bg-gray-200"
+          className="w-full text-center bg-blue-200 text-black rounded-lg px-2 py-1 hover:cursor-pointer hover:bg-gray-200"
           onClick={() => {
             router.push(`/signup?returnUrl=${encodeURIComponent(pathname)}`);
           }}
@@ -43,7 +43,7 @@ export default function UserProfileSidebar() {
           Signup
         </button>
         <button
-          className="w-full text-center bg-blue-200 rounded-lg px-2 py-1 hover:cursor-pointer hover:bg-gray-200"
+          className="w-full text-center bg-blue-200 text-black rounded-lg px-2 py-1 hover:cursor-pointer hover:bg-gray-200"
           onClick={() => {
             router.push(`/login?returnUrl=${encodeURIComponent(pathname)}`);
           }}
