@@ -117,7 +117,7 @@ export default function Page({
 
       <div className="jobId-page sm:flex flex-1 overflow-y-scroll  sm:overflow-hidden  bg- rounded-lg border-gray-200">
         {/* mobile  */}
-        <div className="sticky top-0 px-4 py-2  bg-[#f1f2f4] z-10 sm:hidden">
+        <div className="sticky top-0 p-2  bg-[#f1f2f4] z-10 sm:hidden">
           <JobDetailsCard
             isRemote={jobDetails.is_remote}
             img={jobDetails?.company.logo}
@@ -129,7 +129,7 @@ export default function Page({
             apply_link={jobDetails.apply_link}
           />
         </div>
-        <div className="jobId-page pt-2 sm:pt-4 sm:hidden overflow-y-auto p-4 min-h-0">
+        <div className="jobId-page pt-2 sm:pt-4 sm:hidden overflow-y-auto p-2 min-h-0">
           <JobSpecification
             experienceLevelName={jobDetails.experienceLevel.name}
             experienceLevel={`${jobDetails.experienceLevel.min_years} - ${jobDetails.experienceLevel.max_years} years`}
@@ -186,7 +186,7 @@ export default function Page({
         </div> */}
 
         {/* desktop */}
-        <div className="jobId-page hidden sm:flex sm:basis-35/50 mr-2 min-h-0 rounded-lg gap-y-4  flex-col">
+        <div className="jobId-page hidden sm:flex sm:basis-35/50 mr-2 min-h-0 rounded-lg gap-y-3  flex-col">
           <div className="shrink-0  ">
             <JobDetailsCard
               isRemote={jobDetails.is_remote}
@@ -200,7 +200,7 @@ export default function Page({
             />
           </div>
 
-          <div className="flex-1 min-h-0 overflow-y-auto px-2 bg-white rounded-lg shadow-[0_5px_15px_rgba(0,0,0,0.1)]">
+          <div className="flex-1 min-h-0 overflow-y-auto px-2 bg-white rounded-lg shadow-lg">
             <JobDescription />
           </div>
         </div>

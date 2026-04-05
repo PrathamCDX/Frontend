@@ -45,7 +45,7 @@ export default function JobDetailsCard({
   const { isSuccess } = useGetUser(jwtToken);
 
   return (
-    <div className="components-jobDetails-JobDetailsCard bg-[#fefefe] text-black pb-2 pt-3 md:py-4 rounded-xl shadow-[0_5px_15px_rgba(0,0,0,0.1)] mb-0 space-y-3 sm:grid grid-cols-[1fr_auto] items-center w-full md:px-5 px-3">
+    <div className="components-jobDetails-JobDetailsCard bg-[#fefefe] text-black pb-3 pt-3 md:py-4 rounded-xl shadow-[0_5px_15px_rgba(0,0,0,0.1)] mb-0 space-y-3 sm:grid grid-cols-[1fr_auto] items-center w-full md:px-5 px-3">
       <div className="grid grid-cols-[auto_1fr] gap-x-2 w-full items-center h-full m-0">
         <div className="mt-2 sm:mt-0 sm:m-0 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-white">
           <Image
@@ -67,7 +67,7 @@ export default function JobDetailsCard({
         </div>
       </div>
 
-      <div className="components-jobDetails-JobDetailsCard mt-5 mb-0 sm:mt-0 flex items-center justify-around sm:justify-start gap-3">
+      {/* <div className="components-jobDetails-JobDetailsCard mt-5 mb-0 sm:mt-0 flex items-center justify-around sm:justify-start gap-3">
         <button className="hidden bg-white/20 hover:bg-white/30 p-2 rounded-md">
           <Bookmark size={16} />
         </button>
@@ -89,7 +89,7 @@ export default function JobDetailsCard({
               dispatch(setLoginRequiredDialogBox(true));
             }
           }}
-          className="sm:ml-3  rounded-md cursor-pointer flex-1 sm:flex-none w-full sm:w-auto bg-[#0A66C2] px-5 py-2 text-sm font-medium text-white shadow-[0_4px_12px_rgba(10,102,194,0.28)] transition-all duration-200 hover:translate-y-[-1px] hover:bg-[#0858A8] hover:shadow-[0_8px_18px_rgba(10,102,194,0.34)] focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/30 active:translate-y-0"
+          className="sm:ml-3 rounded-md cursor-pointer w-fit bg-[#0A66C2] px-4 py-2 text-sm font-medium text-white shadow-[0_4px_12px_rgba(10,102,194,0.28)] transition-all duration-200 hover:translate-y-[-1px] hover:bg-[#0858A8] hover:shadow-[0_8px_18px_rgba(10,102,194,0.34)] focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/30 active:translate-y-0"
         >
           Apply Now
         </button>
@@ -103,6 +103,47 @@ export default function JobDetailsCard({
             }
           }}
           className="ml-1 cursor-pointer flex-1 sm:flex-none w-full sm:w-auto rounded-md border border-[#0A66C2] bg-white px-5 py-2 text-sm font-medium text-[#0A66C2] shadow-[0_2px_8px_rgba(10,102,194,0.08)] transition-all duration-200 hover:translate-y-[-1px] hover:bg-[#EFF6FF] hover:border-[#0858A8] hover:text-[#0858A8] hover:shadow-[0_6px_16px_rgba(10,102,194,0.12)] focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/20 active:translate-y-0"
+        >
+          Request Referral
+        </button>
+      </div> */}
+
+      <div className="components-jobDetails-JobDetailsCard mt-5 mb-0 sm:mt-0 flex items-center gap-2 sm:gap-3">
+        <button className="hidden bg-white/20 hover:bg-white/30 p-2 rounded-md">
+          <Bookmark size={16} />
+        </button>
+
+        <button className="hidden bg-white/20 hover:bg-white/30 p-2 rounded-md">
+          <MoreHorizontal size={16} />
+        </button>
+
+        <button
+          onClick={() => {
+            if (isSuccess) {
+              mutate({ jobId, jwtToken });
+              if (apply_link) {
+                window.open(apply_link, "_blank");
+              } else {
+                toast.warning("Invalid apply link");
+              }
+            } else {
+              dispatch(setLoginRequiredDialogBox(true));
+            }
+          }}
+          className="flex-1 sm:flex-none sm:ml-3 rounded-lg cursor-pointer bg-[#0A66C2] px-4 py-2.5 text-sm font-medium text-white shadow-[0_4px_12px_rgba(10,102,194,0.22)] transition-all duration-200 hover:bg-[#0858A8] hover:shadow-[0_8px_18px_rgba(10,102,194,0.28)] focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/30 active:scale-[0.99]"
+        >
+          Apply Now
+        </button>
+
+        <button
+          onClick={() => {
+            if (isSuccess) {
+              toast.success("Request is submitted successfully");
+            } else {
+              dispatch(setLoginRequiredDialogBox(true));
+            }
+          }}
+          className="flex-1 sm:flex-none rounded-lg cursor-pointer border border-[#0A66C2] bg-white px-4 py-2.5 text-sm font-medium text-[#0A66C2] shadow-[0_2px_8px_rgba(10,102,194,0.06)] transition-all duration-200 hover:bg-[#EFF6FF] hover:border-[#0858A8] hover:text-[#0858A8] hover:shadow-[0_6px_16px_rgba(10,102,194,0.10)] focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/20 active:scale-[0.99]"
         >
           Request Referral
         </button>
