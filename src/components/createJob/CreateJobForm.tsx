@@ -20,7 +20,7 @@ import useGetUserRoles from "@/utils/useGetUserRoles";
 import { useRouter } from "next/navigation";
 import { cn } from "@/utils/cn";
 import { toogleShowJobCreateForm } from "@/features/showJobCreateForm/showJobCreateForm";
-import { ChevronRight, DollarSign, Minus, X } from "lucide-react";
+import { ChevronRight, DollarSign, IndianRupee, Minus, X } from "lucide-react";
 import DebouncedDropdown from "./DebouncedDropdown";
 
 import Dropdown from "./Dropdown";
@@ -83,8 +83,8 @@ export default function CreateJobForm({ className }: { className?: string }) {
       location_id: 0,
       is_remote: false,
       apply_link: "",
-      salary_min: 0,
-      salary_max: 0,
+      salary_min: undefined,
+      salary_max: undefined,
       skillIds: [],
       recruiter_id: 0,
       description: "",
@@ -98,6 +98,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
     getValues,
     control,
     trigger,
+    reset,
     formState: { errors },
   } = useFormMethods;
 
@@ -125,7 +126,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
     <div className="fixed w-full h-full flex items-center justify-center z-50 bg-black/10 backdrop-blur-md">
       <div
         className={cn(
-          `components-createJob-CreateJobForm font-inter sm:flex flex-col items-center relative bg-white rounded-2xl w-full sm:w-9/10 h-full sm:h-9/10 overflow-y-scroll hide-scrollbar`,
+          `components-createJob-CreateJobForm font-inter sm:flex flex-col items-center relative bg-white rounded-2xl w-full sm:w-9/10 h-full sm:h-9/10 overflow-y-scroll sm:overflow-y-hidden hide-scrollbar`,
         )}
       >
         <ToastContainer
@@ -165,6 +166,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
             className="components-createJob-CreateJobForm mr-6 hover:cursor-pointer "
             onClick={() => {
               dispatch(toogleShowJobCreateForm());
+              reset();
             }}
           >
             <X width={24} />
@@ -172,7 +174,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
         </div>
 
         <FormProvider {...useFormMethods}>
-          <div className="w-full">
+          <div className="w-full overflow-y-scroll sm:overflow-y-auto hide-scrollbar">
             <form
               onSubmit={handleSubmit(onSubmit, onError)}
               className="components-createJob-CreateJobForm  text-gray-400 hide-scrollbar justify-center flex flex-col space-y-2 w-full  h-fit"
@@ -296,7 +298,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
                       }
                       type={"text"}
                       error={errors.salary_min}
-                      icon={<DollarSign className="border-r pr-1" />}
+                      icon={<IndianRupee className="border-r pr-1" />}
                       setValueFn={(v) => (v === "" ? undefined : Number(v))}
                     />
                   </div>
@@ -318,7 +320,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
                       }
                       type={"text"}
                       error={errors.salary_max}
-                      icon={<DollarSign className="border-r pr-1" />}
+                      icon={<IndianRupee className="border-r pr-1" />}
                       setValueFn={(v) => (v === "" ? undefined : Number(v))}
                     />
                   </div>
