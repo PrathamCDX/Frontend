@@ -28,7 +28,6 @@ import SkillsDropdown from "./SkillsDropdown";
 import { toast, ToastContainer } from "react-toastify";
 // import MarkdownEditor from "./MarkdownEditor";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
-import CustomMDEditor from "./CustomMDEditor";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import MarkdownEditor from "../MarkdownEditor";
 import Image from "next/image";
@@ -366,7 +365,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
                       onValueChange={field.onChange}
                       value={field.value}
                       error={fieldState.error}
-                      height={200}
+                      height={300}
                       placeholder="Type or paste your job description..."
                     />
                   )}

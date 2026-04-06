@@ -50,10 +50,6 @@ function NameExistsChecker<T extends FieldValues>({
     }
   }, [isError, setCompanyNameExists]);
 
-  useEffect(() => {
-    console.log(typeof fieldValue);
-  }, [fieldValue]);
-
   return (
     <div className="">
       <div className="grid grid-cols-[1fr_auto] items-center gap-x-3">

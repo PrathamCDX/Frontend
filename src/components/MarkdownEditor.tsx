@@ -1,5 +1,5 @@
 import MDEditor from "@uiw/react-md-editor";
-import { FC } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { FieldError } from "react-hook-form";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
@@ -18,16 +18,30 @@ const MarkdownEditor: FC<MarkdownEditorProps> = ({
   onValueChange,
   error,
   placeholder,
-  height,
+  height = 200,
 }) => {
+  const editorRef = useRef<HTMLDivElement>(null);
+  const [dynamicHeight, setDynamicHeight] = useState(height);
+
+  useEffect(() => {
+    const textarea = editorRef.current?.querySelector("textarea");
+
+    if (textarea) {
+      textarea.style.height = "auto";
+      const newHeight = textarea.scrollHeight;
+      textarea.style.height = newHeight + "px";
+
+      setDynamicHeight(Math.max(height, newHeight));
+    }
+  }, [value, height]);
+
   return (
-    <div>
+    <div ref={editorRef}>
       <MDEditor
         value={value}
         onChange={onValueChange}
         data-color-mode="light"
-        height={height ?? 600}
-        overflow
+        height={dynamicHeight}
         preview="edit"
         textareaProps={{
           placeholder,
