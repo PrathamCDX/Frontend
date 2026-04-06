@@ -11,7 +11,7 @@ export const CreateJobFormSchema = z.object({
     .number({ error: "Please select an experience level" })
     .min(1, { error: "Please select an experience level" }),
   company_id: z.number({ error: "Please select a company" }).min(1, { error: "Please select a company" }),
-  city_id: z.number({ error: "Please select a city" }).min(1, { error: "Please select a city" }),
+  location_id: z.number({ error: "Please select a city" }).min(1, { error: "Please select a city" }),
   is_remote: z.boolean({ error: "" }),
   apply_link: z.url({ error: "Apply link must be a valid URL" }),
   salary_min: z.number({ error: "Please enter min salary" }).min(1, { error: "Please enter min salary" }),

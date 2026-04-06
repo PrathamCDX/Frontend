@@ -81,7 +81,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
       employment_type_id: 0,
       experience_level_id: 0,
       company_id: 0,
-      city_id: 0,
+      location_id: 0,
       is_remote: false,
       apply_link: "",
       salary_min: 0,
@@ -257,8 +257,8 @@ export default function CreateJobForm({ className }: { className?: string }) {
                       iconUrl="/job-location-icon.svg"
                       placeholder="Select a city"
                       jwtToken={jwtToken}
-                      error={errors.city_id}
-                      fieldName="city_id"
+                      error={errors.location_id}
+                      fieldName="location_id"
                       setValue={setValue}
                       useQueryFn={useGetCity}
                       getOptionLabel={(city) => `${city.name}`}
