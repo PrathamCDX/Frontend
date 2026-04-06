@@ -6,7 +6,7 @@ type JobSpecificationProps = {
   employmentType: string;
   salaryMin: string;
   salaryMax: string;
-  workType: boolean;
+  location: string;
   img: string;
   city: string;
   companyName: string;
@@ -18,47 +18,49 @@ export default function JobSpecification({
   employmentType,
   salaryMin,
   salaryMax,
-  workType,
+  location,
 }: JobSpecificationProps) {
   return (
-    <div>
-      <div className=" gap-2 mb-4 py-5 px-6  bg-white rounded-lg shadow-[0_5px_15px_rgba(0,0,0,0.1)]">
-        <div className="text-lg font-bold mb-3">Job Info</div>
+    <div className="rounded-[24px] border border-[#E6EBF4] bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFDFF_100%)] px-5 py-5 shadow-md">
+      <div className="mb-5 text-[18px] font-semibold tracking-[-0.02em] text-[#111827]">
+        Job Info
+      </div>
+
+      <div className="space-y-1">
         <JobInfoCard
           topElement={true}
-          imgUrl={"/level_icon.svg"}
+          imgUrl="/level_icon.svg"
           label="Level"
           value={experienceLevelName}
-          className="w-full "
         />
+
         <JobInfoCard
-          imgUrl={"/experience_icon.svg"}
+          imgUrl="/experience_icon.svg"
           label="Experience"
           value={experienceLevel}
-          className="w-full"
         />
+
         <JobInfoCard
-          imgUrl={"/job_type_icon.svg"}
+          imgUrl="/job_type_icon.svg"
           label="Job Type"
           value={employmentType}
-          className="w-full"
         />
+
         <JobInfoCard
-          imgUrl={"/work_type_icon.svg"}
+          imgUrl="/work_type_icon.svg"
           label="Work Type"
-          value={workType ? "Remote" : "On-site"}
-          className="w-full"
+          value={location == "Remote" ? "Remote" : "On-site"}
         />
-        {/* hidden */}
+
         <JobInfoCard
-          imgUrl={"/Rectangle 46.svg"}
+          imgUrl="/Rectangle 46.svg"
           label="Salary Range"
           value={
             employmentType === "Internship"
-              ? `${Number(salaryMin)}K-${Number(salaryMax)}K`
-              : `${Number(salaryMin)}LPA-${Number(salaryMax)}LPA`
+              ? `${Number(salaryMin)}K - ${Number(salaryMax)}K`
+              : `${Number(salaryMin)} LPA - ${Number(salaryMax)} LPA`
           }
-          className=" hidden w-full"
+          className="hidden"
         />
       </div>
     </div>

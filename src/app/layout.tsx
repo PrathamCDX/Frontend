@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, Poppins } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Poppins, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/components/QueryProvider";
 // import ReduxProvider from "@/components/ReduxProvider";
@@ -20,6 +20,11 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-poppins",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-plus-jakarta",
 });
 
 export const metadata: Metadata = {
@@ -44,7 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full w-full ">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${inter.variable} antialiased bg-[#F5F5F5] w-full h-full`}
+        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${inter.variable} ${plusJakartaSans.variable} antialiased bg-[#F5F5F5] w-full h-full`}
       >
         <ToastContainer position="top-right" autoClose={3000} />
         <StoreProvider>

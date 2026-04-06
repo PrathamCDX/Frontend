@@ -232,7 +232,7 @@ export default function DebouncedDropdown<
           />
         )}
         <input
-          className="w-full h-full pl-3 pr-3 py-2 bg-transparent focus:outline-none border-none"
+          className="w-full h-full pl-3 text-black pr-3 py-2 bg-transparent focus:outline-none border-none placeholder:text-[#7C8599]"
           value={inputValue}
           onChange={(e) => {
             if (useTextValue) {

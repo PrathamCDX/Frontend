@@ -1,5 +1,4 @@
 "use client";
-import DashboardTopbar from "@/components/dashboard/DashboardTopbar";
 import { IoIosArrowForward } from "react-icons/io";
 import BackButton from "@/components/BackButton";
 import JobDetailsCard from "@/components/jobDetails/JobDetailsCard";
@@ -115,79 +114,11 @@ export default function Page({
         {/* custom top bar */}
       </div>
 
-      <div className="jobId-page sm:flex flex-1 overflow-y-scroll  sm:overflow-hidden  bg- rounded-lg border-gray-200">
-        {/* mobile  */}
-        <div className="sticky top-0 p-2  bg-[#f1f2f4] z-10 sm:hidden">
-          <JobDetailsCard
-            isRemote={jobDetails.is_remote}
-            img={jobDetails?.company.logo}
-            title={jobDetails.jobTitle.title}
-            companyName={jobDetails?.company.name}
-            city={jobDetails.city.name}
-            jobId={Number(jobId)}
-            created_at={jobDetails.created_at}
-            apply_link={jobDetails.apply_link}
-          />
-        </div>
-        <div className="jobId-page pt-2 sm:pt-4 sm:hidden overflow-y-auto p-2 min-h-0">
-          <JobSpecification
-            experienceLevelName={jobDetails.experienceLevel.name}
-            experienceLevel={`${jobDetails.experienceLevel.min_years} - ${jobDetails.experienceLevel.max_years} years`}
-            employmentType={jobDetails.employmentType.name}
-            salaryMax={jobDetails.salary_max}
-            salaryMin={jobDetails.salary_min}
-            workType={jobDetails.is_remote}
-            img={jobDetails.company.logo}
-            city={jobDetails.city.name}
-            companyName={jobDetails.company.name}
-          />
-
-          <div className="bg-white p-2 rounded-lg shadow-[0_5px_15px_rgba(0,0,0,0.1)]">
-            <JobDescription />
-          </div>
-          {/* hidden */}
-          <JobSkills skills={jobDetails.skills} className="hidden" />
-          <CompanyCard
-            website={jobDetails.company.website ?? "https://example.com"}
-            description={jobDetails.company.description ?? "Description"}
-            industry={
-              jobDetails.company.industry
-                ? jobDetails.company.industry.name
-                : "industry"
-            }
-            location={jobDetails.city.name}
-            logoUrl={jobDetails.company.logo}
-            name={jobDetails.company.name}
-            size={
-              jobDetails.company.companySize
-                ? `${jobDetails.company.companySize.min_employees ?? "min"} ${
-                    jobDetails.company.companySize.max_employees
-                      ? jobDetails.company.companySize.max_employees > 100002
-                        ? "+"
-                        : `- ${jobDetails.company.companySize.max_employees}`
-                      : "max"
-                  } employees`
-                : "Company Size"
-            }
-          />
-        </div>
-        {/* <div className="jobId-page sm:basis-35/50 overflow-y-auto py-4 mr-2 shadow-[0_5px_15px_rgba(0,0,0,0.1)] bg-white rounded-lg px-2 min-h-0">
-          <JobDetailsCard
-            isRemote={jobDetails.is_remote}
-            img={jobDetails?.company.logo}
-            title={jobDetails.jobTitle.title}
-            companyName={jobDetails?.company.name}
-            city={jobDetails.city.name}
-            jobId={Number(jobId)}
-            created_at={jobDetails.created_at}
-            apply_link={jobDetails.apply_link}
-          />
-          <JobDescription />
-        </div> */}
-
-        {/* desktop */}
-        <div className="jobId-page hidden sm:flex sm:basis-35/50 mr-2 min-h-0 rounded-lg gap-y-3  flex-col">
-          <div className="shrink-0  ">
+      <div className="jobId-page flex flex-1 overflow-y-scroll rounded-lg border-gray-200 sm:overflow-hidden">
+        {/* mobile */}
+        {/* mobile */}
+        <div className="jobId-page flex h-full min-h-0 w-full flex-col sm:hidden bg-[linear-gradient(180deg,#F8FAFD_0%,#F3F6FB_100%)]">
+          <div className="shrink-0 p-2 pb-0">
             <JobDetailsCard
               isRemote={jobDetails.is_remote}
               img={jobDetails?.company.logo}
@@ -200,46 +131,146 @@ export default function Page({
             />
           </div>
 
-          <div className="flex-1 min-h-0 overflow-y-auto px-2 bg-white rounded-lg shadow-lg">
-            <JobDescription />
+          <div className="min-h-0 flex-1 overflow-y-auto px-2 pb-3 pt-3">
+            <div className="flex flex-col gap-3">
+              <JobSpecification
+                experienceLevelName={jobDetails.experienceLevel.name}
+                experienceLevel={`${jobDetails.experienceLevel.min_years} - ${jobDetails.experienceLevel.max_years} years`}
+                employmentType={jobDetails.employmentType.name}
+                salaryMax={jobDetails.salary_max}
+                salaryMin={jobDetails.salary_min}
+                location={jobDetails.city.name}
+                img={jobDetails.company.logo}
+                city={jobDetails.city.name}
+                companyName={jobDetails.company.name}
+              />
+
+              <div className="rounded-[20px] border border-[#E6EBF4] bg-white shadow-[0_8px_18px_rgba(15,23,42,0.05)]">
+                <div className="border-b border-[#EEF2F7] px-5 py-4">
+                  <h2 className="text-[18px] font-semibold tracking-[-0.02em] text-[#111827]">
+                    Job Description
+                  </h2>
+                </div>
+
+                <JobDescription />
+              </div>
+
+              <CompanyCard
+                website={jobDetails.company.website ?? "https://example.com"}
+                description={jobDetails.company.description ?? "Description"}
+                industry={
+                  jobDetails.company.industry
+                    ? jobDetails.company.industry.name
+                    : "industry"
+                }
+                location={jobDetails.city.name}
+                logoUrl={jobDetails.company.logo}
+                name={jobDetails.company.name}
+                size={
+                  jobDetails.company.companySize
+                    ? `${jobDetails.company.companySize.min_employees ?? "min"} ${
+                        jobDetails.company.companySize.max_employees
+                          ? jobDetails.company.companySize.max_employees >
+                            100002
+                            ? "+"
+                            : `- ${jobDetails.company.companySize.max_employees}`
+                          : "max"
+                      } employees`
+                    : "Company Size"
+                }
+              />
+
+              <JobSkills skills={jobDetails.skills} className="hidden" />
+            </div>
           </div>
         </div>
-        <div className="jobId-page hidden sm:block sm:basis-15/50 overflow-y-auto px-4 min-h-0">
-          <JobSpecification
-            experienceLevelName={jobDetails.experienceLevel.name}
-            experienceLevel={`${jobDetails.experienceLevel.min_years} - ${jobDetails.experienceLevel.max_years} years`}
-            employmentType={jobDetails.employmentType.name}
-            salaryMax={jobDetails.salary_max}
-            salaryMin={jobDetails.salary_min}
-            workType={jobDetails.is_remote}
-            img={jobDetails.company.logo}
+
+        {/* desktop */}
+        <div className="jobId-page hidden min-h-0 flex-1 flex-col gap-4 bg-[linear-gradient(180deg,#F8FAFD_0%,#F3F6FB_100%)] px-4 py-4 sm:flex">
+          {/* full-width top hero */}
+          {/* <div className="shrink-0 rounded-[26px] border border-[#E6EBF4] bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFDFF_100%)] p-5 shadow-[0_10px_30px_rgba(15,23,42,0.06)]">
+            <JobDetailsCard
+              isRemote={jobDetails.is_remote}
+              img={jobDetails?.company.logo}
+              title={jobDetails.jobTitle.title}
+              companyName={jobDetails?.company.name}
+              city={jobDetails.city.name}
+              jobId={Number(jobId)}
+              created_at={jobDetails.created_at}
+              apply_link={jobDetails.apply_link}
+            />
+          </div> */}
+
+          <JobDetailsCard
+            isRemote={jobDetails.is_remote}
+            img={jobDetails?.company.logo}
+            title={jobDetails.jobTitle.title}
+            companyName={jobDetails?.company.name}
             city={jobDetails.city.name}
-            companyName={jobDetails.company.name}
+            jobId={Number(jobId)}
+            created_at={jobDetails.created_at}
+            apply_link={jobDetails.apply_link}
           />
-          <JobSkills skills={jobDetails.skills} />
-          <CompanyCard
-            website={jobDetails.company.website ?? "https://example.com"}
-            description={jobDetails.company.description ?? "Description"}
-            industry={
-              jobDetails.company.industry
-                ? jobDetails.company.industry.name
-                : "industry"
-            }
-            location={jobDetails.city.name}
-            logoUrl={jobDetails.company.logo}
-            name={jobDetails.company.name}
-            size={
-              jobDetails.company.companySize
-                ? `${jobDetails.company.companySize.min_employees ?? "min"} ${
-                    jobDetails.company.companySize.max_employees
-                      ? jobDetails.company.companySize.max_employees > 100002
-                        ? "+"
-                        : `- ${jobDetails.company.companySize.max_employees}`
-                      : "max"
-                  } employees`
-                : "Company Size"
-            }
-          />
+
+          {/* split body */}
+          <div className="grid min-h-0 flex-1 grid-cols-[1fr_320px] gap-4">
+            {/* left description */}
+            <div className="min-h-0 overflow-hidden rounded-[24px] border border-[#E6EBF4] bg-white shadow-[0_10px_30px_rgba(15,23,42,0.06)]">
+              <div className="flex h-full min-h-0 flex-col">
+                <div className="shrink-0 border-b border-[#EEF2F7] px-6 py-4">
+                  <h2 className="text-[20px] font-semibold tracking-[-0.02em] text-[#111827]">
+                    Job Description
+                  </h2>
+                </div>
+
+                <div className="min-h-0 flex-1 overflow-y-auto hide-scrollbar px-6 py-5">
+                  <JobDescription />
+                </div>
+              </div>
+            </div>
+
+            {/* right sidebar */}
+            <div className="min-h-0 overflow-y-auto hide-scrollbar pr-1">
+              <div className="flex flex-col gap-4">
+                <JobSpecification
+                  experienceLevelName={jobDetails.experienceLevel.name}
+                  experienceLevel={`${jobDetails.experienceLevel.min_years} - ${jobDetails.experienceLevel.max_years} years`}
+                  employmentType={jobDetails.employmentType.name}
+                  salaryMax={jobDetails.salary_max}
+                  salaryMin={jobDetails.salary_min}
+                  location={jobDetails.city.name}
+                  img={jobDetails.company.logo}
+                  city={jobDetails.city.name}
+                  companyName={jobDetails.company.name}
+                />
+
+                <CompanyCard
+                  website={jobDetails.company.website ?? "https://example.com"}
+                  description={jobDetails.company.description ?? "Description"}
+                  industry={
+                    jobDetails.company.industry
+                      ? jobDetails.company.industry.name
+                      : "industry"
+                  }
+                  location={jobDetails.city.name}
+                  logoUrl={jobDetails.company.logo}
+                  name={jobDetails.company.name}
+                  size={
+                    jobDetails.company.companySize
+                      ? `${jobDetails.company.companySize.min_employees ?? "min"} ${
+                          jobDetails.company.companySize.max_employees
+                            ? jobDetails.company.companySize.max_employees >
+                              100002
+                              ? "+"
+                              : `- ${jobDetails.company.companySize.max_employees}`
+                            : "max"
+                        } employees`
+                      : "Company Size"
+                  }
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

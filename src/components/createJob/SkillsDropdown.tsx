@@ -162,7 +162,7 @@ export default function SkillsDropdown<TFormValues extends FieldValues>({
                   </div>
                 ))}
               <input
-                className="min-w-[200px] flex-1 h-full pl-5 pr-3 py-2 "
+                className="min-w-[200px] flex-1 h-full pl-5 pr-3 py-2 placeholder:text-[#7C8599]"
                 onChange={(e) => setSkillName(e.target.value)}
                 value={skillName ?? ""}
                 type="text"
