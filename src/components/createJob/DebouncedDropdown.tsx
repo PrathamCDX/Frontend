@@ -10,7 +10,6 @@
 
 // // type CreateJobFormValues = z.infer<typeof CreateJobFormSchema>;
 
-
 // export default function DebouncedDropdown<T extends FieldValues>({
 //   placeholder,
 //   jwtToken,
@@ -100,16 +99,23 @@
 //   );
 // }
 
-'use client';
+"use client";
 
 import { useDebounce } from "@/utils/useDebounce";
 import { useEffect, useState, useRef } from "react";
-import { FieldError, FieldValues, Path, UseFormSetValue, PathValue } from "react-hook-form";
+import {
+  FieldError,
+  FieldValues,
+  Path,
+  UseFormSetValue,
+  PathValue,
+} from "react-hook-form";
 import { ChevronDown } from "lucide-react";
+import Image from "next/image";
 
 export interface DebouncedDropdownProps<
   TFormValues extends FieldValues,
-  TQueryData
+  TQueryData,
 > {
   placeholder: string;
   jwtToken: string | null;
@@ -119,21 +125,25 @@ export interface DebouncedDropdownProps<
   fieldValue?: string;
   useQueryFn: (
     jwtToken: string | null,
-    query: string
+    query: string,
   ) => {
     data?: TQueryData[];
     isLoading: boolean;
   };
   getOptionLabel: (option: TQueryData) => string;
-  getOptionValue: (option: TQueryData) => PathValue<TFormValues, Path<TFormValues>>;
+  getOptionValue: (
+    option: TQueryData,
+  ) => PathValue<TFormValues, Path<TFormValues>>;
+  iconUrl?: string;
   useTextValue?: boolean;
   disabled?: boolean;
   resetOn?: boolean;
+  inputClassName?: string;
 }
 
 export default function DebouncedDropdown<
   TFormValues extends FieldValues,
-  TQueryData
+  TQueryData,
 >({
   placeholder,
   jwtToken,
@@ -144,9 +154,11 @@ export default function DebouncedDropdown<
   getOptionLabel,
   getOptionValue,
   fieldValue,
-  useTextValue= false,
-  disabled=false ,
-  resetOn=false,
+  iconUrl,
+  inputClassName = "",
+  useTextValue = false,
+  disabled = false,
+  resetOn = false,
 }: DebouncedDropdownProps<TFormValues, TQueryData>) {
   const [isOpen, setIsOpen] = useState(false);
   const [optionArray, setOptionArray] = useState<TQueryData[]>([]);
@@ -157,11 +169,11 @@ export default function DebouncedDropdown<
 
   const { data, isLoading } = useQueryFn(jwtToken, debouncedSearchTerm);
 
-  useEffect(()=>{
-      if(resetOn){
-        setInputValue("");
-      }
-    },[resetOn])
+  useEffect(() => {
+    if (resetOn) {
+      setInputValue("");
+    }
+  }, [resetOn]);
 
   useEffect(() => {
     if (fieldValue) {
@@ -177,7 +189,10 @@ export default function DebouncedDropdown<
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -190,7 +205,10 @@ export default function DebouncedDropdown<
   const handleSelectOption = (option: TQueryData) => {
     const valueToSet = getOptionValue(option);
     const label = getOptionLabel(option);
-    setValue(fieldName, valueToSet, { shouldValidate: true, shouldDirty: true });
+    setValue(fieldName, valueToSet, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
     setInputValue(label);
     setIsOpen(false);
   };
@@ -198,16 +216,28 @@ export default function DebouncedDropdown<
   return (
     <div className="relative w-full" ref={dropdownRef}>
       <div
-        className="flex items-center h-[42px] justify-between pr-3 w-full border rounded-md"
+        className={
+          "flex items-center h-[42px] justify-between pr-3 w-full border   border-gray-300 rounded-md " +
+          inputClassName
+        }
         onClick={() => setIsOpen((prev) => !prev)}
       >
+        {iconUrl && (
+          <Image
+            alt=""
+            src={iconUrl}
+            width={20}
+            height={20}
+            className="h-8 w-8 ml-2"
+          />
+        )}
         <input
-          className="w-full h-full pl-3 pr-3 py-2 bg-transparent focus:outline-none"
+          className="w-full h-full pl-3 pr-3 py-2 bg-transparent focus:outline-none border-none"
           value={inputValue}
           onChange={(e) => {
-            if(useTextValue){
+            if (useTextValue) {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              setValue(fieldName,e.target.value as any)
+              setValue(fieldName, e.target.value as any);
             }
             setInputValue(e.target.value);
             setSearchTerm(e.target.value);
@@ -217,7 +247,7 @@ export default function DebouncedDropdown<
           }}
           type="text"
           placeholder={placeholder || ""}
-          disabled = {disabled} 
+          disabled={disabled}
         />
         <ChevronDown
           width={20}
@@ -226,7 +256,9 @@ export default function DebouncedDropdown<
       </div>
       {isOpen && (
         <div className="max-h-[20vh] border w-full absolute overflow-y-auto bg-white shadow-lg rounded-md mt-1 z-10">
-          {isLoading && <div className="px-2 py-1 text-gray-500">Loading...</div>}
+          {isLoading && (
+            <div className="px-2 py-1 text-gray-500">Loading...</div>
+          )}
           {!isLoading && optionArray.length === 0 && (
             <div className="px-2 py-1 text-gray-500">No results found</div>
           )}

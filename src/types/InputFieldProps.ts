@@ -6,7 +6,8 @@ export type InputFieldProps<T extends FieldValues> = {
   fieldName: Path<T>;
   placeholder: string;
   type: InputHTMLAttributes<HTMLInputElement>["type"];
-  icon: JSX.Element;
+  iconUrl?: string;
+  icon?: JSX.Element;
   other?: JSX.Element;
   validate?: RegisterOptions["validate"];
   error?: FieldError;

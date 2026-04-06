@@ -7,7 +7,6 @@
 // import { useState } from "react";
 // import { ChevronDown } from "lucide-react";
 
-
 // type CreateJobFormValues = z.infer<typeof CreateJobFormSchema>;
 
 // export default function Dropdown({
@@ -74,31 +73,36 @@
 //   );
 // }
 
-'use client';
+"use client";
 
 import { useState, useRef, useEffect } from "react";
-import { FieldError, FieldValues, Path, UseFormSetValue, PathValue } from "react-hook-form";
+import {
+  FieldError,
+  FieldValues,
+  Path,
+  UseFormSetValue,
+  PathValue,
+} from "react-hook-form";
 import { ChevronDown } from "lucide-react";
+import Image from "next/image";
 
-export interface DropdownProps<
-  TFormValues extends FieldValues,
-  TOption
-> {
+export interface DropdownProps<TFormValues extends FieldValues, TOption> {
   optionArray: TOption[] | undefined;
   fieldName: Path<TFormValues>;
   setValue: UseFormSetValue<TFormValues>;
   error: FieldError | undefined;
   placeholder: string;
   getOptionLabel: (option: TOption) => string;
-  getOptionValue: (option: TOption) => PathValue<TFormValues, Path<TFormValues>>;
+  getOptionValue: (
+    option: TOption,
+  ) => PathValue<TFormValues, Path<TFormValues>>;
+  iconUrl?: string;
   fieldValue?: string;
   resetOn?: boolean;
+  inputClassName?: string;
 }
 
-export default function Dropdown<
-  TFormValues extends FieldValues,
-  TOption
->({
+export default function Dropdown<TFormValues extends FieldValues, TOption>({
   optionArray,
   fieldName,
   setValue,
@@ -107,21 +111,28 @@ export default function Dropdown<
   getOptionLabel,
   getOptionValue,
   fieldValue,
-  resetOn= false,
+  iconUrl,
+  resetOn = false,
+  inputClassName = "",
 }: DropdownProps<TFormValues, TOption>) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedLabel, setSelectedLabel] = useState<string | null>(fieldValue || null);
+  const [selectedLabel, setSelectedLabel] = useState<string | null>(
+    fieldValue || null,
+  );
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(()=>{
-    if(resetOn){
+  useEffect(() => {
+    if (resetOn) {
       setSelectedLabel(null);
     }
-  },[resetOn])
+  }, [resetOn]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -130,7 +141,7 @@ export default function Dropdown<
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  
+
   const handleSelectOption = (option: TOption) => {
     const value = getOptionValue(option);
     const label = getOptionLabel(option);
@@ -142,31 +153,46 @@ export default function Dropdown<
   return (
     <div className="relative" ref={dropdownRef}>
       <div
-        className="flex items-center h-[42px] justify-between px-3 w-full border rounded-md cursor-pointer"
+        className={
+          "flex items-center h-[42px] justify-start pr-3 w-full border border-gray-300 rounded-md cursor-pointer " +
+          inputClassName
+        }
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <div className={selectedLabel ? "text-black" : "text-gray-500"}>
-          {selectedLabel || placeholder}
+        {iconUrl && (
+          <Image
+            alt=""
+            src={iconUrl}
+            width={20}
+            height={20}
+            className="h-8 w-8 ml-2 "
+          />
+        )}
+        <div className="w-full flex items-center justify-between pl-2">
+          <div className={selectedLabel ? "text-black" : "text-[#7c7d7d]"}>
+            {selectedLabel || placeholder}
+          </div>
+          <ChevronDown
+            width={20}
+            className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+          />
         </div>
-        <ChevronDown
-          width={20}
-          className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-        />
       </div>
       {isOpen && (
         <div className="max-h-[20vh] border w-full absolute overflow-y-auto bg-white shadow-lg rounded-md mt-1 z-10">
-          {optionArray && optionArray.map((option, index) => {
-            const label = getOptionLabel(option);
-            return (
-              <div
-                onClick={() => handleSelectOption(option)}
-                className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
-                key={index}
-              >
-                {label}
-              </div>
-            );
-          })}
+          {optionArray &&
+            optionArray.map((option, index) => {
+              const label = getOptionLabel(option);
+              return (
+                <div
+                  onClick={() => handleSelectOption(option)}
+                  className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                  key={index}
+                >
+                  {label}
+                </div>
+              );
+            })}
         </div>
       )}
       {error && (
@@ -175,4 +201,3 @@ export default function Dropdown<
     </div>
   );
 }
-
