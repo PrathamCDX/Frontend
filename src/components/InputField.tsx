@@ -1,5 +1,6 @@
 import { InputFieldProps } from "@/types/InputFieldProps";
 import { cn } from "@/utils/cn";
+import Image from "next/image";
 // import { useEffect, useState } from "react";
 import { FieldValues } from "react-hook-form";
 
@@ -16,6 +17,7 @@ export default function InputField<T extends FieldValues>({
   setValueFn,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   fieldValue,
+  iconUrl,
   disabled,
   onChangeFn,
   inputClassName,
@@ -36,6 +38,16 @@ export default function InputField<T extends FieldValues>({
             {icon}
           </div>
         )}
+
+        {iconUrl && (
+          <Image
+            alt=""
+            src={iconUrl}
+            width={20}
+            height={20}
+            className="h-8 w-8 absolute left-2 top-1/2 -translate-y-1/2"
+          />
+        )}
         <input
           {...register(fieldName, {
             required: true,
@@ -46,13 +58,16 @@ export default function InputField<T extends FieldValues>({
           placeholder={placeholder}
           // value={inputValue ?? ""}
           onChange={(e) => {
+            register(fieldName).onChange(e);
             onChangeFn?.(e);
             // setInputValue(e.target.value);
           }}
           aria-invalid={!!error}
-          className={`w-full pl-10 pr-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            error ? "border-red-500" : "border-[#E0E0E0]"
-          }` + inputClassName}
+          className={
+            `w-full pl-10 pr-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              error ? "border-red-500" : "border-[#E0E0E0]"
+            }` + inputClassName
+          }
           disabled={disabled ? disabled : false}
         />
         {other}

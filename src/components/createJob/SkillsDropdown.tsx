@@ -8,6 +8,7 @@ import {
   Path,
   PathValue,
   UseFormSetValue,
+  UseFormTrigger,
 } from "react-hook-form";
 import { OptionType } from "./CreateJobForm";
 import { useDebounce } from "@/utils/useDebounce";
@@ -24,14 +25,16 @@ export default function SkillsDropdown<TFormValues extends FieldValues>({
   fieldValue,
   handleSkillDelete,
   handleSkillAdd,
+  trigger,
 }: {
   fieldName: Path<TFormValues>;
   setValue: UseFormSetValue<TFormValues>;
   error: Merge<FieldError, (FieldError | undefined)[]> | undefined;
   jwtToken: string | null;
+  trigger?: UseFormTrigger<TFormValues>;
   fieldValue?: Skills[];
-  handleSkillDelete?: (id: number)=> void;
-  handleSkillAdd?: (id: number, name: string)=> void;
+  handleSkillDelete?: (id: number) => void;
+  handleSkillAdd?: (id: number, name: string) => void;
 }) {
   const [mounted, setMounted] = useState(false);
 
@@ -42,15 +45,14 @@ export default function SkillsDropdown<TFormValues extends FieldValues>({
       ? fieldValue.map((v) => {
           return v.id;
         })
-      : []
+      : [],
   );
   const [skillNameArray, setSkillNameArray] = useState<
     { id: number; name: string }[]
   >(fieldValue ?? []);
   const [toggle, setToggle] = useState(false);
 
-  useEffect(()=>{
-  },[skillNameArray, skillIdArray])
+  useEffect(() => {}, [skillNameArray, skillIdArray]);
 
   const [skills, setSkills] = useState<OptionType[]>([]);
   const [skillName, setSkillName] = useState<string | null>(null);
@@ -63,8 +65,6 @@ export default function SkillsDropdown<TFormValues extends FieldValues>({
       setSkills(skillData);
     }
   }, [skillData]);
-
-
 
   // const handleSkillSelect = (skill: { id: number; name: string }) => {
   //   if (skillIdArray.includes(skill.id)) {
@@ -86,23 +86,23 @@ export default function SkillsDropdown<TFormValues extends FieldValues>({
   // };
 
   const handleSkillSelect = (skill: { id: number; name: string }) => {
-  if (skillIdArray.includes(skill.id)) {
-    toast.error("This skill is already selected!", {
-      position: "top-left",
-      autoClose: 3000,
-      theme: "light",
-    });
-    return;
-  }
+    if (skillIdArray.includes(skill.id)) {
+      toast.error("This skill is already selected!", {
+        position: "top-left",
+        autoClose: 3000,
+        theme: "light",
+      });
+      return;
+    }
 
-  setSkillNameArray((prev) => [...prev, skill]);
+    setSkillNameArray((prev) => [...prev, skill]);
 
-  const updated = [...skillIdArray, skill.id]; 
-  setSkillIdArray(updated);                     
-  setValue(fieldName, updated as PathValue<TFormValues, Path<TFormValues>>); 
-
-  handleSkillAdd?.(skill.id, skill.name);
-};
+    const updated = [...skillIdArray, skill.id];
+    setSkillIdArray(updated);
+    setValue(fieldName, updated as PathValue<TFormValues, Path<TFormValues>>);
+    trigger?.();
+    handleSkillAdd?.(skill.id, skill.name);
+  };
   // const handleRemoveSkill = (id: number) => {
   //   setSkillIdArray((prev) => {
   //     const updated = prev.filter((skillId) => skillId !== id);
@@ -114,57 +114,68 @@ export default function SkillsDropdown<TFormValues extends FieldValues>({
   // };
 
   const handleRemoveSkill = (id: number) => {
-  setSkillIdArray((prev) => prev.filter((skillId) => skillId !== id));
-  setSkillNameArray((prev) => prev.filter((skill) => skill.id !== id));
-};
+    setSkillIdArray((prev) => prev.filter((skillId) => skillId !== id));
+    setSkillNameArray((prev) => prev.filter((skill) => skill.id !== id));
+    trigger?.();
+  };
 
-useEffect(() => {
-  setValue(fieldName, skillIdArray as PathValue<TFormValues, Path<TFormValues>>);
-}, [skillIdArray, setValue, fieldName]);
-
+  useEffect(() => {
+    setValue(
+      fieldName,
+      skillIdArray as PathValue<TFormValues, Path<TFormValues>>,
+    );
+  }, [skillIdArray, setValue, fieldName]);
 
   if (!mounted) return null;
 
   return (
     <div>
       {/* Selected skills */}
-      <div className="flex flex-wrap gap-2 my-2 p-2">
-        {skillNameArray.map((skill) => (
-          <div
-            className="flex justify-between p-2 border rounded-lg w-fit gap-x-5"
-            key={skill.id}
-          >
-            <div>{skill.name}</div>
+
+      {skillNameArray && skillNameArray.length > 0 && (
+        <div className="flex flex-wrap gap-2 my-2 p-2">
+          {skillNameArray.map((skill) => (
             <div
-              onClick={() => {handleRemoveSkill(skill.id); handleSkillDelete?.(skill.id)}}
-              className="cursor-pointer"
+              className="flex justify-between p-2 border rounded-lg w-fit gap-x-5"
+              key={skill.id}
             >
-              <X />
+              <div>{skill.name}</div>
+              <div
+                onClick={() => {
+                  handleRemoveSkill(skill.id);
+                  handleSkillDelete?.(skill.id);
+                }}
+                className="cursor-pointer"
+              >
+                <X />
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {/* Dropdown */}
       <div>
         <div
-          className="flex items-center justify-between w-full pr-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex items-center justify-between w-full pr-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           onClick={() => setToggle((prev) => !prev)}
         >
           <input
-            className="w-full pl-10 pr-3 py-2"
+            className="w-full pl-10 pr-3 py-2 "
             onChange={(e) => setSkillName(e.target.value)}
             type="text"
             placeholder="Select a skill"
           />
-          <ChevronDown />
+          <ChevronDown className="hover:cursor-pointer" />
         </div>
 
         {toggle && (
           <div className="h-[20vh] border overflow-y-scroll">
             {skills.map((skill) => (
               <div
-                onClick={() => {handleSkillSelect(skill); }}
+                onClick={() => {
+                  handleSkillSelect(skill);
+                }}
                 className="px-2 py-1 cursor-pointer hover:bg-gray-100"
                 key={skill.id}
               >
