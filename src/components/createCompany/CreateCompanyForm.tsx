@@ -6,7 +6,7 @@ import {
   CreateCompanyFormData,
 } from "@/schema/createCompany.validator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Building2, Link2, X } from "lucide-react";
+import { Link2, X } from "lucide-react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import InputField from "../InputField";
 import useCreateCompany from "@/utils/useCreateCompany";
@@ -19,16 +19,18 @@ import DebouncedDropdown from "../createJob/DebouncedDropdown";
 import { OptionType } from "../createJob/CreateJobForm";
 import useGetIndustry from "@/utils/useGetIndustry";
 import DragAndDropFileBlob from "./DragAndDropFileBlob";
-import CustomMDEditor from "../createJob/CustomMDEditor";
+// import CustomMDEditor from "../createJob/CustomMDEditor";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import MarkdownEditor from "../MarkdownEditor";
+import NameExistsChecker from "./NameExistsChecker";
+import useFindCompanyName from "@/utils/useFindCompanyName";
 
 export default function CreateCompanyForm() {
   const [showDescriptionError, setShowDescriptionError] = useState(false);
-
+  const [companyNameExists, setCompanyNameExists] = useState(true);
   const methods = useForm<CreateCompanyFormData>({
     mode: "onSubmit",
-    reValidateMode: "onSubmit",
+    reValidateMode: "onChange",
     resolver: zodResolver(CreateCompanySchema),
     defaultValues: {
       name: "",
@@ -46,6 +48,7 @@ export default function CreateCompanyForm() {
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = methods;
 
@@ -112,13 +115,24 @@ export default function CreateCompanyForm() {
             Debug Values
           </button>
 
-          <InputField
+          {/* <InputField
             fieldName="name"
             icon={<Building2 />}
             placeholder="Company Name"
             register={register}
             type="text"
             error={errors.name}
+          /> */}
+
+          <NameExistsChecker
+            error={errors.name}
+            companyNameExists={companyNameExists}
+            setCompanyNameExists={setCompanyNameExists}
+            name="name"
+            placeholder="Company Name"
+            register={register}
+            useQueryFn={useFindCompanyName}
+            watch={watch}
           />
 
           <div>Company Size</div>
@@ -185,8 +199,14 @@ export default function CreateCompanyForm() {
               onClick={() => {
                 setShowDescriptionError(true);
               }}
+              disabled={companyNameExists}
               type="submit"
-              className="hover:cursor-pointer rounded py-2 px-4 bg-blue-200 hover:bg-blue-400 font-semibold justify-center duration-200"
+              className={
+                (companyNameExists
+                  ? " hover:cursor-not-allowed "
+                  : " hover:cursor-pointer ") +
+                " rounded py-2 px-4 bg-blue-200 hover:bg-blue-400 font-semibold justify-center duration-200"
+              }
             >
               Create
             </button>
