@@ -52,7 +52,7 @@ export default function CompanyCard({
   const shouldShowToggle = contentHeight > collapsedHeight + 4;
 
   return (
-    <div className="mb-10 mt-5 space-y-4 rounded-lg bg-[#d6dce3] bg-radial from-black/10 to-white p-5 shadow-[4px_1px_22px_3px_rgba(0,0,0,0.20)] backdrop-blur-2xl">
+    <div className="mb-10 mt-5 space-y-4 rounded-lg bg-[#d6dce3] bg-radial from-black/10 to-white p-5 shadow-[0px_7px_29px_0px_rgba(100,100,111,0.2)] backdrop-blur-2xl">
       <h3 className="text-lg font-semibold text-gray-900">About Company</h3>
 
       <div className="flex items-center gap-4">

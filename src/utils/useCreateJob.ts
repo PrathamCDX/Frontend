@@ -1,16 +1,13 @@
-import { setShowJobCreateForm } from "@/features/showJobCreateForm/showJobCreateForm";
 import { jobServiceApi } from "@/lib/axios.config";
 import { CreateJobFormSchema } from "@/schema/createJob.validator";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import z from "zod";
 
 type CreateJobFormValues = z.infer<typeof CreateJobFormSchema>;
 
 const useCreateJob = () => {
   
-  const dispatch = useDispatch();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({
@@ -36,7 +33,6 @@ const useCreateJob = () => {
     },
     onSuccess: () => {
       toast.success("Job posted successfully!");
-      dispatch(setShowJobCreateForm(false));
       queryClient.invalidateQueries({ queryKey: ["jobList"] });
     },
   });

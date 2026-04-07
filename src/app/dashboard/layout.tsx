@@ -20,7 +20,6 @@ import { setLoginRequiredDialogBox } from "@/features/loginRequiredDialogBox/log
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { ToastContainer } from "react-toastify";
 
 export default function DashboardLayout({
   children,
@@ -180,7 +179,6 @@ export default function DashboardLayout({
   return (
     // {h-[100vh]}
     <div className="dashboard-layout text-black  h-[100%] w-[100%] bg-[#F5F5F5]">
-      <ToastContainer position="top-right" autoClose={3000} className="z-20" />
       <ConfirmLoginDialog
         isOpen={loginRequiredDialogBox}
         onClose={() => {

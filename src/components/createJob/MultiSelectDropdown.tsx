@@ -1,14 +1,21 @@
-'use client';
+"use client";
 
 import { useEffect, useState, useRef } from "react";
-import { FieldError, FieldValues, Path, UseFormSetValue, Merge, PathValue } from "react-hook-form";
+import {
+  FieldError,
+  FieldValues,
+import { toast } from "sonner";
+  UseFormSetValue,
+  Merge,
+  PathValue,
+} from "react-hook-form";
 import { useDebounce } from "@/utils/useDebounce";
 import { X } from "lucide-react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 export interface MultiSelectDropdownProps<
   TFormValues extends FieldValues,
-  TOption
+  TOption,
 > {
   setValue: UseFormSetValue<TFormValues>;
   error?: Merge<FieldError, (FieldError | undefined)[]> | undefined;
@@ -16,7 +23,7 @@ export interface MultiSelectDropdownProps<
   fieldName: Path<TFormValues>;
   useQueryFn: (
     jwtToken: string | null,
-    query: string
+    query: string,
   ) => {
     data?: TOption[];
     isLoading: boolean;
@@ -28,7 +35,7 @@ export interface MultiSelectDropdownProps<
 
 export default function MultiSelectDropdown<
   TFormValues extends FieldValues,
-  TOption
+  TOption,
 >({
   setValue,
   error,
@@ -45,16 +52,25 @@ export default function MultiSelectDropdown<
   const debouncedSearchTerm = useDebounce(searchTerm, 400);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { data: queryResults, isLoading } = useQueryFn(jwtToken, debouncedSearchTerm);
+  const { data: queryResults, isLoading } = useQueryFn(
+    jwtToken,
+    debouncedSearchTerm,
+  );
 
   useEffect(() => {
-    const values = selectedOptions.map(option => getOptionValue(option));
-    setValue(fieldName, values as PathValue<TFormValues, Path<TFormValues>>, { shouldValidate: true, shouldDirty: true });
+    const values = selectedOptions.map((option) => getOptionValue(option));
+    setValue(fieldName, values as PathValue<TFormValues, Path<TFormValues>>, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   }, [selectedOptions, fieldName, setValue, getOptionValue]);
-  
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -67,7 +83,7 @@ export default function MultiSelectDropdown<
   const handleAddOption = (option: TOption) => {
     const optionValue = getOptionValue(option);
     const isAlreadySelected = selectedOptions.some(
-      (selected) => getOptionValue(selected) === optionValue
+      (selected) => getOptionValue(selected) === optionValue,
     );
 
     if (isAlreadySelected) {
@@ -81,7 +97,7 @@ export default function MultiSelectDropdown<
   const handleRemoveOption = (optionToRemove: TOption) => {
     const valueToRemove = getOptionValue(optionToRemove);
     setSelectedOptions((prev) =>
-      prev.filter((option) => getOptionValue(option) !== valueToRemove)
+      prev.filter((option) => getOptionValue(option) !== valueToRemove),
     );
   };
 
@@ -102,33 +118,37 @@ export default function MultiSelectDropdown<
             </div>
           </div>
         ))}
-         <input
-            className="flex-grow w-full bg-transparent focus:outline-none"
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              setIsOpen(true);
-            }}
-            value={searchTerm}
-            type="text"
-            placeholder={placeholder}
-            onFocus={() => setIsOpen(true)}
-          />
+        <input
+          className="flex-grow w-full bg-transparent focus:outline-none"
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setIsOpen(true);
+          }}
+          value={searchTerm}
+          type="text"
+          placeholder={placeholder}
+          onFocus={() => setIsOpen(true)}
+        />
       </div>
       <div className="relative">
-      {isOpen && (
-        <div className="max-h-[20vh] border w-full absolute overflow-y-auto bg-white shadow-lg rounded-md mt-1 z-10">
-           {isLoading && <div className="px-2 py-1 text-gray-500">Loading...</div>}
-           {!isLoading && queryResults && queryResults.map((option, index) => (
-            <div
-              onClick={() => handleAddOption(option)}
-              className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
-              key={index}
-            >
-              {getOptionLabel(option)}
-            </div>
-          ))}
-        </div>
-      )}
+        {isOpen && (
+          <div className="max-h-[20vh] border w-full absolute overflow-y-auto bg-white shadow-lg rounded-md mt-1 z-10">
+            {isLoading && (
+              <div className="px-2 py-1 text-gray-500">Loading...</div>
+            )}
+            {!isLoading &&
+              queryResults &&
+              queryResults.map((option, index) => (
+                <div
+                  onClick={() => handleAddOption(option)}
+                  className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                  key={index}
+                >
+                  {getOptionLabel(option)}
+                </div>
+              ))}
+          </div>
+        )}
       </div>
       {error && (
         <p className="text-sm text-red-500 mt-1 ml-1">
@@ -138,4 +158,3 @@ export default function MultiSelectDropdown<
     </div>
   );
 }
-

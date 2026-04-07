@@ -1,6 +1,6 @@
 import { userServiceApi } from "@/lib/axios.config";
 import { useMutation } from "@tanstack/react-query";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { AxiosError } from "axios";
 
 const useCreateRole = () => {

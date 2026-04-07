@@ -8,7 +8,7 @@ import InputField from "../InputField";
 import useGetUser from "@/utils/useGetUser";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
 import useUpdateUserDetails from "@/utils/useUpdateUserDetails";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { UserDetailSchema } from "@/schema/userDetails.validator";
 import { useRouter } from "next/navigation";
 import TripleDotLoader from "../TripleDotLoader";

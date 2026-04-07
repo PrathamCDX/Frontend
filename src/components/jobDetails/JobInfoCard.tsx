@@ -28,8 +28,8 @@ export default function JobInfoCard({
           />
         </div>
         <div style={{ marginTop: !topElement ? 20 : 0 }}>
-          <div className="text-sm text-gray-400">{label}</div>
-          <div className="text-base font-semibold text-black">{value}</div>
+          <div className="text-[14px] font-medium leading-[1.2] text-[#98A2B3]">{label}</div>
+          <div className="mt-1 text-[16px] font-semibold leading-[1.25] text-[#111827]">{value}</div>
         </div>
       </div>
     </div>

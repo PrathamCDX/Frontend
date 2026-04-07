@@ -2,7 +2,7 @@ import { jobServiceApi } from "@/lib/axios.config";
 import { CreateCompanySchema } from "@/schema/createCompany.validator";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import z from "zod";
 
 type CreateCompanyFormType = z.infer<typeof CreateCompanySchema>;

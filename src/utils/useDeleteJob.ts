@@ -1,6 +1,6 @@
 import { jobServiceApi } from "@/lib/axios.config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 type DeleteJobFormValues = {
   id: number;

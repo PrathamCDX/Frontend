@@ -2,7 +2,7 @@ import { userServiceApi } from "@/lib/axios.config";
 import { SignUpFormSchema } from "@/schema/signUp.validator";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import z from "zod";
 
 type FormValues = z.infer<typeof SignUpFormSchema>;
@@ -19,12 +19,13 @@ const useSignup = () =>
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.message || "Error occured while signing up");
+        toast.error(error.response?.data?.message || "Error while signing you up");
       } else {
         toast.error("Error occured while signing up");
       }
     },
     onSuccess: (data) => {
+      toast.success("Signed up successfully");
       const jwtToken = data.data;
       localStorage.setItem("AuthJwtToken", jwtToken);
     },

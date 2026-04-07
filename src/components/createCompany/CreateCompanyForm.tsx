@@ -83,7 +83,7 @@ export default function CreateCompanyForm() {
         <X width={20} />
       </div>
 
-      {isPending && <TripleDotLoader />}
+      {isPending && <TripleDotLoader className=" bg-white/50 fixed inset-0" />}
 
       <FormProvider {...methods}>
         <form
