@@ -158,7 +158,7 @@ export default function SkillsDropdown<TFormValues extends FieldValues>({
                   </div>
                 ))}
               <input
-                className="min-w-[200px] flex-1 h-full pl-5 pr-3 py-2 placeholder:text-[#7C8599]"
+                className="min-w-[200px] flex-1 h-full pl-5 pr-3 py-2 outline-none placeholder:text-[#7C8599]"
                 onChange={(e) => setSkillName(e.target.value)}
                 value={skillName ?? ""}
                 type="text"
@@ -171,6 +171,29 @@ export default function SkillsDropdown<TFormValues extends FieldValues>({
         </div>
 
         {toggle && (
+          <div className="absolute z-10 mt-2 w-full max-h-60 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
+            {skills.length === 0 && (
+              <div className="px-4 py-3 text-sm text-gray-500">
+                No skills found
+              </div>
+            )}
+
+            {skills.map((skill) => (
+              <div
+                key={skill.id}
+                onClick={() => {
+                  handleSkillSelect(skill);
+                  setToggle(false);
+                  setSkillName("");
+                }}
+                className="mx-2 my-1 rounded-lg px-3 py-2 text-sm text-gray-700 cursor-pointer transition-colors duration-150 hover:bg-gray-100 active:bg-gray-200"
+              >
+                {skill.name}
+              </div>
+            ))}
+          </div>
+        )}
+        {/* {toggle && (
           <div
             className={`max-h-[25vh] overflow-y-auto rounded-md ${
               toggle ? "border border-gray-500" : "border border-transparent"
@@ -190,7 +213,7 @@ export default function SkillsDropdown<TFormValues extends FieldValues>({
               </div>
             ))}
           </div>
-        )}
+        )} */}
       </div>
 
       {/* Error */}
