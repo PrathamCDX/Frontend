@@ -2,7 +2,7 @@ import { UserProfileFormValues } from "@/components/me/UserProfileForm";
 import { userServiceApi } from "@/lib/axios.config";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const useUpdateUserProfile = () => {
   return useMutation({

@@ -20,7 +20,10 @@ import useGetCompany from "@/utils/useGetCompany";
 import useGetUserRoles from "@/utils/useGetUserRoles";
 import { useRouter } from "next/navigation";
 import { cn } from "@/utils/cn";
-import { toogleShowJobCreateForm } from "@/features/showJobCreateForm/showJobCreateForm";
+import {
+  setShowJobCreateForm,
+  toogleShowJobCreateForm,
+} from "@/features/showJobCreateForm/showJobCreateForm";
 import {
   BriefcaseBusiness,
   ChevronRight,
@@ -31,11 +34,11 @@ import {
 import DebouncedDropdown from "./DebouncedDropdown";
 import Dropdown from "./Dropdown";
 import SkillsDropdown from "./SkillsDropdown";
-import { toast, ToastContainer } from "react-toastify";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import MarkdownEditor from "../MarkdownEditor";
 import Image from "next/image";
+import { toast } from "sonner";
 
 type CreateJobFormValues = z.infer<typeof CreateJobFormSchema>;
 
@@ -59,11 +62,7 @@ function SectionLabel({
   );
 }
 
-export default function CreateJobForm({
-  className,
-}: {
-  className?: string;
-}) {
+export default function CreateJobForm({ className }: { className?: string }) {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -102,8 +101,8 @@ export default function CreateJobForm({
       location_id: 0,
       is_remote: false,
       apply_link: "",
-      salary_min: 0,
-      salary_max: 0,
+      salary_min: undefined,
+      salary_max: undefined,
       skillIds: [],
       recruiter_id: 0,
       description: "",
@@ -117,16 +116,27 @@ export default function CreateJobForm({
     getValues,
     control,
     trigger,
+    reset,
+    watch,
     formState: { errors },
   } = useFormMethods;
 
+  const recruiter_id = watch("recruiter_id");
+
   useEffect(() => {
-    if (data?.id) {
+    if (data?.id && !recruiter_id) {
       setValue("recruiter_id", Number(data.id));
     }
-  }, [data?.id, setValue]);
+  }, [data?.id, setValue, recruiter_id]);
 
-  const { mutate, isPending } = useCreateJob();
+  const { mutate, isPending, isSuccess } = useCreateJob();
+
+  useEffect(() => {
+    if (isSuccess) {
+      reset();
+      dispatch(setShowJobCreateForm(false));
+    }
+  }, [isSuccess, reset, dispatch]);
 
   const onSubmit = (createData: CreateJobFormValues) => {
     mutate({
@@ -144,6 +154,7 @@ export default function CreateJobForm({
 
   const handleClose = () => {
     dispatch(toogleShowJobCreateForm());
+    reset();
   };
 
   if (!showjobCreateForm) return null;
@@ -156,11 +167,11 @@ export default function CreateJobForm({
           className,
         )}
       >
-        <ToastContainer
+        {/* <ToastContainer
           position="top-right"
           autoClose={3000}
           className="z-20"
-        />
+        /> */}
 
         {isPending && (
           <div className="fixed inset-0 z-[60] flex items-center justify-center bg-white/50">
@@ -297,7 +308,7 @@ export default function CreateJobForm({
                         placeholder="https://company.com/job123"
                         type="text"
                         error={errors.apply_link}
-                        inputClassName="h-[54px] rounded-2xl border border-[#D8E0EE] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8FAFD_100%)] text-black placeholder:text-[#7C8599] shadow-[0_4px_12px_rgba(15,23,42,0.04)]"
+                        inputClassName=" h-[54px] rounded-2xl border border-[#D8E0EE] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8FAFD_100%)] text-black placeholder:text-[#7C8599] shadow-[0_4px_12px_rgba(15,23,42,0.04)]"
                       />
                     </div>
 
@@ -320,7 +331,9 @@ export default function CreateJobForm({
                         }
                         type="text"
                         error={errors.salary_min}
-                        icon={<IndianRupee className="border-r border-[#D8E0EE] pr-1 text-[#5F6C85]" />}
+                        icon={
+                          <IndianRupee className="border-r border-[#D8E0EE] pr-1 text-[#5F6C85]" />
+                        }
                         setValueFn={(v) => (v === "" ? undefined : Number(v))}
                       />
                     </div>
@@ -341,7 +354,9 @@ export default function CreateJobForm({
                         }
                         type="text"
                         error={errors.salary_max}
-                        icon={<IndianRupee className="border-r border-[#D8E0EE] pr-1 text-[#5F6C85]" />}
+                        icon={
+                          <IndianRupee className="border-r border-[#D8E0EE] pr-1 text-[#5F6C85]" />
+                        }
                         setValueFn={(v) => (v === "" ? undefined : Number(v))}
                       />
                     </div>

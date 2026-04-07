@@ -4,7 +4,7 @@ import useCreateSkill from "@/utils/useCreateSkills";
 import useGetSkill from "@/utils/useGetSkill";
 import { Plus, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 export default function AddSkill() {
   const [skills, setSkills] = useState<string[]>([]);

@@ -1,7 +1,7 @@
 import { jobServiceApi } from "@/lib/axios.config";
 import { UpdateJobSchema } from "@/schema/updateJob.validator";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import z from "zod";
 
 type UpdateJobFormValues = z.infer<typeof UpdateJobSchema>;

@@ -7,7 +7,6 @@ import JobSpecification from "@/components/jobDetails/JobSpecification";
 import { Suspense, use, useEffect } from "react";
 import { setJobId } from "@/features/jobId/jobId";
 import useGetJobDetails from "@/utils/useGetJobDetails";
-import { ToastContainer } from "react-toastify";
 import { setAuthJwtToken } from "@/features/authJwtToken/authJwtTokenSlice";
 import TripleDotLoader from "@/components/TripleDotLoader";
 import { setJobDetails } from "@/features/jobDetails/jobDetails";
@@ -78,7 +77,6 @@ export default function Page({
 
   return (
     <div className="jobId-page  text-black bg-[#f1f2f4] h-full flex flex-col px-3">
-      <ToastContainer position="top-right" autoClose={3000} />
       <div className="jobId-page grid grid-cols-[5fr_95fr]  items-center pl-3 md:pl-0">
         <div className="jobId-page hidden sm:block">
           <BackButton />

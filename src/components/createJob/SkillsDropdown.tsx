@@ -14,8 +14,8 @@ import { OptionType } from "./CreateJobForm";
 import { useDebounce } from "@/utils/useDebounce";
 import useGetSkill from "@/utils/useGetSkill";
 import { ChevronDown, X } from "lucide-react";
-import { Bounce, toast, ToastContainer } from "react-toastify";
 import { Skills } from "@/types/JobDetailsType";
+import { toast } from "sonner";
 
 export default function SkillsDropdown<TFormValues extends FieldValues>({
   fieldName,
@@ -92,11 +92,7 @@ export default function SkillsDropdown<TFormValues extends FieldValues>({
 
   const handleSkillSelect = (skill: { id: number; name: string }) => {
     if (skillIdArray.includes(skill.id)) {
-      toast.error("This skill is already selected!", {
-        position: "top-left",
-        autoClose: 3000,
-        theme: "light",
-      });
+      toast.error("This skill is already selected!");
       return;
     }
 
@@ -203,15 +199,6 @@ export default function SkillsDropdown<TFormValues extends FieldValues>({
           {error.message || "This field is required"}
         </p>
       )}
-
-      {/* Toasts */}
-      <ToastContainer
-        position="top-left"
-        autoClose={3000}
-        draggable
-        theme="light"
-        transition={Bounce}
-      />
     </div>
   );
 }

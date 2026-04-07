@@ -5,7 +5,7 @@ import useCreateApplication from "@/utils/useCreateApplication";
 import useGetUser from "@/utils/useGetUser";
 import Image from "next/image";
 import { useEffect } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 type JobDetailsCardProps = {
   jobId: number;
@@ -44,7 +44,6 @@ export default function JobDetailsCard({
   const { isSuccess } = useGetUser(jwtToken);
 
   return (
-
     <div className="components-jobDetails-JobDetailsCard mb-0 w-full rounded-[24px] bg-transparent px-2 py-2 text-black sm:grid sm:grid-cols-[1fr_auto] sm:items-center sm:gap-x-6 md:px-4 md:py-3">
       <div className="grid w-full grid-cols-[74px_1fr] gap-x-4 items-center sm:grid-cols-[auto_1fr] sm:gap-x-6">
         <div className="flex h-[74px] w-[74px] shrink-0 items-center justify-center rounded-[22px] border border-[#EEF2F7] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8FAFC_100%)] p-3 shadow-[0_8px_20px_rgba(15,23,42,0.06)] sm:mt-0 sm:h-[116px] sm:w-[116px] sm:rounded-[28px] sm:p-5 sm:shadow-[-14px_14px_34px_rgba(191,219,254,0.38),0_14px_32px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.95)]">

@@ -4,7 +4,7 @@ import { LogInFormSchema } from "@/schema/logIn.validator";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import z from "zod";
 
 type FormValues = z.infer<typeof LogInFormSchema>;
@@ -23,12 +23,13 @@ const useLogin = () =>{
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.message || "Error occured while logging in");
+        toast.error(error.response?.data?.message || "Error while logging you in");
       } else {
         toast.error("Error occured while logging in");
       }
     },
     onSuccess: (data) => {
+      toast.success("Logged in successfully");
       const jwtToken = data.data;
       localStorage.setItem("AuthJwtToken", String(jwtToken));
       dispatch(setAuthJwtToken(jwtToken));

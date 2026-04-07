@@ -1,6 +1,6 @@
 import { jobServiceApi } from "@/lib/axios.config"
 import { useMutation } from "@tanstack/react-query"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 
 const  useCreateApplication= ()=>{
     return useMutation({
@@ -25,10 +25,10 @@ const  useCreateApplication= ()=>{
             }
         },
         onError: ()=>{
-            // toast.error("Error applying for job ")
+            toast.error("Error applying for job ")
         },
         onSuccess: ()=>{
-            // toast.success("Succesfully applied")
+            toast.success("Succesfully applied")
         }
     })
 }
