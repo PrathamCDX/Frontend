@@ -179,15 +179,22 @@ export default function Dropdown<TFormValues extends FieldValues, TOption>({
         </div>
       </div>
       {isOpen && (
-        <div className="max-h-[20vh] border w-full absolute overflow-y-auto bg-white shadow-lg rounded-md mt-1 z-10">
+        <div className="absolute z-10 mt-2 w-full max-h-60 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
+          {optionArray && optionArray.length === 0 && (
+            <div className="px-4 py-3 text-sm text-gray-500">
+              No results found
+            </div>
+          )}
+
           {optionArray &&
             optionArray.map((option, index) => {
               const label = getOptionLabel(option);
+
               return (
                 <div
-                  onClick={() => handleSelectOption(option)}
-                  className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
                   key={index}
+                  onClick={() => handleSelectOption(option)}
+                  className="mx-2 my-1 rounded-lg px-3 py-2 text-sm text-gray-700 cursor-pointer transition-colors duration-150 hover:bg-gray-100 active:bg-gray-200"
                 >
                   {label}
                 </div>
@@ -195,6 +202,7 @@ export default function Dropdown<TFormValues extends FieldValues, TOption>({
             })}
         </div>
       )}
+
       {error && (
         <p className="text-sm text-red-500 mt-1 ml-1">{error.message}</p>
       )}

@@ -255,6 +255,42 @@ export default function DebouncedDropdown<
         />
       </div>
       {isOpen && (
+        <div className="absolute z-10 mt-2 w-full max-h-60 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
+          {isLoading && (
+            <div className="flex items-center gap-2 px-4 py-3 text-sm text-gray-500">
+              <span className="loading loading-spinner loading-sm text-gray-400"></span>
+              Loading...
+            </div>
+          )}
+
+          {!isLoading && optionArray.length === 0 && (
+            <div className="px-4 py-3 text-sm text-gray-500">
+              No results found
+            </div>
+          )}
+
+          {!isLoading && optionArray.length > 0 && (
+            <ul className="menu menu-sm w-full p-0 bg-white">
+              {optionArray.map((option, index) => {
+                const label = getOptionLabel(option);
+
+                return (
+                  <li key={index}>
+                    <button
+                      type="button"
+                      onClick={() => handleSelectOption(option)}
+                      className="mx-2 my-1 rounded-lg px-3 py-2 text-sm text-gray-700 cursor-pointer transition-colors duration-150 hover:bg-gray-100 active:bg-gray-200"
+                    >
+                      {label}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      )}
+      {/* {isOpen && (
         <div className="max-h-[20vh] border w-full absolute overflow-y-auto bg-white shadow-lg rounded-md mt-1 z-10">
           {isLoading && (
             <div className="px-2 py-1 text-gray-500">Loading...</div>
@@ -276,7 +312,7 @@ export default function DebouncedDropdown<
               );
             })}
         </div>
-      )}
+      )} */}
       {error && (
         <p className="text-sm text-red-500 mt-1 ml-1">{error.message}</p>
       )}
