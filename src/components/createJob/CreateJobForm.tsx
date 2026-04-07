@@ -104,7 +104,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
       salary_min: undefined,
       salary_max: undefined,
       skillIds: [],
-      recruiter_id: 0,
+      recruiter_id: data?.id || 0,
       description: "",
     },
   });
