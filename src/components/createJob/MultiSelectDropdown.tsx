@@ -4,10 +4,10 @@ import { useEffect, useState, useRef } from "react";
 import {
   FieldError,
   FieldValues,
-import { toast } from "sonner";
   UseFormSetValue,
   Merge,
   PathValue,
+  Path,
 } from "react-hook-form";
 import { useDebounce } from "@/utils/useDebounce";
 import { X } from "lucide-react";
@@ -87,7 +87,7 @@ export default function MultiSelectDropdown<
     );
 
     if (isAlreadySelected) {
-      toast.warn("This item is already selected.");
+      toast.error("This item is already selected.");
       return;
     }
     setSelectedOptions((prev) => [...prev, option]);
