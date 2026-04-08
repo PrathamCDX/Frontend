@@ -144,26 +144,13 @@ function Form() {
         /> */}
 
         {/* Full Name */}
-        <div>
-          <div className="relative">
-            <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
-              <User size={20} strokeWidth={2.1} />
-            </span>
-
-            <input
-              {...register("fullName")}
-              type="text"
-              placeholder="Full Name"
-              className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-4 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
-            />
-          </div>
-
-          {errors.fullName?.message && (
-            <p className="mt-2 text-left text-xs text-[#E04B40]">
-              Enter your full name
-            </p>
-          )}
-        </div>
+        <SignupTextInput
+          register={register}
+          fieldName="fullName"
+          placeholder="Full Name"
+          icon={<User size={20} strokeWidth={2.1} />}
+          error={errors.fullName}
+        />
 
         {/* <InputField
           register={register}
@@ -174,26 +161,14 @@ function Form() {
           error={errors.phoneNo}
         /> */}
 
-        <div>
-          <div className="relative">
-            <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
-              <Phone size={20} strokeWidth={2.1} />
-            </span>
-
-            <input
-              {...register("phoneNo")}
-              type="text"
-              placeholder="Phone No."
-              className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-4 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
-            />
-          </div>
-
-          {errors.phoneNo?.message && (
-            <p className="mt-2 text-left text-xs text-[#E04B40]">
-              Enter your phone number
-            </p>
-          )}
-        </div>
+        {/* Phone No. */}
+        <SignupTextInput
+          register={register}
+          fieldName="phoneNo"
+          placeholder="Phone No."
+          icon={<Phone size={20} strokeWidth={2.1} />}
+          error={errors.phoneNo}
+        />
 
         {/* <InputField
           register={register}
@@ -204,26 +179,14 @@ function Form() {
           error={errors.email}
         /> */}
 
-        <div>
-          <div className="relative">
-            <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
-              <Mail size={20} strokeWidth={2.1} />
-            </span>
-
-            <input
-              {...register("email")}
-              type="text"
-              placeholder="Email Address"
-              className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-4 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
-            />
-          </div>
-
-          {errors.email?.message && (
-            <p className="mt-2 text-left text-xs text-[#E04B40]">
-              Enter your email address
-            </p>
-          )}
-        </div>
+        {/* Email Address */}
+        <SignupTextInput
+          register={register}
+          fieldName="email"
+          placeholder="Email Address"
+          icon={<Mail size={20} strokeWidth={2.1} />}
+          error={errors.email}
+        />
 
         {/* <InputField
           register={register}
@@ -234,26 +197,14 @@ function Form() {
           error={errors.graduationYear}
         /> */}
 
-        <div>
-          <div className="relative">
-            <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
-              <Calendar size={20} strokeWidth={2.1} />
-            </span>
-
-            <input
-              {...register("graduationYear")}
-              type="text"
-              placeholder="Graduation Year"
-              className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-4 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
-            />
-          </div>
-
-          {errors.graduationYear?.message && (
-            <p className="mt-2 text-left text-xs text-[#E04B40]">
-              Enter your graduation year
-            </p>
-          )}
-        </div>
+        {/* Graduation Year */}
+        <SignupTextInput
+          register={register}
+          fieldName="graduationYear"
+          placeholder="Graduation Year"
+          icon={<Calendar size={20} strokeWidth={2.1} />}
+          error={errors.graduationYear}
+        />
 
         {/* Fresher options */}
         {/* <DropDownField
@@ -289,26 +240,14 @@ function Form() {
               error={errors.currentCompany}
             /> */}
 
-            <div>
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
-                  <User size={20} strokeWidth={2.1} />
-                </span>
-
-                <input
-                  {...register("currentCompany")}
-                  type="text"
-                  placeholder="Current Company Name"
-                  className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-4 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
-                />
-              </div>
-
-              {errors.currentCompany?.message && (
-                <p className="mt-2 text-left text-xs text-[#E04B40]">
-                  Enter your current company name
-                </p>
-              )}
-            </div>
+            {/* Current Company */}
+            <SignupTextInput
+              register={register}
+              fieldName="currentCompany"
+              placeholder="Current Company Name"
+              icon={<Building2 size={20} strokeWidth={2.1} />}
+              error={errors.currentCompany}
+            />
 
             <SignupDropdown
               error={errors.currentCtc}
