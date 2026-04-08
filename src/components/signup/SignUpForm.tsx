@@ -1,7 +1,17 @@
 "use client";
 
-import InputField from "../InputField";
-import { FormProvider, useForm } from "react-hook-form";
+// import InputField from "../InputField";
+import {
+  FieldError,
+  FieldErrors,
+  FieldValues,
+  FormProvider,
+  Path,
+  PathValue,
+  useForm,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 import {
   Eye,
   EyeOff,
@@ -14,8 +24,9 @@ import {
   School,
   IndianRupee,
   CodeXml,
+  ChevronDown,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import z from "zod";
@@ -27,42 +38,47 @@ import {
   domainOptions,
   fresherOptions,
 } from "@/utils/signup.utils";
-import Dropdown from "../createJob/Dropdown";
 
 type FormValues = z.infer<typeof SignUpFormSchema>;
 
 export default function SignUpForm() {
   const router = useRouter();
+
   return (
-    <div className="relative w-full h-full ">
-      <div className=" top-0 left-0 p-6 pt-3">
+    <div className="relative w-full h-full p-3 flex flex-col">
+      <div className="flex justify-center px-6 pt-12">
         <Image
           src="/WorkR-Full-Logo2.png"
           alt="photo"
           width={80}
           height={80}
+          className="h-auto w-[138px]"
           objectFit="cover"
           priority
         />
       </div>
-      <div className="flex items-center justify-center mt-[2vh]">
-        <div className=" w-[100%] sm:w-[60%] text-center mt-[4vh]">
-          <div className="text-lg font-semibold">Create Your Account</div>
-          <div className="text-sm px-4">
-            Welcome to Workr! Let’s get started by creating your Account
-          </div>
+      <div className="flex items-center justify-center mt-[2vh] px-6">
+        <div className=" w-full max-w-[440px] text-center">
+          <h1 className="text-[27px] font-semibold tracking-[-0.025em] text-[#263243] sm:text-[28px]">
+            Create Your Account
+          </h1>
+
+          <p className="mt-2 text-[15px] font-normal text-[#66788C]">
+            {"Welcome to Workr! Let's get started by creating your Account"}
+          </p>
+
           <Form />
         </div>
       </div>
-      <div className=" bottom-0 flex items-center justify-center text-sm">
-        <div>Already have an account? </div>
+      <div className="pb-9 mt-[70px] text-center text-[15px] text-[#445366]">
+        <span>Already have an account? </span>
         <button
-          className="text-[#467FA3] hover:cursor-pointer"
+          className="font-medium text-[#1681D8] transition hover:cursor-pointer hover:text-[#0D63AA]"
           onClick={() => {
             router.push("/login");
           }}
         >
-          Log in
+          Login
         </button>
       </div>
 
@@ -114,45 +130,130 @@ function Form() {
     <FormProvider {...methods}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="max-w-md mx-auto space-y-2 py-6 rounded-lg font-poppins text-sm px-8"
+        className="max-w-md mx-auto space-y-3 py-6 rounded-lg font-poppins text-sm px-2"
       >
         {/* {isError ? (<ErrorPopup message="Error while Siging up" />):(<></>)} */}
 
-        <InputField
+        {/* <InputField
           register={register}
           fieldName="fullName"
           placeholder="Full Name"
           type="text"
           icon={<User size={20} />}
           error={errors.fullName}
-        />
+        /> */}
 
-        <InputField
+        {/* Full Name */}
+        <div>
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
+              <User size={20} strokeWidth={2.1} />
+            </span>
+
+            <input
+              {...register("fullName")}
+              type="text"
+              placeholder="Full Name"
+              className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-4 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
+            />
+          </div>
+
+          {errors.fullName?.message && (
+            <p className="mt-2 text-left text-xs text-[#E04B40]">
+              Enter your full name
+            </p>
+          )}
+        </div>
+
+        {/* <InputField
           register={register}
           fieldName="phoneNo"
           placeholder="Phone No."
           type="text"
           icon={<Phone size={20} />}
           error={errors.phoneNo}
-        />
+        /> */}
 
-        <InputField
+        <div>
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
+              <Phone size={20} strokeWidth={2.1} />
+            </span>
+
+            <input
+              {...register("phoneNo")}
+              type="text"
+              placeholder="Phone No."
+              className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-4 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
+            />
+          </div>
+
+          {errors.phoneNo?.message && (
+            <p className="mt-2 text-left text-xs text-[#E04B40]">
+              Enter your phone number
+            </p>
+          )}
+        </div>
+
+        {/* <InputField
           register={register}
           fieldName="email"
           placeholder="Email Address"
           type="email"
           icon={<Mail size={20} />}
           error={errors.email}
-        />
+        /> */}
 
-        <InputField
+        <div>
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
+              <Mail size={20} strokeWidth={2.1} />
+            </span>
+
+            <input
+              {...register("email")}
+              type="text"
+              placeholder="Email Address"
+              className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-4 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
+            />
+          </div>
+
+          {errors.email?.message && (
+            <p className="mt-2 text-left text-xs text-[#E04B40]">
+              Enter your email address
+            </p>
+          )}
+        </div>
+
+        {/* <InputField
           register={register}
           fieldName="graduationYear"
           placeholder="Graduation Year"
           type="number"
           icon={<Calendar size={20} />}
           error={errors.graduationYear}
-        />
+        /> */}
+
+        <div>
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
+              <Calendar size={20} strokeWidth={2.1} />
+            </span>
+
+            <input
+              {...register("graduationYear")}
+              type="text"
+              placeholder="Graduation Year"
+              className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-4 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
+            />
+          </div>
+
+          {errors.graduationYear?.message && (
+            <p className="mt-2 text-left text-xs text-[#E04B40]">
+              Enter your graduation year
+            </p>
+          )}
+        </div>
 
         {/* Fresher options */}
         {/* <DropDownField
@@ -161,7 +262,7 @@ function Form() {
           defaultValue="Select Student or Working Professional"
         /> */}
 
-        <Dropdown
+        <SignupDropdown
           error={errors.details}
           fieldName="details"
           optionArray={fresherOptions}
@@ -179,16 +280,37 @@ function Form() {
         {watch("details") === "Working Professional" && (
           <>
             {/* Current Company */}
-            <InputField
+            {/* <InputField
               register={register}
               fieldName="currentCompany"
               placeholder="Current Company"
               type="text"
               icon={<Building2 size={20} />}
               error={errors.currentCompany}
-            />
+            /> */}
 
-            <Dropdown
+            <div>
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
+                  <User size={20} strokeWidth={2.1} />
+                </span>
+
+                <input
+                  {...register("currentCompany")}
+                  type="text"
+                  placeholder="Current Company Name"
+                  className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-4 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
+                />
+              </div>
+
+              {errors.currentCompany?.message && (
+                <p className="mt-2 text-left text-xs text-[#E04B40]">
+                  Enter your current company name
+                </p>
+              )}
+            </div>
+
+            <SignupDropdown
               error={errors.currentCtc}
               fieldName="currentCtc"
               optionArray={ctcOptions}
@@ -209,7 +331,7 @@ function Form() {
           defaultValue="Select Domain"
         /> */}
 
-        <Dropdown
+        <SignupDropdown
           error={errors.domain}
           fieldName="domain"
           optionArray={domainOptions}
@@ -221,7 +343,7 @@ function Form() {
           icon={<CodeXml size={20} />}
         />
 
-        <InputField
+        {/* <InputField
           register={register}
           fieldName="password"
           placeholder="Password"
@@ -236,9 +358,44 @@ function Form() {
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </span>
           }
-        />
+        /> */}
+        <div>
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
+              <Lock size={20} strokeWidth={2.1} />
+            </span>
 
-        <InputField
+            <input
+              {...register("password")}
+              onChange={(e) => {
+                setValue("password", e.target.value, { shouldValidate: true });
+              }}
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-14 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
+            />
+
+            <button
+              type="button"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#243446] hover:cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <EyeOff size={21} strokeWidth={2.1} />
+              ) : (
+                <Eye size={21} strokeWidth={2.1} />
+              )}
+            </button>
+          </div>
+
+          {errors.password?.message && (
+            <p className="mt-2 text-left text-xs text-[#E04B40]">
+              {errors.password.message}
+            </p>
+          )}
+        </div>
+
+        {/* <InputField
           register={register}
           fieldName="confirmPassword"
           placeholder="Confirm Password"
@@ -254,7 +411,45 @@ function Form() {
             </span>
           }
           validate={(value) => value === password}
-        />
+        /> */}
+
+        <div>
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
+              <Lock size={20} strokeWidth={2.1} />
+            </span>
+
+            <input
+              {...register("confirmPassword")}
+              onChange={(e) => {
+                setValue("confirmPassword", e.target.value, {
+                  shouldValidate: true,
+                });
+              }}
+              type={showConfirm ? "text" : "password"}
+              placeholder="Confirm Password"
+              className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-14 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
+            />
+
+            <button
+              type="button"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#243446] hover:cursor-pointer"
+              onClick={() => setShowConfirm(!showConfirm)}
+            >
+              {showConfirm ? (
+                <EyeOff size={21} strokeWidth={2.1} />
+              ) : (
+                <Eye size={21} strokeWidth={2.1} />
+              )}
+            </button>
+          </div>
+
+          {errors.confirmPassword?.message && (
+            <p className="mt-2 text-left text-xs text-[#E04B40]">
+              {errors.confirmPassword.message}
+            </p>
+          )}
+        </div>
 
         <button
           type="submit"
@@ -265,19 +460,218 @@ function Form() {
             !!errors.fullName ||
             !!errors.phoneNo
           }
-          className={` border border-[#F0F0F0] w-full py-1.5 rounded-md font-bold ${
+          className={` mt-1 h-[54px] w-full rounded-[14px] text-[17px] font-semibold text-white transition ${
             errors.confirmPassword ||
             errors.password ||
             errors.email ||
             errors.fullName ||
             errors.phoneNo
-              ? "cursor-not-allowed text-[#DDDDDD] bg-[#F0F0F0]"
-              : "bg-[#3177a7] cursor-pointer hover:bg-[#7ba1d0]"
+              ? "cursor-not-allowed bg-[#C8D6E4]"
+              : "cursor-pointer bg-[linear-gradient(90deg,#0F67B8_0%,#1681D8_55%,#0D72CC_100%)] shadow-[0_10px_24px_rgba(22,129,216,0.24)] hover:brightness-[1.03]"
           }`}
         >
           {isPending || isSuccess ? "Signing Up" : "Sign up"}
         </button>
       </form>
     </FormProvider>
+  );
+}
+
+export interface DropdownProps<TFormValues extends FieldValues, TOption> {
+  optionArray: TOption[] | undefined;
+  fieldName: Path<TFormValues>;
+  setValue: UseFormSetValue<TFormValues>;
+  error: FieldError | undefined;
+  placeholder: string;
+  getOptionLabel: (option: TOption) => string;
+  getOptionValue: (
+    option: TOption,
+  ) => PathValue<TFormValues, Path<TFormValues>>;
+  iconUrl?: string;
+  icon?: React.ReactNode;
+  fieldValue?: string;
+  resetOn?: boolean;
+  inputClassName?: string;
+}
+
+function SignupDropdown<TFormValues extends FieldValues, TOption>({
+  optionArray,
+  fieldName,
+  setValue,
+  error,
+  placeholder,
+  getOptionLabel,
+  getOptionValue,
+  fieldValue,
+  iconUrl,
+  icon,
+  resetOn = false,
+  inputClassName = "",
+}: DropdownProps<TFormValues, TOption>) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedLabel, setSelectedLabel] = useState<string | null>(
+    fieldValue || null,
+  );
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (resetOn) {
+      setSelectedLabel(null);
+    }
+  }, [resetOn]);
+
+  useEffect(() => {
+    if (fieldValue) {
+      setSelectedLabel(fieldValue);
+    }
+  }, [fieldValue]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleSelectOption = (option: TOption) => {
+    const value = getOptionValue(option);
+    const label = getOptionLabel(option);
+
+    setValue(fieldName, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+
+    setSelectedLabel(label);
+    setIsOpen(false);
+  };
+
+  const hasLeftIcon = !!iconUrl || !!icon;
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen((prev) => !prev)}
+        className={`flex h-[58px] cursor-pointer w-full items-center rounded-[18px] border bg-white text-left transition outline-none ${
+          error
+            ? "border-red-300 focus:ring-2 focus:ring-red-100"
+            : "border-[#D6DBE4] focus:ring-2 focus:ring-[#DCE9FF]"
+        } ${inputClassName}`}
+      >
+        {hasLeftIcon && (
+          <div className="ml-4 flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-[#EAF3FF]">
+            {iconUrl ? (
+              <Image
+                alt=""
+                src={iconUrl}
+                width={18}
+                height={18}
+                className="h-[18px] w-[18px] object-contain"
+              />
+            ) : (
+              <span className="flex items-center justify-center text-[#2B6DEB]">
+                {icon}
+              </span>
+            )}
+          </div>
+        )}
+
+        <div
+          className={`flex w-full items-center justify-between ${
+            hasLeftIcon ? "pl-3" : "pl-4"
+          } pr-4`}
+        >
+          <span
+            className={`truncate text-[1rem]  ${
+              selectedLabel ? "text-[#111827]" : "text-[#98A2B3]"
+            }`}
+          >
+            {selectedLabel || placeholder}
+          </span>
+
+          <ChevronDown
+            className={`h-[20px] w-[20px] shrink-0 text-[#111827] transition-transform duration-200 ${
+              isOpen ? "rotate-180" : ""
+            }`}
+            strokeWidth={2.2}
+          />
+        </div>
+      </button>
+
+      {isOpen && (
+        <div className="absolute z-20 mt-2 max-h-60 w-full overflow-y-auto rounded-2xl border border-[#E5E7EB] bg-white p-2 shadow-[0_12px_30px_rgba(15,23,42,0.10)]">
+          {optionArray && optionArray.length === 0 && (
+            <div className="px-3 py-3 text-sm font-medium text-[#98A2B3]">
+              No results found
+            </div>
+          )}
+
+          {optionArray?.map((option, index) => {
+            const label = getOptionLabel(option);
+
+            return (
+              <button
+                type="button"
+                key={index}
+                onClick={() => handleSelectOption(option)}
+                className="block w-full cursor-pointer rounded-xl px-3 py-3 text-left text-[0.98rem] font-medium text-[#374151] transition hover:bg-[#F3F6FB]"
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {error && (
+        <p className="mt-2 text-left text-xs text-[#E04B40]">{error.message}</p>
+      )}
+    </div>
+  );
+}
+
+function SignupTextInput<T extends FieldValues>({
+  register,
+  error,
+  fieldName,
+  placeholder,
+  icon,
+}: {
+  register: UseFormRegister<T>;
+  error: FieldError | undefined;
+  fieldName: Path<T>;
+  placeholder: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <div>
+      <div className="relative">
+        <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
+          {/* <User size={20} strokeWidth={2.1} /> */}
+          {icon}
+        </span>
+
+        <input
+          {...register(fieldName)}
+          type="text"
+          placeholder={placeholder}
+          className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-4 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
+        />
+      </div>
+
+      {error && error?.message && (
+        <p className="mt-2 text-left text-xs text-[#E04B40]">{error.message}</p>
+      )}
+    </div>
   );
 }
