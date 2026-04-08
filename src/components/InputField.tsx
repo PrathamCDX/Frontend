@@ -1,7 +1,6 @@
 import { InputFieldProps } from "@/types/InputFieldProps";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
-// import { useEffect, useState } from "react";
 import { FieldValues } from "react-hook-form";
 
 export default function InputField<T extends FieldValues>({
@@ -15,65 +14,68 @@ export default function InputField<T extends FieldValues>({
   error,
   className = "",
   setValueFn,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   fieldValue,
   iconUrl,
   disabled,
   onChangeFn,
   inputClassName,
 }: InputFieldProps<T>) {
-  // const [inputValue, setInputValue] = useState<string | undefined>(
-  //   fieldValue ?? undefined
-  // );
-
-  // useEffect(()=>{
-  //   setInputValue(fieldValue ?? "")
-  // }, [fieldValue])
+  const hasLeftIcon = !!icon || !!iconUrl;
 
   return (
     <div>
       <div className={cn("relative w-full", className)}>
-        {icon && (
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8E8E8E] ">
-            {icon}
+        {hasLeftIcon && (
+          <div className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#EAF3FF]">
+              {iconUrl ? (
+                <Image
+                  alt=""
+                  src={iconUrl}
+                  width={18}
+                  height={18}
+                  className="h-[18px] w-[18px] object-contain"
+                />
+              ) : (
+                <span className="flex items-center justify-center text-[#2B6DEB]">
+                  {icon}
+                </span>
+              )}
+            </div>
           </div>
         )}
 
-        {iconUrl && (
-          <Image
-            alt=""
-            src={iconUrl}
-            width={20}
-            height={20}
-            className="h-8 w-8 absolute left-2 top-1/2 -translate-y-1/2"
-          />
-        )}
         <input
           {...register(fieldName, {
             required: true,
-            validate: validate,
+            validate,
             setValueAs: setValueFn,
           })}
           type={type}
           placeholder={placeholder}
-          // value={inputValue ?? ""}
+          defaultValue={fieldValue ?? ""}
           onChange={(e) => {
             register(fieldName).onChange(e);
             onChangeFn?.(e);
-            // setInputValue(e.target.value);
           }}
           aria-invalid={!!error}
-          className={
-            `w-full pl-10 pr-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              error ? "border-red-500" : "border-[#E0E0E0]"
-            }` + inputClassName
-          }
-          disabled={disabled ? disabled : false}
+          disabled={disabled ?? false}
+          className={cn(
+            "h-[58px] w-full rounded-[14px] border bg-white pr-4 text-[1rem] font-medium text-[#111827] outline-none transition placeholder:font-medium placeholder:text-[#98A2B3]",
+            hasLeftIcon ? "pl-16" : "pl-4",
+            error
+              ? "border-red-300 focus:ring-2 focus:ring-red-100"
+              : "border-[#D6DBE4] focus:border-[#B8D1FF] focus:ring-2 focus:ring-[#DCE9FF]",
+            disabled ? "cursor-not-allowed opacity-70" : "",
+            inputClassName,
+          )}
         />
+
         {other}
       </div>
+
       {error && (
-        <p className="text-sm text-red-500 mt-1 ml-1">
+        <p className="ml-1 mt-2 text-sm font-medium text-red-500">
           {error.message || "This field is required"}
         </p>
       )}

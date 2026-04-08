@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React, { useEffect, useMemo, useState, DragEvent } from "react";
 import { FieldError } from "react-hook-form";
+import { CloudUpload } from "lucide-react";
 
 interface DragAndDropFileProps {
   file: File | null;
@@ -33,7 +34,7 @@ export default function DragAndDropFileBlob({
     onChangeFn?.();
   };
 
-  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+  const handleDrop = (e: DragEvent<HTMLLabelElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
@@ -44,46 +45,89 @@ export default function DragAndDropFileBlob({
     }
   };
 
-  return (
-    <div
-      className={`components-createCompany-DragAndDropFile drag-drop-container justify-center ${
-        dragActive ? "active" : ""
-      }`}
-      onDragEnter={() => setDragActive(true)}
-      onDragOver={(e) => e.preventDefault()}
-      onDragLeave={() => setDragActive(false)}
-      onDrop={handleDrop}
-    >
-      <input
-        type="file"
-        onChange={(e) => {
-          const selectedFile = e.target.files?.[0] ?? null;
-          if (selectedFile) {
-            handleFileUpload(selectedFile);
-          }
-        }}
-        className="components-createCompany-DragAndDropFile border w-full rounded-lg p-4 hover:cursor-pointer"
-        id="upload-input"
-      />
+  const initials = file?.name ? file.name.charAt(0).toUpperCase() : "CL";
 
-      {file && previewUrl && (
-        <div className="mt-2">
-          <Image
-            src={previewUrl}
-            height={1000}
-            width={1000}
-            alt="preview"
-            className="h-20 w-20"
-          />
-          <p className="mt-1 text-sm text-gray-600">{file.name}</p>
+  return (
+    <div className="mt-5">
+      <label
+        htmlFor="upload-input"
+        className={`flex h-[190px] w-full cursor-pointer flex-col items-center justify-center rounded-[20px] border-2 border-dashed px-5 text-center transition ${
+          dragActive
+            ? "border-[#8EB6FF] bg-[#F4F8FF]"
+            : "border-[#B8D1FF] bg-[#f5f9fd] hover:border-[#8EB6FF] hover:bg-[#F4F8FF]"
+        }`}
+        onDragEnter={() => setDragActive(true)}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragActive(true);
+        }}
+        onDragLeave={() => setDragActive(false)}
+        onDrop={handleDrop}
+      >
+        <input
+          id="upload-input"
+          type="file"
+          accept=".png,.jpg,.jpeg"
+          className="hidden"
+          onChange={(e) => {
+            const selectedFile = e.target.files?.[0] ?? null;
+            if (selectedFile) {
+              handleFileUpload(selectedFile);
+            }
+          }}
+        />
+
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#DCE9FF]">
+          <CloudUpload color="#2157C9" size={26} />
         </div>
-      )}
+
+        <h5 className="mt-3 text-[0.98rem] font-semibold text-[#2157C9]">
+          Drag & drop or click to upload
+        </h5>
+
+        <p className="mt-1.5 text-[0.9rem] font-medium text-[#7C8798]">
+          PNG, JPG or JPEG (max 2MB)
+        </p>
+      </label>
 
       {error && (
-        <p className="text-sm text-red-500 mt-1 ml-1">
-          {error.message}
-        </p>
+        <p className="mt-2 ml-1 text-sm text-red-500">{error.message}</p>
       )}
+
+      <div className="mt-5 flex items-center gap-3">
+        <div className="h-px flex-1 bg-[#D6DBE4]" />
+        <span className="text-[0.95rem] font-medium text-[#7C8798]">
+          Preview
+        </span>
+        <div className="h-px flex-1 bg-[#D6DBE4]" />
+      </div>
+
+      <div className="mt-4 flex items-center gap-3">
+        <div className="flex h-[70px] w-[70px] items-center justify-center overflow-hidden rounded-[18px] bg-[#DCE9FF]">
+          {file && previewUrl ? (
+            <Image
+              src={previewUrl}
+              alt="preview"
+              width={70}
+              height={70}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <span className="text-[1.7rem] font-semibold text-[#2B6DEB]">
+              {initials}
+            </span>
+          )}
+        </div>
+
+        <div className="min-w-0">
+          <h5 className="text-[1rem] font-semibold text-[#111827]">
+            Company logo
+          </h5>
+          <p className="mt-1 truncate text-[0.92rem] font-medium leading-snug text-[#8A94A6]">
+            {file ? file.name : "Preview will appear here"}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

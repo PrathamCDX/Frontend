@@ -134,9 +134,8 @@ export default function CreateJobForm({ className }: { className?: string }) {
   useEffect(() => {
     if (isSuccess) {
       reset();
-      dispatch(setShowJobCreateForm(false));
     }
-  }, [isSuccess, reset, dispatch]);
+  }, [isSuccess, reset]);
 
   const onSubmit = (createData: CreateJobFormValues) => {
     mutate({
@@ -234,6 +233,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
                         useQueryFn={useGetCompany}
                         getOptionLabel={(company) => company.name}
                         getOptionValue={(company) => company.id}
+                        inputTerm="company name"
                       />
                     </div>
 
@@ -265,6 +265,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
                         useQueryFn={useGetJobTitle}
                         getOptionLabel={(jobTitle) => jobTitle.name}
                         getOptionValue={(jobTitle) => jobTitle.id}
+                        inputTerm="job title"
                       />
                     </div>
 
@@ -296,6 +297,7 @@ export default function CreateJobForm({ className }: { className?: string }) {
                         useQueryFn={useGetCity}
                         getOptionLabel={(city) => `${city.name}`}
                         getOptionValue={(city) => city.id}
+                        inputTerm="location"
                       />
                     </div>
 

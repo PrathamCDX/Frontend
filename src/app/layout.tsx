@@ -56,7 +56,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${inter.variable} ${plusJakartaSans.variable} antialiased bg-[#F5F5F5] w-full h-full`}
       >
-        <Toaster richColors position="top-right" />
+        <Toaster richColors position="top-right" theme="light" />
         {/* <ToastContainer position="top-right" autoClose={3000} /> */}
         <StoreProvider>
           <QueryProvider>{children}</QueryProvider>

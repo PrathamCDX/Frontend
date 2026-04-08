@@ -93,10 +93,10 @@ export default function DashboardLayout({
       show: showAddTitleForm,
       element: <AddTitleForm />,
     },
-    {
-      show: showCreateCompanyForm,
-      element: <CreateCompanyForm />,
-    },
+    // {
+    //   show: showCreateCompanyForm,
+    //   element: <CreateCompanyForm />,
+    // },
     {
       show: showAddSkillsForm,
       element: <AddSkill />,
@@ -287,6 +287,7 @@ export default function DashboardLayout({
       )}
 
       <CreateJobForm />
+      {showCreateCompanyForm &&<CreateCompanyForm />}
 
       <div
         className={`dashboard-layout absolute w-[100%] h-[100%] sm:hidden  border top-0 left-0 bg-black opacity-35 z-10 ${
@@ -388,9 +389,15 @@ export default function DashboardLayout({
   );
 }
 
+// const Wrapper = ({ children }: { children: React.ReactNode }) => (
+//   <div className="shadow-gray-500 border border-gray-700 dashboard-layout hidden sm:block sm:absolute top-[10%] right-[10%] rounded-lg shadow-lg px-10 hide-scrollbar justify-center z-20 h-[calc(100vh-20%)] w-full sm:w-[79%] bg-[#F5F5F5] overflow-y-auto">
+//     <div className="dashboard-layout w-full min-h-full">{children}</div>
+//   </div>
+// );
+
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="shadow-gray-500 border border-gray-700 dashboard-layout hidden sm:block sm:absolute top-[10%] right-[10%] rounded-lg shadow-lg px-10 hide-scrollbar justify-center z-20 h-[calc(100vh-20%)] w-full sm:w-[79%] bg-[#F5F5F5] overflow-y-auto">
-    <div className="dashboard-layout w-full min-h-full">{children}</div>
+  <div className="hidden sm:block absolute backdrop-blur-md left-1/2 top-1/2 z-20 h-[90vh] w-[90%] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-lg border border-gray-300 bg-white shadow-lg shadow-gray-400 hide-scrollbar">
+    <div className="dashboard-layout w-full h-full">{children}</div>
   </div>
 );
 

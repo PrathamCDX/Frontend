@@ -1,104 +1,3 @@
-// 'use client' ;
-
-// import { CreateJobFormSchema } from "@/schema/createJob.validator";
-// import { useDebounce } from "@/utils/useDebounce";
-// import { useEffect, useState } from "react";
-// import { FieldError, FieldValues, Path, UseFormSetValue } from "react-hook-form";
-// import { OptionType } from "./createJobForm";
-// import { ChevronDown } from "lucide-react";
-// import z from "zod";
-
-// // type CreateJobFormValues = z.infer<typeof CreateJobFormSchema>;
-
-// export default function DebouncedDropdown<T extends FieldValues>({
-//   placeholder,
-//   jwtToken,
-//   fieldName,
-//   setValue,
-//   error,
-//   useQueryFn,
-//   fieldValue,
-// }: {
-//   placeholder: string;
-//   jwtToken: string | null;
-//   fieldName: Path<T>;
-//   setValue: UseFormSetValue<T>;
-//   error: FieldError | undefined;
-//   fieldValue?: string ;
-//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   useQueryFn: any;
-// }) {
-//   const [toogle, setToogle] = useState(false);
-//   // const [isEmpty, setIsEmpty] = useState<string | null>(null);
-//   const [optionArray, setOptionArray] = useState<OptionType[]>();
-//   const [partialName, setPartialName] = useState<string>();
-//   const [inputValue, setInputValue] = useState(fieldValue || "");
-//   const debouncedCity = useDebounce(partialName, 400);
-
-//   const { data } = useQueryFn(jwtToken, debouncedCity);
-
-//   useEffect(() => {
-//     if (data) {
-//       setOptionArray(data);
-//     }
-//   }, [debouncedCity, data]);
-
-//   return (
-//     <div className="relative ">
-//       <div
-//         className="flex items-center h-[42px] justify-between pr-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//         onClick={() => {
-//           setToogle((prev) => {
-//             return !prev;
-//           });
-//         }}
-//       >
-//         <input
-//           className="w-full h-full pl-10 pr-3 py-2"
-//           value={inputValue}
-//           onChange={(e) => {
-//             setInputValue(e.target.value);
-//             setPartialName(e.target.value);
-//           }}
-//           type="text"
-//           placeholder={placeholder ? placeholder : ""}
-//         ></input>
-//         <ChevronDown width={30} />
-//       </div>
-//       {toogle ? (
-//         <div className="h-[20vh] border w-full absolute overflow-y-scroll bg-[#F5F5F5] z-10 ">
-//           {optionArray &&
-//             optionArray.map((option) => {
-//               return (
-//                 <div
-//                   onClick={() => {
-//                     setValue(fieldName, option.id);
-//                     // setIsEmpty(option.name);
-//                     setInputValue(option.name);
-//                     setToogle((prev) => {
-//                       return !prev;
-//                     });
-//                   }}
-//                   className="px-2 py-1"
-//                   key={option.id}
-//                 >
-//                   {option.name}
-//                 </div>
-//               );
-//             })}
-//         </div>
-//       ) : (
-//         <></>
-//       )}
-//       {error && (
-//         <p className="text-sm text-red-500 mt-1 ml-1">
-//           {error.message || "This field is required"}
-//         </p>
-//       )}
-//     </div>
-//   );
-// }
-
 "use client";
 
 import { useDebounce } from "@/utils/useDebounce";
@@ -110,8 +9,9 @@ import {
   UseFormSetValue,
   PathValue,
 } from "react-hook-form";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, LoaderCircle } from "lucide-react";
 import Image from "next/image";
+import React from "react";
 
 export interface DebouncedDropdownProps<
   TFormValues extends FieldValues,
@@ -135,10 +35,12 @@ export interface DebouncedDropdownProps<
     option: TQueryData,
   ) => PathValue<TFormValues, Path<TFormValues>>;
   iconUrl?: string;
+  icon?: React.ReactNode;
   useTextValue?: boolean;
   disabled?: boolean;
   resetOn?: boolean;
   inputClassName?: string;
+  inputTerm?: string;
 }
 
 export default function DebouncedDropdown<
@@ -155,10 +57,12 @@ export default function DebouncedDropdown<
   getOptionValue,
   fieldValue,
   iconUrl,
+  icon,
   inputClassName = "",
   useTextValue = false,
   disabled = false,
   resetOn = false,
+  inputTerm,
 }: DebouncedDropdownProps<TFormValues, TQueryData>) {
   const [isOpen, setIsOpen] = useState(false);
   const [optionArray, setOptionArray] = useState<TQueryData[]>([]);
@@ -172,6 +76,8 @@ export default function DebouncedDropdown<
   useEffect(() => {
     if (resetOn) {
       setInputValue("");
+      setSearchTerm("");
+      setOptionArray([]);
     }
   }, [resetOn]);
 
@@ -184,6 +90,8 @@ export default function DebouncedDropdown<
   useEffect(() => {
     if (data) {
       setOptionArray(data);
+    } else {
+      setOptionArray([]);
     }
   }, [data]);
 
@@ -196,6 +104,7 @@ export default function DebouncedDropdown<
         setIsOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -205,42 +114,67 @@ export default function DebouncedDropdown<
   const handleSelectOption = (option: TQueryData) => {
     const valueToSet = getOptionValue(option);
     const label = getOptionLabel(option);
+
     setValue(fieldName, valueToSet, {
       shouldValidate: true,
       shouldDirty: true,
     });
+
     setInputValue(label);
+    setSearchTerm(label);
     setIsOpen(false);
   };
+
+  const hasLeftIcon = !!iconUrl || !!icon;
 
   return (
     <div className="relative w-full" ref={dropdownRef}>
       <div
-        className={
-          "flex items-center h-[42px] justify-between pr-3 w-full border   border-gray-300 rounded-md " +
-          inputClassName
-        }
-        onClick={() => setIsOpen((prev) => !prev)}
+        className={`flex h-[58px] w-full items-center rounded-[14px] border bg-white transition ${
+          error
+            ? "border-red-300 focus-within:ring-2 focus-within:ring-red-100"
+            : "border-[#D6DBE4] focus-within:ring-2 focus-within:ring-[#DCE9FF]"
+        } ${disabled ? "cursor-not-allowed opacity-70" : "cursor-text"} ${inputClassName}`}
+        onClick={() => {
+          if (!disabled) setIsOpen(true);
+        }}
       >
-        {iconUrl && (
-          <Image
-            alt=""
-            src={iconUrl}
-            width={20}
-            height={20}
-            className="h-8 w-8 ml-2"
-          />
+        {hasLeftIcon && (
+          <div className="ml-4 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#EAF3FF]">
+            {iconUrl ? (
+              <Image
+                alt=""
+                src={iconUrl}
+                width={18}
+                height={18}
+                className="h-[18px] w-[18px] object-contain"
+              />
+            ) : (
+              <span className="flex items-center justify-center text-[#2B6DEB]">
+                {icon}
+              </span>
+            )}
+          </div>
         )}
+
         <input
-          className="w-full h-full pl-3 text-black pr-3 py-2 bg-transparent focus:outline-none border-none placeholder:text-[#7C8599]"
+          className={`h-full w-full bg-transparent pr-3 text-[1rem] font-medium text-[#111827] outline-none placeholder:font-medium placeholder:text-[#98A2B3] ${
+            hasLeftIcon ? "pl-3" : "pl-4"
+          }`}
           value={inputValue}
           onChange={(e) => {
+            const value = e.target.value;
+
             if (useTextValue) {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              setValue(fieldName, e.target.value as any);
+              setValue(fieldName, value as PathValue<TFormValues, Path<TFormValues>>, {
+                shouldValidate: true,
+                shouldDirty: true,
+              });
             }
-            setInputValue(e.target.value);
-            setSearchTerm(e.target.value);
+
+            setInputValue(value);
+            setSearchTerm(value);
+
             if (!isOpen) {
               setIsOpen(true);
             }
@@ -249,72 +183,64 @@ export default function DebouncedDropdown<
           placeholder={placeholder || ""}
           disabled={disabled}
         />
-        <ChevronDown
-          width={20}
-          className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-        />
+
+        <div className="mr-4 flex shrink-0 items-center justify-center">
+          {isLoading ? (
+            <LoaderCircle
+              className="h-[18px] w-[18px] animate-spin text-[#94A3B8]"
+              strokeWidth={2.2}
+            />
+          ) : (
+            <ChevronDown
+              className={`h-[20px] w-[20px] text-[#111827] transition-transform duration-200 ${
+                isOpen ? "rotate-180" : ""
+              }`}
+              strokeWidth={2.2}
+            />
+          )}
+        </div>
       </div>
+
       {isOpen && (
-        <div className="absolute z-10 mt-2 w-full max-h-60 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
+        <div className="absolute z-20 mt-2 max-h-60 w-full overflow-y-auto rounded-2xl border border-[#E5E7EB] bg-white p-2 shadow-[0_12px_30px_rgba(15,23,42,0.10)]">
           {isLoading && (
-            <div className="flex items-center gap-2 px-4 py-3 text-sm text-gray-500">
-              <span className="loading loading-spinner loading-sm text-gray-400"></span>
+            <div className="flex items-center gap-2 px-3 py-3 text-sm font-medium text-[#98A2B3]">
+              <LoaderCircle className="h-4 w-4 animate-spin" />
               Loading...
             </div>
           )}
 
           {!isLoading && optionArray.length === 0 && (
-            <div className="px-4 py-3 text-sm text-gray-500">
-              No results found
+            <div className="px-3 py-3 text-sm font-medium text-[#98A2B3]">
+              Search for {inputTerm || "something"} to see results
             </div>
           )}
 
           {!isLoading && optionArray.length > 0 && (
-            <ul className="menu menu-sm w-full p-0 bg-white">
+            <div className="space-y-1">
               {optionArray.map((option, index) => {
                 const label = getOptionLabel(option);
 
                 return (
-                  <li key={index}>
-                    <button
-                      type="button"
-                      onClick={() => handleSelectOption(option)}
-                      className="mx-2 my-1 rounded-lg px-3 py-2 text-sm text-gray-700 cursor-pointer transition-colors duration-150 hover:bg-gray-100 active:bg-gray-200"
-                    >
-                      {label}
-                    </button>
-                  </li>
+                  <button
+                    type="button"
+                    key={index}
+                    onClick={() => handleSelectOption(option)}
+                    className="block w-full cursor-pointer rounded-xl px-3 py-3 text-left text-[0.98rem] font-medium text-[#374151] transition hover:bg-[#F3F6FB]"
+                  >
+                    {label}
+                  </button>
                 );
               })}
-            </ul>
+            </div>
           )}
         </div>
       )}
-      {/* {isOpen && (
-        <div className="max-h-[20vh] border w-full absolute overflow-y-auto bg-white shadow-lg rounded-md mt-1 z-10">
-          {isLoading && (
-            <div className="px-2 py-1 text-gray-500">Loading...</div>
-          )}
-          {!isLoading && optionArray.length === 0 && (
-            <div className="px-2 py-1 text-gray-500">No results found</div>
-          )}
-          {!isLoading &&
-            optionArray.map((option, index) => {
-              const label = getOptionLabel(option);
-              return (
-                <div
-                  onClick={() => handleSelectOption(option)}
-                  className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
-                  key={index}
-                >
-                  {label}
-                </div>
-              );
-            })}
-        </div>
-      )} */}
+
       {error && (
-        <p className="text-sm text-red-500 mt-1 ml-1">{error.message}</p>
+        <p className="ml-1 mt-2 text-sm font-medium text-red-500">
+          {error.message}
+        </p>
       )}
     </div>
   );
