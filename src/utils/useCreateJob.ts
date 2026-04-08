@@ -1,7 +1,7 @@
 import { jobServiceApi } from "@/lib/axios.config";
 import { CreateJobFormSchema } from "@/schema/createJob.validator";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { toast } from "sonner";
 import z from "zod";
 
