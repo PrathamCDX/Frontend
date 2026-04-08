@@ -7,8 +7,8 @@ import { Suspense } from "react";
 export default function Page() {
   return (
     <div className=" bg-[#F3F8FC] font-poppins text-[#1F2A37] h-full w-full">
-      <div className="flex w-screen h-[100%] p-3 gap-x-2">
-        <div className=" w-full overflow-y-auto hide-scrollbar rounded-[28px] border border-[#D7E6F3] bg-[linear-gradient(180deg,#FDFEFF_0%,#F7FBFF_100%)] shadow-[0_8px_30px_rgba(104,140,171,0.12)] sm:basis-[45%]">
+      <div className="flex w-full h-[100%] p-3 gap-x-2">
+        <div className=" w-full overflow-y-  rounded-[28px] border border-[#D7E6F3] bg-[linear-gradient(180deg,#FDFEFF_0%,#F7FBFF_100%)] shadow-[0_8px_30px_rgba(104,140,171,0.12)] sm:basis-[45%]">
           <Suspense
             fallback={
               <div>

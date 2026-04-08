@@ -45,44 +45,44 @@ export default function SignUpForm() {
   const router = useRouter();
 
   return (
-    <div className="relative w-full h-full p-3 flex flex-col">
-      <div className="flex justify-center px-6 pt-12">
+    <div className="relative w-full h-full p-3 grid grid-rows-[auto_1fr_auto]">
+      <div className="flex justify-center px-6 pt-3">
         <Image
           src="/WorkR-Full-Logo2.png"
           alt="photo"
           width={80}
           height={80}
-          className="h-auto w-[138px]"
-          objectFit="cover"
+          className="h-auto w-[100px]"
           priority
         />
       </div>
-      <div className="flex items-center justify-center mt-[2vh] px-6">
-        <div className=" w-full max-w-[440px] text-center">
-          <h1 className="text-[27px] font-semibold tracking-[-0.025em] text-[#263243] sm:text-[28px]">
-            Create Your Account
-          </h1>
 
-          <p className="mt-2 text-[15px] font-normal text-[#66788C]">
-            {"Welcome to Workr! Let's get started by creating your Account"}
-          </p>
+      <div className="flex items-center-safe justify-center px-6 min-h-0">
+        <div className="w-full  max-h-full max-w-[440px] text-center flex flex-col min-h-0">
+          <div className="shrink-0">
+            <h1 className="text-[22px] font-semibold tracking-[-0.025em] text-[#263243] sm:text-[28px]">
+              Create Your Account
+            </h1>
+            <p className="text-[12px] font-normal text-[#66788C]">
+              {"Welcome to Workr! Let's get started by creating your Account"}
+            </p>
+          </div>
 
-          <Form />
+          <div className="flex-1 min-h-0 overflow-y-auto">
+            <Form />
+          </div>
         </div>
       </div>
-      <div className="pb-9 mt-[70px] text-center text-[15px] text-[#445366]">
+
+      <div className="pb-4 text-center text-[15px] text-[#445366]">
         <span>Already have an account? </span>
         <button
           className="font-medium text-[#1681D8] transition hover:cursor-pointer hover:text-[#0D63AA]"
-          onClick={() => {
-            router.push("/login");
-          }}
+          onClick={() => router.push("/login")}
         >
           Login
         </button>
       </div>
-
-      <div className="h-[140px] bg-transparent"></div>
     </div>
   );
 }
@@ -130,7 +130,7 @@ function Form() {
     <FormProvider {...methods}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="max-w-md mx-auto space-y-3 py-6 rounded-lg font-poppins text-sm px-2"
+        className="max-w-md mx-auto space-y-1.5 pt-3 rounded-lg font-poppins text-sm px-2"
       >
         {/* {isError ? (<ErrorPopup message="Error while Siging up" />):(<></>)} */}
 
@@ -300,7 +300,7 @@ function Form() {
         /> */}
         <div>
           <div className="relative">
-            <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
+            <span className="absolute left-2 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
               <Lock size={20} strokeWidth={2.1} />
             </span>
 
@@ -311,7 +311,7 @@ function Form() {
               }}
               type={showPassword ? "text" : "password"}
               placeholder="Password"
-              className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-14 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
+              className="h-[40px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[47px] pr-14 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
             />
 
             <button
@@ -354,7 +354,7 @@ function Form() {
 
         <div>
           <div className="relative">
-            <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
+            <span className="absolute left-2 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
               <Lock size={20} strokeWidth={2.1} />
             </span>
 
@@ -367,7 +367,7 @@ function Form() {
               }}
               type={showConfirm ? "text" : "password"}
               placeholder="Confirm Password"
-              className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-14 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
+              className="h-[40px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[47px] pr-14 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
             />
 
             <button
@@ -399,7 +399,7 @@ function Form() {
             !!errors.fullName ||
             !!errors.phoneNo
           }
-          className={` mt-1 h-[54px] w-full rounded-[14px] text-[17px] font-semibold text-white transition ${
+          className={`sticky bottom-0 z-50 mt-1 h-[40px] w-full rounded-[12px] text-[17px] font-semibold text-white transition ${
             errors.confirmPassword ||
             errors.password ||
             errors.email ||
@@ -501,14 +501,14 @@ function SignupDropdown<TFormValues extends FieldValues, TOption>({
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`flex h-[64px] cursor-pointer w-full items-center rounded-[18px] border bg-white text-left transition outline-none ${
+        className={`flex h-[40px] cursor-pointer w-full items-center rounded-[18px] border bg-white text-left transition outline-none ${
           error
             ? "border-red-300 focus:ring-2 focus:ring-red-100"
             : "border-[#D6DBE4] focus:ring-2 focus:ring-[#DCE9FF]"
         } ${inputClassName}`}
       >
         {hasLeftIcon && (
-          <div className="ml-4 flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-[#EAF3FF]">
+          <div className="ml-2 flex h-7 w-7 shrink-0 items-center justify-center rounded-[14px] bg-[#EAF3FF]">
             {iconUrl ? (
               <Image
                 alt=""
@@ -595,7 +595,7 @@ function SignupTextInput<T extends FieldValues>({
   return (
     <div>
       <div className="relative">
-        <span className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
+        <span className="absolute left-2 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
           {/* <User size={20} strokeWidth={2.1} /> */}
           {icon}
         </span>
@@ -604,7 +604,7 @@ function SignupTextInput<T extends FieldValues>({
           {...register(fieldName)}
           type="text"
           placeholder={placeholder}
-          className="h-[64px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[72px] pr-4 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
+          className="h-[40px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[47px] pr-4 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
         />
       </div>
 
