@@ -64,7 +64,7 @@ function Form() {
     setValue,
   } = useForm<LogInFormValues>({
     mode: "onChange",
-    reValidateMode: "onBlur",
+    reValidateMode: "onChange",
     resolver: zodResolver(LogInFormSchema),
   });
   const router = useRouter();
@@ -113,10 +113,8 @@ function Form() {
         placeholder="Email Address"
         type="email"
         icon={<Mail size={20} />}
+        error={errors.email}
       />
-      {errors.email?.message && (
-        <p className="text-[#E04B40] text-xs">Enter valid email</p>
-      )}
 
       <InputField
         register={register}
@@ -127,6 +125,7 @@ function Form() {
         placeholder="Password"
         type={showPassword ? "text" : "password"}
         icon={<Lock size={20} />}
+        error={errors.password}
         other={
           <span
             className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
@@ -136,9 +135,6 @@ function Form() {
           </span>
         }
       />
-      {errors.password?.message && (
-        <p className="text-[#E04B40] text-xs">{errors.password.message}</p>
-      )}
 
       <button
         type="submit"

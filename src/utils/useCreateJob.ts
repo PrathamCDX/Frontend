@@ -1,6 +1,7 @@
 import { jobServiceApi } from "@/lib/axios.config";
 import { CreateJobFormSchema } from "@/schema/createJob.validator";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import z from "zod";
 
@@ -28,8 +29,12 @@ const useCreateJob = () => {
         throw error;
       }
     },
-    onError: () => {
-      toast.error("Error creating job");
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data?.message || "Error creating the job");
+      } else {
+        toast.error("Error occured while creating job");
+      }
     },
     onSuccess: () => {
       toast.success("Job posted successfully!");
