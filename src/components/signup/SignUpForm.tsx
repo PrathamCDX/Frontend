@@ -11,6 +11,9 @@ import {
   Phone,
   Calendar,
   Building2,
+  School,
+  IndianRupee,
+  CodeXml,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -167,7 +170,7 @@ function Form() {
           placeholder="Student or Professional"
           setValue={setValue}
           fieldValue=""
-          icon={<Building2 size={20} />}
+          icon={<School size={20} />}
         />
         {/* {errors.details?.message && (
           <p className="text-[#E04B40] text-xs">{errors.details.message}</p>
@@ -194,7 +197,7 @@ function Form() {
               placeholder="Select Current CTC Range"
               setValue={setValue}
               fieldValue=""
-              icon={<Building2 size={20} />}
+              icon={<IndianRupee size={20} />}
             />
           </>
         )}
@@ -215,7 +218,7 @@ function Form() {
           placeholder="Select Domain"
           setValue={setValue}
           fieldValue=""
-          icon={<Building2 size={20} />}
+          icon={<CodeXml size={20} />}
         />
 
         <InputField
