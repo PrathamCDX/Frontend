@@ -562,7 +562,7 @@ function SignupDropdown<TFormValues extends FieldValues, TOption>({
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`flex h-[58px] cursor-pointer w-full items-center rounded-[18px] border bg-white text-left transition outline-none ${
+        className={`flex h-[64px] cursor-pointer w-full items-center rounded-[18px] border bg-white text-left transition outline-none ${
           error
             ? "border-red-300 focus:ring-2 focus:ring-red-100"
             : "border-[#D6DBE4] focus:ring-2 focus:ring-[#DCE9FF]"
