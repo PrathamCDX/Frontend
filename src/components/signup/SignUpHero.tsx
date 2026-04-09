@@ -161,7 +161,7 @@ export default function SignUpHero() {
       <div className="absolute bottom-[46px] left-[61%] h-1.5 w-1.5 rounded-full bg-white/65" />
 
       {/* heading section */}
-      <div ref={textAreaRef} className="absolute left-[52px] top-[78px] z-20">
+      <div ref={textAreaRef} className="absolute left-[52px] top-[68px] z-20">
         <div className="mb-8 flex items-center gap-3">
           <div className="h-[7px] w-[112px] rounded-full bg-[#1681D8]" />
           <div className="h-[9px] w-[9px] rounded-full bg-[#A7C8E8]" />

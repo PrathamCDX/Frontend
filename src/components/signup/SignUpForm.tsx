@@ -38,6 +38,7 @@ import {
   domainOptions,
   fresherOptions,
 } from "@/utils/signup.utils";
+import SignupTextInput from "./SignupTextInput";
 
 type FormValues = z.infer<typeof SignUpFormSchema>;
 
@@ -45,7 +46,7 @@ export default function SignUpForm() {
   const router = useRouter();
 
   return (
-    <div className="relative w-full h-full p-3 grid grid-rows-[auto_1fr_auto]">
+    <div className="relative  w-full h-full p-3 grid grid-rows-[auto_1fr_auto]">
       <div className="flex justify-center px-6 pt-3">
         <Image
           src="/WorkR-Full-Logo2.png"
@@ -57,7 +58,7 @@ export default function SignUpForm() {
         />
       </div>
 
-      <div className="flex items-center-safe justify-center px-6 min-h-0">
+      <div className="flex h-full items-center justify-center px-6 min-h-0">
         <div className="w-full  max-h-full max-w-[440px] text-center flex flex-col min-h-0">
           <div className="shrink-0">
             <h1 className="text-[22px] font-semibold tracking-[-0.025em] text-[#263243] sm:text-[28px]">
@@ -300,7 +301,7 @@ function Form() {
         /> */}
         <div>
           <div className="relative">
-            <span className="absolute left-2 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
+            <span className="absolute left-2 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
               <Lock size={20} strokeWidth={2.1} />
             </span>
 
@@ -311,7 +312,7 @@ function Form() {
               }}
               type={showPassword ? "text" : "password"}
               placeholder="Password"
-              className="h-[40px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[47px] pr-14 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
+              className="h-[44px] w-full rounded-[14px] border border-[#D7E4F0] bg-white pl-[47px] pr-14 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
             />
 
             <button
@@ -354,7 +355,7 @@ function Form() {
 
         <div>
           <div className="relative">
-            <span className="absolute left-2 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
+            <span className="absolute left-2 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
               <Lock size={20} strokeWidth={2.1} />
             </span>
 
@@ -367,7 +368,7 @@ function Form() {
               }}
               type={showConfirm ? "text" : "password"}
               placeholder="Confirm Password"
-              className="h-[40px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[47px] pr-14 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
+              className="h-[44px] w-full rounded-[14px] border border-[#D7E4F0] bg-white pl-[47px] pr-14 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
             />
 
             <button
@@ -501,14 +502,14 @@ function SignupDropdown<TFormValues extends FieldValues, TOption>({
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`flex h-[40px] cursor-pointer w-full items-center rounded-[18px] border bg-white text-left transition outline-none ${
+        className={`flex h-[44px] cursor-pointer w-full items-center rounded-[18px] border bg-white text-left transition outline-none ${
           error
             ? "border-red-300 focus:ring-2 focus:ring-red-100"
             : "border-[#D6DBE4] focus:ring-2 focus:ring-[#DCE9FF]"
         } ${inputClassName}`}
       >
         {hasLeftIcon && (
-          <div className="ml-2 flex h-7 w-7 shrink-0 items-center justify-center rounded-[14px] bg-[#EAF3FF]">
+          <div className="ml-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-[14px] bg-[#EAF3FF]">
             {iconUrl ? (
               <Image
                 alt=""
@@ -579,38 +580,38 @@ function SignupDropdown<TFormValues extends FieldValues, TOption>({
   );
 }
 
-function SignupTextInput<T extends FieldValues>({
-  register,
-  error,
-  fieldName,
-  placeholder,
-  icon,
-}: {
-  register: UseFormRegister<T>;
-  error: FieldError | undefined;
-  fieldName: Path<T>;
-  placeholder: string;
-  icon: React.ReactNode;
-}) {
-  return (
-    <div>
-      <div className="relative">
-        <span className="absolute left-2 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
-          {/* <User size={20} strokeWidth={2.1} /> */}
-          {icon}
-        </span>
+// function SignupTextInput<T extends FieldValues>({
+//   register,
+//   error,
+//   fieldName,
+//   placeholder,
+//   icon,
+// }: {
+//   register: UseFormRegister<T>;
+//   error: FieldError | undefined;
+//   fieldName: Path<T>;
+//   placeholder: string;
+//   icon: React.ReactNode;
+// }) {
+//   return (
+//     <div>
+//       <div className="relative">
+//         <span className="absolute left-2 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#EEF5FF] text-[#1681D8]">
+//           {/* <User size={20} strokeWidth={2.1} /> */}
+//           {icon}
+//         </span>
 
-        <input
-          {...register(fieldName)}
-          type="text"
-          placeholder={placeholder}
-          className="h-[40px] w-full rounded-[18px] border border-[#D7E4F0] bg-white pl-[47px] pr-4 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
-        />
-      </div>
+//         <input
+//           {...register(fieldName)}
+//           type="text"
+//           placeholder={placeholder}
+//           className="h-[40px] w-full rounded-[14px] border border-[#D7E4F0] bg-white pl-[47px] pr-4 text-[16px] font-medium text-[#334155] shadow-[0_2px_8px_rgba(15,56,101,0.04)] outline-none transition placeholder:font-normal placeholder:text-[#9AA8B7] focus:border-[#8CC2EE] focus:ring-4 focus:ring-[#DDEEFF]"
+//         />
+//       </div>
 
-      {error && error?.message && (
-        <p className="mt-2 text-left text-xs text-[#E04B40]">{error.message}</p>
-      )}
-    </div>
-  );
-}
+//       {error && error?.message && (
+//         <p className="mt-2 text-left text-xs text-[#E04B40]">{error.message}</p>
+//       )}
+//     </div>
+//   );
+// }
