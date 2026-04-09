@@ -153,7 +153,7 @@ export function WorkingCandidatesList({ setTotalCount }: CandidatesListProps) {
                 </div>
               </div>
 
-              <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-2 py-2 px-2 bg-gray-50 hide-scrollbar">
+              <div className="flex-1 min-h-0 h-full max-h-[calc(100%-3.5rem)]  overflow-y-auto flex flex-col gap-2 py-2 px-2 bg-gray-50 hide-scrollbar">
                 {data.records.map((user: GetUserResponseType) => (
                   <div
                     key={user?.id ?? ""}
