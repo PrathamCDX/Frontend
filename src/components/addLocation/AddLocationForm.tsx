@@ -42,7 +42,7 @@ export default function AddLocationForm() {
   };
   return (
     <div className="fixed z-50 w-full h-full font-inter flex items-center justify-center bg-[#0F172A]/20 backdrop-blur-[10px] ">
-      <div className="h-full sm:h-8/10 w-full sm:w-1/2 bg-white sm:rounded-[28px] relative overflow-hidden bg-[radial-gradient(120%_120%_at_50%_10%,rgba(255,255,255,0)_64%,rgba(178,214,244,0.55)_80%,rgba(164,206,241,0.70)_94%,rgba(152,198,236,0.84)_100%)] shadow-2xl">
+      <div className="h-full sm:h-auto w-full sm:w-1/2 bg-white sm:rounded-[28px] relative overflow-hidden bg-[radial-gradient(110%_110%_at_50%_10%,rgba(255,255,255,0)_64%,rgba(178,214,244,0.55)_80%,rgba(164,206,241,0.70)_94%,rgba(152,198,236,0.84)_100%)] shadow-2xl">
         {isPending && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/50">
             <div className="loader"></div>
@@ -69,7 +69,7 @@ export default function AddLocationForm() {
               onSubmit={handleSubmit(onSubmit)}
               className="px-6 relative flex-1 flex min-h-0 flex-col "
             >
-              <div className="flex-1 flex flex-col min-h-0 justify-start sm:justify-center overflow-y-auto">
+              <div className=" flex flex-col min-h-0 justify-start sm:justify-center overflow-y-auto">
                 <HeadingLabel>City Name</HeadingLabel>
                 <DebouncedDropdown
                   error={errors.city}
@@ -111,7 +111,7 @@ export default function AddLocationForm() {
                   icon={<LocateFixed />}
                 />
               </div>
-              <div className="my-5  flex justify-center">
+              <div className="mt-5 mb-5 sm:mb-20  flex justify-center">
                 <button
                   type="submit"
                   className="cursor-pointer tracking-wide w-full sm:w-1/2 py-3 rounded-2xl text-white text-lg border border-[#2D6BFF] bg-[linear-gradient(90deg,#2E63F5_0%,#3478FF_60%,#285BEB_100%)] shadow-[0_12px_24px_rgba(46,99,245,0.28)] hover:brightness-105 active:translate-y-[1px]"

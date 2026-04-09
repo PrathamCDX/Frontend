@@ -10,6 +10,7 @@ import {
   Path,
   UseFormRegister,
 } from "react-hook-form";
+import { toast } from "sonner";
 
 function NameExistsChecker<T extends FieldValues>({
   name,
@@ -44,7 +45,12 @@ function NameExistsChecker<T extends FieldValues>({
   const jwtToken = useAppSelector((state) => state.authJwtToken.value);
 
   const shouldCheck = debouncedValue.length > 0;
-  const { data, isFetching, isError } = useQueryFn(jwtToken, debouncedValue);
+  const {
+    data,
+    isFetching,
+    isError,
+    error: queryError,
+  } = useQueryFn(jwtToken, debouncedValue);
 
   useEffect(() => {
     if (!shouldCheck) {
@@ -55,15 +61,15 @@ function NameExistsChecker<T extends FieldValues>({
     if (data && validationFn(data)) {
       setCompanyNameExists(true);
     } else {
-      setCompanyNameExists(false);
+      if (isError) {
+        setCompanyNameExists(true);
+        toast.error(queryError?.message || "Something went wrong");
+      } else {
+        setCompanyNameExists(false);
+      }
     }
-  }, [data, shouldCheck, setCompanyNameExists, validationFn]);
-
-  useEffect(() => {
-    if (isError) {
-      setCompanyNameExists(false);
-    }
-  }, [isError, setCompanyNameExists]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, shouldCheck, setCompanyNameExists, validationFn, isError]);
 
   const hasError = companyNameExists || !!error;
   const showStatusIcon = trimmedValue.length > 0;
@@ -125,7 +131,7 @@ function NameExistsChecker<T extends FieldValues>({
 
       {!companyNameExists && error && (
         <p className="ml-1 mt-2 text-sm font-medium text-red-500">
-          {errorMessage || "This field is required"}
+          {error.message || "This field is required"}
         </p>
       )}
     </div>
