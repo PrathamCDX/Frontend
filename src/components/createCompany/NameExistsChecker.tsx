@@ -20,6 +20,9 @@ function NameExistsChecker<T extends FieldValues>({
   companyNameExists,
   setCompanyNameExists,
   placeholder,
+  validationFn,
+  errorMessage,
+  delay = 500,
 }: {
   name: Path<T>;
   register: UseFormRegister<T>;
@@ -30,10 +33,14 @@ function NameExistsChecker<T extends FieldValues>({
   companyNameExists: boolean;
   setCompanyNameExists: React.Dispatch<React.SetStateAction<boolean>>;
   placeholder: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  validationFn: (data: any) => boolean;
+  errorMessage: string;
+  delay?: number;
 }) {
   const fieldValue = watch(name) || "";
   const trimmedValue = fieldValue.trim();
-  const debouncedValue = useDebounce(trimmedValue, 500);
+  const debouncedValue = useDebounce(trimmedValue, delay);
   const jwtToken = useAppSelector((state) => state.authJwtToken.value);
 
   const shouldCheck = debouncedValue.length > 0;
@@ -45,12 +52,12 @@ function NameExistsChecker<T extends FieldValues>({
       return;
     }
 
-    if (data && data.id) {
+    if (data && validationFn(data)) {
       setCompanyNameExists(true);
     } else {
       setCompanyNameExists(false);
     }
-  }, [data, shouldCheck, setCompanyNameExists]);
+  }, [data, shouldCheck, setCompanyNameExists, validationFn]);
 
   useEffect(() => {
     if (isError) {
@@ -83,8 +90,8 @@ function NameExistsChecker<T extends FieldValues>({
   };
 
   return (
-    <div>
-      <div className="relative">
+    <div className="w-full">
+      <div className="relative w-full">
         <div className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#EAF3FF]">
             <Building2
@@ -112,13 +119,13 @@ function NameExistsChecker<T extends FieldValues>({
 
       {companyNameExists && (
         <p className="ml-1 mt-2 text-sm font-medium text-red-500">
-          Company name already exists
+          {errorMessage || "This name already exists"}
         </p>
       )}
 
       {!companyNameExists && error && (
         <p className="ml-1 mt-2 text-sm font-medium text-red-500">
-          {error.message || "This field is required"}
+          {errorMessage || "This field is required"}
         </p>
       )}
     </div>
