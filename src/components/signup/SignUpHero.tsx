@@ -111,7 +111,6 @@ export default function SignUpHero() {
   useEffect(() => {
     const updateBottom = () => {
       if (parentDivRef.current && textAreaRef.current) {
-        console.log("updateBottom");
         const parentDivHeight = parentDivRef.current.clientHeight;
         const imgDivHeight = parentDivRef.current.clientWidth * 0.8;
         const textAreaBottom =
