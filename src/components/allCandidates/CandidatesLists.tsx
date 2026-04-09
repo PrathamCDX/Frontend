@@ -48,7 +48,7 @@ export function StudentCandidatesList({ setTotalCount }: CandidatesListProps) {
               </div>
 
               {/* Body */}
-              <div className="flex flex-col gap-2 py-2 px-2 bg-gray-50 h-full min-h-0  overflow-y-auto">
+              <div className="flex flex-col gap-2 py-2 px-2 bg-gray-50 h-full min-h-0 max-h-[calc(100%-3.5rem)] overflow-y-auto">
                 {data.records.map((user: GetUserResponseType) => (
                   <div
                     key={user?.id ?? ""}
