@@ -1,5 +1,6 @@
 import { jobServiceApi } from "@/lib/axios.config";
 import { CreateJobFormSchema } from "@/schema/createJob.validator";
+import { ErrorResponse } from "@/types/ErrorResponse";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
@@ -8,7 +9,6 @@ import z from "zod";
 type CreateJobFormValues = z.infer<typeof CreateJobFormSchema>;
 
 const useCreateJob = () => {
-  
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({
@@ -18,16 +18,12 @@ const useCreateJob = () => {
       createJobData: CreateJobFormValues;
       authJwtToken: string | null;
     }) => {
-      try {
-        const response = await jobServiceApi.post("/jobs", createJobData, {
-          headers: {
-            Authorization: `${authJwtToken}`,
-          },
-        });
-        return response.data;
-      } catch (error) {
-        throw error;
-      }
+      const response = await jobServiceApi.post("/jobs", createJobData, {
+        headers: {
+          Authorization: `${authJwtToken}`,
+        },
+      });
+      return response.data;
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
